@@ -209,7 +209,7 @@
     const genderResult = planetNames[ownerNumber - 1]
       ? planetNames[ownerNumber - 1] + "ဂြိုဟ် — " + gender
       : gender;
-    addLankaRow(details,"ကျား / မ ဂြိုဟ်",gender === "ယောက်ျားဂြိုဟ်" ? genderVerses.male : genderVerses.female,genderResult);
+    addLankaRow(details,"ကျား / မ ဂြိုဟ်",genderVerses.male + " · " + genderVerses.female,genderResult);
 
     const classNumbers = values.map(value => getClassificationNumber(value,selectedWeekday,periodStart));
     addLankaRow(details,"နဂိုရ် / ယာယီ ဂြိုဟ်",classificationSets.native.verse + " · " + classificationSets.temporary.verse,
