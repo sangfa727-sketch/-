@@ -20,6 +20,15 @@ test('2026-11-04 converts to ME 1388 Thadingyut waning day 9', () => {
   assert.equal(result.wd, 4); // Wednesday; 0=Saturday
 });
 
+test('1986-08-28 converts to ME 1348 Wagaung waning day 8 Thursday', () => {
+  const result = sandbox.j2m(sandbox.w2j(1986, 8, 28, 1));
+  assert.equal(result.my, 1348);
+  assert.equal(result.mm, 5);
+  assert.equal(result.mp, 2);
+  assert.equal(result.fd, 8);
+  assert.equal(result.wd, 5); // Thursday; 0=Saturday
+});
+
 test('calendar core returns valid dates for every day in 2026-2125', () => {
   let checked = 0;
   let previousJdn = null;
@@ -47,10 +56,13 @@ test('calendar core returns valid dates for every day in 2026-2125', () => {
   assert.deepEqual([...yearTypes].sort(), [0, 1, 2]);
 });
 
-test('date picker and 100-year range are present', () => {
-  assert.match(html, /min="2026-01-01"/);
+test('historical and future date lookup plus date-gap UI are present', () => {
+  assert.match(html, /min="1900-01-01"/);
   assert.match(html, /max="2125-12-31"/);
   assert.match(html, /id="dateInput"/);
+  assert.match(html, /id="dateText"/);
+  assert.match(html, /id="dateGap"/);
+  assert.match(html, /function calendarGap\\(/);
   assert.match(html, /id="calendarGrid"/);
 });
 
