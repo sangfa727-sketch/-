@@ -80,6 +80,7 @@ test('Myanmar calendar works in desktop and mobile Chromium browsers', async () 
     assert.equal(await page.locator('#totalDays').textContent(), '၁၄၆၇၈ ရက်');
     await page.locator('#dateText').fill('31,2,2024');
     assert.equal(await page.locator('#myanmarFullDate').textContent(), '—');
+    assert.equal(await page.locator('#datePicker').inputValue(), '');
     assert.match(await page.locator('#errorMessage').textContent(), /ရက်စွဲမမှန်ကန်ပါ/);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('http://127.0.0.1:4173/app.html');
