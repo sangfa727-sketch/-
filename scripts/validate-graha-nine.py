@@ -2,6 +2,8 @@
 """Regression checks for the static Myanmar astrology reference page."""
 
 from html.parser import HTMLParser
+from html import unescape
+import re
 from pathlib import Path
 import sys
 
@@ -140,6 +142,24 @@ def main():
         return fail("Ketu source gap must remain explicit")
     if "အဖ၊ အဖေ" not in pariyaya or "ပညာ" not in pariyaya:
         return fail("Expected original pariyaya wording is missing")
+    source_section = re.search(
+        r'<section\\b[^>]*aria-labelledby="graha-pariyaya-heading"[^>]*>(.*?)</section>',
+        source,
+        re.DOTALL,
+    )
+    if not source_section:
+        return fail("Original graha pariyaya source section is missing")
+    source_terms = re.findall(
+        r'<tr><td class="num">.*?</td><td>.*?</td><td>.*?</td><td>(.*?)</td></tr>',
+        source_section.group(1),
+        re.DOTALL,
+    )
+    if len(source_terms) != 8:
+        return fail(f"Expected 8 original pariyaya source rows, found {len(source_terms)}")
+    for term in source_terms:
+        original_text = unescape(re.sub(r"<[^>]+>", "", term)).strip()
+        if original_text not in pariyaya:
+            return fail("A source pariyaya entry was changed or omitted")
 
     print("PASS: original graha, letter, and Mahabote sections remain")
     print("PASS: nine pariyaya cards, original wording, and explicit Ketu gap")
