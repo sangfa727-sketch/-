@@ -192,7 +192,21 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     await page.goto('http://127.0.0.1:4173/graha-pariyaya.html');
     const pariyayaLankaSection = page.locator('#lanka-verses');
     assert.equal(await pariyayaLankaSection.count(), 1);
-    assert.deepEqual((await pariyayaLankaSection.locator('.lanka-verse').allTextContents()).map(text => text.trim()), expectedLankaVerses);
+    assert.deepEqual(await pariyayaLankaSection.locator('.lanka-verse').evaluateAll(nodes => nodes.map(node => {
+      const classification = node.querySelector('.lanka-classification');
+      return classification ? node.textContent.replace(classification.textContent, '').trim() : node.textContent.trim();
+    })), expectedLankaVerses);
+    assert.deepEqual(await pariyayaLankaSection.locator('.lanka-classification').allTextContents(), [
+      'အပြင်မိတ်','အတွင်းမိတ်','အပြင်ရန်','အတွင်းရန်','အရှင်ဂြိုလ်','ကျွန်ဂြိုလ်ပေါင်း','ဓာတ်မိတ်','ဓာတ်ရန်'
+    ]);
+    const grahaFactCards = await page.locator('#planetGrid .planet-card:not([data-planet="ကိတ်"])').evaluateAll(cards => cards.map(card => ({
+      planet: card.dataset.planet,
+      lifespan: card.querySelector('.planet-facts dd')?.textContent.trim(),
+      factCount: card.querySelectorAll('.planet-facts dt').length,
+      directions: [...card.querySelectorAll('.planet-facts dd')].slice(1).map(node => node.textContent.trim())
+    })));
+    assert.equal(grahaFactCards.length, 8);
+    assert.ok(grahaFactCards.every(card => card.lifespan && card.factCount >= 3 && card.directions.length >= 2));
     assert.equal(await pariyayaLankaSection.locator('h1,h2,h3,h4,h5,h6,table').count(), 0);
     assert.doesNotMatch(await pariyayaLankaSection.innerText(), /[၀-၉0-9]/);
     const correctedPlanetOrder = await page.locator('#planetGrid .planet-card').evaluateAll(cards =>
