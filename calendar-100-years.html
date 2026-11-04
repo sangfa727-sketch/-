@@ -123,7 +123,7 @@ function chooseDate(date){
 }
 function clearResults(){["myYear","myMonth","myDay","myWeekday","yearType","fullDate","currentDate","searchedDate","dateGap","totalGapDays","gapDirection"].forEach(id=>$(id).textContent="—");}
 function rejectFreeDate(message){$("error").textContent=message;$("dateInput").value="";clearResults();}
-$("dateText").addEventListener("input",()=>{const value=$("dateText").value;if(!value.trim()){rejectFreeDate("ရက်၊ လ၊ နှစ်ကို 28,8,1986 ပုံစံဖြင့် ထည့်ပါ။");return;}const p=parseFreeDate(value);if(!p){rejectFreeDate("ရက်၊ လ၊ နှစ်ကို 28,8,1986 ပုံစံဖြင့် ထည့်ပါ။");return;}if(p.y<START_YEAR||p.y>END_YEAR){rejectFreeDate("ရှာဖွေနိုင်သောကာလမှာ 1900 မှ 2125 အထိဖြစ်သည်။");return;}const d=new Date(p.y,p.m-1,p.d);if(p.m<1||p.m>12||p.d<1||d.getFullYear()!==p.y||d.getMonth()!==p.m-1||d.getDate()!==p.d){rejectFreeDate("ရက်စွဲမမှန်ကန်ပါ။");return;}chooseDate(d);});
+$("dateText").addEventListener("input",()=>{const value=$("dateText").value;if(!value.trim()){rejectFreeDate("ရက်၊ လ၊ နှစ်ကို 28,8,1986 ပုံစံဖြင့် ထည့်ပါ။");return;}const p=parseFreeDate(value);if(!p){const dateShape=/^(?:\d{1,2}\s*[,/.-]\s*\d{1,2}\s*[,/.-]\s*\d{4}|\d{4}-\d{1,2}-\d{1,2})$/.test(value.trim());rejectFreeDate(dateShape?"ရက်စွဲမမှန်ကန်ပါ။":"ရက်၊ လ၊ နှစ်ကို 28,8,1986 ပုံစံဖြင့် ထည့်ပါ။");return;}if(p.y<START_YEAR||p.y>END_YEAR){rejectFreeDate("ရှာဖွေနိုင်သောကာလမှာ 1900 မှ 2125 အထိဖြစ်သည်။");return;}const d=new Date(p.y,p.m-1,p.d);if(p.m<1||p.m>12||p.d<1||d.getFullYear()!==p.y||d.getMonth()!==p.m-1||d.getDate()!==p.d){rejectFreeDate("ရက်စွဲမမှန်ကန်ပါ။");return;}chooseDate(d);});
 $("dateInput").addEventListener("change",()=>{
  if(!$("dateInput").value)return;
  const [y,m,d]=$("dateInput").value.split("-").map(Number);
