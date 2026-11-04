@@ -153,13 +153,19 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     // selection, inferred weekday continuation, pillar labels, and mobile fit.
     await page.setViewportSize({ width: 1365, height: 900 });
     await page.goto('http://127.0.0.1:4173/anga-vijja.html');
-    assert.deepEqual(await page.locator('#chart .cell:not(.empty)').allTextContents(), ['၅', '၂', '၆', '၁', '၄', '၀', '၃']);
+    assert.deepEqual(await page.locator('#chart .cell:not(.center)').allTextContents(), ['၅', '၂', '၆', '၄', '၀', '၃']);
+    assert.equal(await page.locator('#chart .cell.center').innerText(), '၁\nတနင်္ဂနွေ နံ');
+    assert.equal(await page.locator('#chart .chart-rule').count(), 2);
+    const verticalChart = await page.locator('#chart .cell').evaluateAll(cells => cells.map(cell => ({ top: cell.getBoundingClientRect().top, left: cell.getBoundingClientRect().left })));
+    assert.ok(verticalChart.every((cell, i) => i === 0 || cell.top > verticalChart[i - 1].top), 'pillar digits and center must be vertically stacked');
     await page.locator('#weekday').selectOption('1');
-    assert.deepEqual(await page.locator('#chart .cell:not(.empty)').allTextContents(), ['၆', '၃', '၀', '၂', '၅', '၁', '၄']);
+    assert.deepEqual(await page.locator('#chart .cell:not(.center)').allTextContents(), ['၆', '၃', '၀', '၅', '၁', '၄']);
+    assert.equal(await page.locator('#chart .cell.center').innerText(), '၂\nတနင်္လာ နံ');
     await page.locator('#letter').selectOption('ဃ');
     assert.equal(await page.locator('#weekday').inputValue(), '1');
     await page.locator('#weekday').selectOption('2');
-    assert.deepEqual(await page.locator('#chart .cell:not(.empty)').allTextContents(), ['၀', '၄', '၁', '၃', '၆', '၂', '၅']);
+    assert.deepEqual(await page.locator('#chart .cell:not(.center)').allTextContents(), ['၀', '၄', '၁', '၆', '၂', '၅']);
+    assert.equal(await page.locator('#chart .cell.center').innerText(), '၃\nအင်္ဂါ နံ');
 
     await page.locator('#pillarNumbers').fill('1,0,5,4,2');
     await page.locator('#interpret').click();
