@@ -139,8 +139,8 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     const genderHeaders = await genderTable.locator('thead th').allTextContents();
     const numberColumn = genderHeaders.findIndex(value => value.trim() === 'ကိန်းဂဏန်း');
     assert.ok(numberColumn >= 0, 'gender table must expose a number column');
-    const maleGenderRow = genderRows.filter({ has: genderTable.locator('td').filter({ hasText: 'ယောက်ျားဂြိုဟ်' }) }).first();
-    const femaleGenderRow = genderRows.filter({ has: genderTable.locator('td').filter({ hasText: 'မိန်းမဂြိုဟ်' }) }).first();
+    const maleGenderRow = genderRows.filter({ hasText: 'ယောက်ျားဂြိုဟ်' }).first();
+    const femaleGenderRow = genderRows.filter({ hasText: 'မိန်းမဂြိုဟ်' }).first();
     assert.equal(await maleGenderRow.count(), 1, 'male gender mnemonic row must exist exactly once');
     assert.equal(await femaleGenderRow.count(), 1, 'female gender mnemonic row must exist exactly once');
     const maleGenderNumber = (await maleGenderRow.locator('td').nth(numberColumn).textContent()).replace(/\\s+/g, '');
