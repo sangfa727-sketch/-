@@ -1,4 +1,4 @@
-const CACHE_NAME = "myanmar-astrology-shell-v2";
+const CACHE_NAME = "myanmar-astrology-shell-v3";
 const APP_SHELL = [
   "./app.html",
   "./calendar.html",
