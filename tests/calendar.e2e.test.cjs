@@ -94,8 +94,8 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(appDimensions.document <= appDimensions.viewport, `app mobile horizontal overflow: ${JSON.stringify(appDimensions)}`);
     assert.ok(await page.locator('#calendarGrid .calendar-day').count() >= 28);
 
-    // Static astrology reference: verify all seven mnemonic classification tables
-    // and key source wording without changing the reference content.
+    // Static astrology reference: verify the mnemonic tables, corrected wording,
+    // the two new reference sections, and desktop/mobile table containment.
     await page.setViewportSize({ width: 1365, height: 900 });
     await page.goto('http://127.0.0.1:4173/graha-nine.html');
     const classification = page.locator('section[aria-labelledby="akchara-linga-heading"]');
@@ -113,6 +113,13 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       assert.ok(await classification.getByRole('heading', { name: heading, exact: true }).count() === 1, `missing heading: ${heading}`);
     }
     assert.ok((await page.locator('body').innerText()).includes('အောင်ပ ကုလား ဆွေသား နှောင်ရင်း'));
+    const grahaBodyText = await page.locator('body').innerText();
+    assert.ok(grahaBodyText.includes('ဦးသာ စိန်ပန်း ဒန်းလှ ကိုရှာ'));
+    assert.equal(await page.locator('#graha-comparison-heading').count(), 1);
+    assert.equal(await page.locator('#people-body-heading').count(), 1);
+    assert.equal(await page.locator('#graha-comparison-heading').locator('xpath=following-sibling::div//tbody/tr').count(), 8);
+    assert.equal(await page.locator('#people-body-heading').locator('xpath=following-sibling::p').count(), 1);
+    assert.equal(await page.locator('#people-body-heading').locator('xpath=following-sibling::div//tbody/tr').count(), 8);
     assert.ok((await page.locator('body').innerText()).includes('အရှင်ဂြိုဟ်'));
     assert.ok((await page.locator('body').innerText()).includes('ကျွန်ဂြိုဟ်'));
 
