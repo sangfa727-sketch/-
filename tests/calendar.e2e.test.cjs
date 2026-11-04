@@ -129,20 +129,25 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#akchara-linga-heading').count(), 1);
     assert.equal(await page.locator('section[aria-labelledby="akchara-linga-heading"] h3').count(), 7);
     const genderSection = page.locator('section[aria-labelledby="akchara-linga-heading"]');
-    // This is the first table in the section: the dedicated male/female mnemonic table.
-    const genderTable = genderSection.locator('table').first();
+    // Bind the gender table to its explicit heading, not the first table in a section.
+    const genderHeading = genderSection.getByRole('heading', {
+      name: '၁။ ကျား / မ ဂြိုဟ် ခွဲခြားနည်း', exact: true
+    });
+    const genderTable = genderHeading.locator('xpath=following-sibling::div[contains(@class,"table-wrap")][1]//table');
     const genderRows = genderTable.locator('tbody tr');
     assert.equal(await genderRows.count(), 2, 'gender mnemonic table must contain exactly two rows');
-    // Locate rows by semantic labels rather than relying on DOM row/cell indexes.
-    const maleGenderRow = genderRows.filter({ hasText: 'ယောက်ျားဂြိုဟ်' }).first();
-    const femaleGenderRow = genderRows.filter({ hasText: 'မိန်းမဂြိုဟ်' }).first();
+    const genderHeaders = await genderTable.locator('thead th').allTextContents();
+    const numberColumn = genderHeaders.findIndex(value => value.trim() === 'ကိန်းဂဏန်း');
+    assert.ok(numberColumn >= 0, 'gender table must expose a number column');
+    const maleGenderRow = genderRows.filter({ has: genderTable.locator('td').filter({ hasText: 'ယောက်ျားဂြိုဟ်' }) }).first();
+    const femaleGenderRow = genderRows.filter({ has: genderTable.locator('td').filter({ hasText: 'မိန်းမဂြိုဟ်' }) }).first();
     assert.equal(await maleGenderRow.count(), 1, 'male gender mnemonic row must exist exactly once');
     assert.equal(await femaleGenderRow.count(), 1, 'female gender mnemonic row must exist exactly once');
-    const maleGenderText = (await maleGenderRow.innerText()).replace(/\s+/g, '');
-    const femaleGenderText = (await femaleGenderRow.innerText()).replace(/\s+/g, '');
-    assert.match(maleGenderText, /ယောက်ျားဂြိုဟ်.*၁၊၃၊၄၊၅/,
+    const maleGenderNumber = (await maleGenderRow.locator('td').nth(numberColumn).textContent()).replace(/\\s+/g, '');
+    const femaleGenderNumber = (await femaleGenderRow.locator('td').nth(numberColumn).textContent()).replace(/\\s+/g, '');
+    assert.match(maleGenderNumber, /၁၊၃၊၄၊၅/,
       'male graha mnemonic must map to 1, 3, 4, 5');
-    assert.match(femaleGenderText, /မိန်းမဂြိုဟ်.*၂၊၆၊၀၊၈/,
+    assert.match(femaleGenderNumber, /၂၊၆၊၀၊၈/,
       'female graha mnemonic must map to 2, 6, 0, 8');
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
