@@ -159,6 +159,17 @@ def main():
     )
     if len(source_terms) != 8:
         return fail(f"Expected 8 original pariyaya source rows, found {len(source_terms)}")
+    source_planets = re.findall(
+        r'<tr><td class="num">.*?</td><td>(.*?)</td><td>.*?</td><td>.*?</td></tr>',
+        source_section.group(1),
+        re.DOTALL,
+    )
+    expected_planets = ["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသာပတေး","သောကြာ","စနေ","ရာဟု"]
+    if source_planets != expected_planets:
+        return fail(f"Pariyaya rows must follow canonical planet numbering 1–8: {source_planets}")
+    for required in ('id="graha-comparison-heading"','id="people-body-heading"','id="akchara-linga-heading"'):
+        if required not in pariyaya:
+            return fail(f"Dedicated pariyaya page is missing original detail section: {required}")
     for term in source_terms:
         original_text = unescape(re.sub(r"<[^>]+>", "", term)).strip()
         if original_text not in pariyaya:
