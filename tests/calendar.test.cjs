@@ -62,7 +62,7 @@ test('historical and future date lookup plus date-gap UI are present', () => {
   assert.match(html, /id="dateInput"/);
   assert.match(html, /id="dateText"/);
   assert.match(html, /id="dateGap"/);
-  assert.match(html, /function calendarGap\\(/);
+  assert.match(html, /function calendarGap\(/);
   assert.match(html, /id="calendarGrid"/);
 });
 
