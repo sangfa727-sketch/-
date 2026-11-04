@@ -13,6 +13,7 @@ const assets = {
   '/css/app.css': ['css/app.css', 'text/css; charset=utf-8'],
   '/js/calendar-app.js': ['js/calendar-app.js', 'text/javascript; charset=utf-8'],
   '/graha-nine.html': ['graha-nine.html', 'text/html; charset=utf-8'],
+  '/anga-vijja.html': ['anga-vijja.html', 'text/html; charset=utf-8'],
 };
 
 test('Myanmar calendar and astrology reference pages work in desktop and mobile Chromium', async () => {
@@ -147,6 +148,39 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(mobileGrahaDimensions.tableWrappers > 0);
     assert.equal(mobileGrahaDimensions.tables, await page.locator('table').count());
     assert.ok(mobileGrahaDimensions.scrollableTables > 0, 'wide tables should scroll inside their wrappers on mobile');
+
+    // Interactive Angavijja module: supplied Sunday/Monday examples, letter
+    // selection, inferred weekday continuation, pillar labels, and mobile fit.
+    await page.setViewportSize({ width: 1365, height: 900 });
+    await page.goto('http://127.0.0.1:4173/anga-vijja.html');
+    assert.deepEqual(await page.locator('#chart .cell:not(.empty)').allTextContents(), ['၅', '၂', '၆', '၁', '၄', '၀', '၃']);
+    await page.locator('#weekday').selectOption('1');
+    assert.deepEqual(await page.locator('#chart .cell:not(.empty)').allTextContents(), ['၆', '၃', '၀', '၂', '၅', '၁', '၄']);
+    await page.locator('#letter').selectOption('ဃ');
+    assert.equal(await page.locator('#weekday').inputValue(), '1');
+    await page.locator('#weekday').selectOption('2');
+    assert.deepEqual(await page.locator('#chart .cell:not(.empty)').allTextContents(), ['၀', '၄', '၁', '၃', '၆', '၂', '၅']);
+
+    await page.locator('#pillarNumbers').fill('1,0,5,4,2');
+    await page.locator('#interpret').click();
+    assert.match(await page.locator('#interpretResult').textContent(), /မူလတိုင်/);
+    assert.match(await page.locator('#interpretResult').textContent(), /လက္ခဏာတိုင်/);
+    await page.locator('#pillarNumbers').fill('1,0');
+    await page.locator('#interpret').click();
+    assert.match(await page.locator('#interpretResult').textContent(), /တိုင်အရေအတွက်/);
+    await page.locator('#pillarType').selectOption('3');
+    await page.locator('#pillarNumbers').fill('1,0,5');
+    await page.locator('#interpret').click();
+    assert.match(await page.locator('#interpretResult').textContent(), /နိမိတ်တိုင်/);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.reload();
+    const angaDimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      document: document.documentElement.scrollWidth,
+    }));
+    assert.ok(angaDimensions.document <= angaDimensions.viewport, `Angavijja mobile horizontal overflow: ${JSON.stringify(angaDimensions)}`);
+
     assert.deepEqual(pageErrors, []);
   } finally {
     if (browser) await browser.close();
