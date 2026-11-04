@@ -133,9 +133,11 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     const femaleGenderRow = genderSection.locator('tbody tr').filter({ hasText: 'မိန်းမဂြိုဟ်' });
     assert.equal(await maleGenderRow.count(), 1, 'male graha mnemonic row must be unique');
     assert.equal(await femaleGenderRow.count(), 1, 'female graha mnemonic row must be unique');
-    assert.ok((await maleGenderRow.locator('td').nth(2).textContent()).includes('၁၊ ၃၊ ၄၊ ၅'),
+    const maleGenderText = (await maleGenderRow.textContent()).replace(/\\s+/g, '');
+    const femaleGenderText = (await femaleGenderRow.textContent()).replace(/\\s+/g, '');
+    assert.match(maleGenderText, /၁၊၃၊၄၊၅/,
       'male graha mnemonic must map to 1, 3, 4, 5');
-    assert.ok((await femaleGenderRow.locator('td').nth(2).textContent()).includes('၂၊ ၆၊ ၀၊ ၈'),
+    assert.match(femaleGenderText, /၂၊၆၊၀၊၈/,
       'female graha mnemonic must map to 2, 6, 0, 8');
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
