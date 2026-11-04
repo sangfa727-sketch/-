@@ -23,7 +23,7 @@ button{cursor:pointer;background:var(--soft);color:var(--accent);font-weight:700
 .cell.center{min-height:76px;background:#eaf1f8;border:0;color:#172b3b;border-radius:0}.chart-rule{height:2px;background:var(--accent);width:100%}.cell.center small{display:block;font-size:.78rem;font-weight:650;line-height:1.35;color:var(--muted)}
 .chart-caption{text-align:center;color:var(--muted);font-size:.9rem}
 .pillar-list{display:grid;gap:8px}
-.week-examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.week-example{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;background:#fbfcfe}.week-example h3{font-size:1rem;margin:0 0 6px}.week-example pre{font:700 1rem/1.65 inherit;color:var(--accent);margin:0;white-space:pre-wrap}.formula{background:#f5f7fa;border-radius:8px;padding:9px 11px;overflow-wrap:anywhere}.pillar-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:7px 0}.pillar-item:last-child{border:0}
+.week-examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.week-example{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;background:#fbfcfe}.week-example h3{font-size:1rem;margin:0 0 6px}.week-example pre{font-family:inherit;font-size:1rem;line-height:1.65;font-weight:700;color:var(--accent);margin:0;white-space:pre-wrap}.formula{background:#f5f7fa;border-radius:8px;padding:9px 11px;overflow-wrap:anywhere}.pillar-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:7px 0}.pillar-item:last-child{border:0}
 .note{font-size:.88rem;color:var(--muted);margin:10px 0 0}.callout{padding:12px 14px;background:#f8f6f0;border-left:3px solid var(--gold);border-radius:8px}
 .verse{font-size:1.05rem;line-height:2.15}.verse-lines{display:grid;gap:4px}.verse-line{padding:8px 10px;border-bottom:1px solid var(--line)}
 .example{font-weight:750;color:var(--accent);letter-spacing:.05em}.pillars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.pillar{border:1px solid var(--line);border-radius:11px;padding:10px;text-align:center;background:#fbfcfe}.pillar strong{display:block;font-size:1.3rem;color:var(--accent)}
@@ -166,7 +166,9 @@ const groups=[
 ["အ","အာ","ဣ","ဤ","ဥ","ဦ","ဧ","အဲ","ဩ","ဪ","အံ","အား"],
 ["က","ခ","ဃ","ဂ","င"],["စ","ဆ","ဇ","ဈ","ည"],["လ","ဝ"],
 ["ပ","ဖ","ဗ","ဘ","မ"],["သ","ဟ"],["ဋ","ဌ","ဍ","ဎ","ဏ","တ","ထ","ဒ","ဓ","န"]];
-// အင်္ဂဝိဇ္ဇာတိုင် အခြေခံဖော်မြူလာ: P(d) = (SundayReference[i] + d) mod 7။\n// SundayReference = [5,2,6,1,4,0,3]၊ d = တနင်္ဂနွေ ၀ မှ စနေ ၆။\n// အစဉ် = အပေါ် ၃ လုံး၊ အလယ်တည်ကိန်း၊ အောက် ၃ လုံး။\nconst base=[5,2,6,1,4,0,3];
+// အင်္ဂဝိဇ္ဇာတိုင် အခြေခံဖော်မြူလာ: P(d) = (SundayReference[i] + d) mod 7။
+// SundayReference = [5,2,6,1,4,0,3]၊ d = တနင်္ဂနွေ ၀ မှ စနေ ၆။
+// အစဉ် = အပေါ် ၃ လုံး၊ အလယ်တည်ကိန်း၊ အောက် ၃ လုံး။\nconst base=[5,2,6,1,4,0,3];
 const myDigits=n=>String(n).replace(/\d/g,d=>"၀၁၂၃၄၅၆၇၈၉"[Number(d)]);
 const weekday=document.getElementById("weekday"),letter=document.getElementById("letter");
 const chart=document.getElementById("chart");
