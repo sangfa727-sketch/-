@@ -133,17 +133,16 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     const genderTable = genderSection.locator('table').first();
     const genderRows = genderTable.locator('tbody tr');
     assert.equal(await genderRows.count(), 2, 'gender mnemonic table must contain exactly two rows');
-    const maleGenderRow = genderRows.nth(0);
-    const femaleGenderRow = genderRows.nth(1);
-    const maleGenderCells = maleGenderRow.locator('td');
-    const femaleGenderCells = femaleGenderRow.locator('td');
-    assert.equal((await maleGenderCells.nth(0).textContent()).trim(), 'ယောက်ျားဂြိုဟ်');
-    assert.equal((await femaleGenderCells.nth(0).textContent()).trim(), 'မိန်းမဂြိုဟ်');
-    const maleGenderNumber = (await maleGenderCells.nth(2).textContent()).replace(/\s+/g, '');
-    const femaleGenderNumber = (await femaleGenderCells.nth(2).textContent()).replace(/\s+/g, '');
-    assert.match(maleGenderNumber, /၁၊၃၊၄၊၅/,
+    // Locate rows by semantic labels rather than relying on DOM row/cell indexes.
+    const maleGenderRow = genderRows.filter({ hasText: 'ယောက်ျားဂြိုဟ်' }).first();
+    const femaleGenderRow = genderRows.filter({ hasText: 'မိန်းမဂြိုဟ်' }).first();
+    assert.equal(await maleGenderRow.count(), 1, 'male gender mnemonic row must exist exactly once');
+    assert.equal(await femaleGenderRow.count(), 1, 'female gender mnemonic row must exist exactly once');
+    const maleGenderText = (await maleGenderRow.innerText()).replace(/\s+/g, '');
+    const femaleGenderText = (await femaleGenderRow.innerText()).replace(/\s+/g, '');
+    assert.match(maleGenderText, /ယောက်ျားဂြိုဟ်.*၁၊၃၊၄၊၅/,
       'male graha mnemonic must map to 1, 3, 4, 5');
-    assert.match(femaleGenderNumber, /၂၊၆၊၀၊၈/,
+    assert.match(femaleGenderText, /မိန်းမဂြိုဟ်.*၂၊၆၊၀၊၈/,
       'female graha mnemonic must map to 2, 6, 0, 8');
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
