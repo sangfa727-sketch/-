@@ -13,6 +13,7 @@ const assets = {
   '/css/app.css': ['css/app.css', 'text/css; charset=utf-8'],
   '/js/calendar-app.js': ['js/calendar-app.js', 'text/javascript; charset=utf-8'],
   '/graha-nine.html': ['graha-nine.html', 'text/html; charset=utf-8'],
+  '/graha-pariyaya.html': ['graha-pariyaya.html', 'text/html; charset=utf-8'],
   '/anga-vijja.html': ['anga-vijja.html', 'text/html; charset=utf-8'],
 };
 
@@ -75,7 +76,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(await page.locator('#calendarGrid .day').count() >= 28);
 
     await page.goto('http://127.0.0.1:4173/app.html');
-    assert.equal(await page.locator('#astrology-features .feature-card').count(), 2);
+    assert.equal(await page.locator('#astrology-features .feature-card').count(), 3);
     assert.equal(await page.locator('#feature-pillar-method').getAttribute('href'), 'anga-vijja.html#pillar-method');
     assert.equal(await page.locator('#feature-pillar-verses').getAttribute('href'), 'anga-vijja.html#five-pillar-reading');
     await page.locator('#feature-pillar-method').click();
@@ -86,6 +87,32 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(page.url().endsWith('/anga-vijja.html#five-pillar-reading'));
     assert.equal(await page.locator('#five-pillar-reading h2').textContent(), '၅ တိုင်ထူ အဟောလင်္ကာ');
     assert.equal(await page.locator('#three-pillar-reading h2').textContent(), '၃ တိုင်ထူ အဟောလင်္ကာ');
+    await page.goto('http://127.0.0.1:4173/app.html');
+    assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
+    await page.locator('#feature-graha-pariyaya').click();
+    assert.ok(page.url().endsWith('/graha-pariyaya.html'));
+    assert.equal(await page.locator('#planetGrid .planet-card').count(), 9);
+    assert.equal(await page.locator('#planetGrid .planet-card:not(.missing)').count(), 9);
+    const ketuText = await page.locator('#planetGrid [data-planet="ကိတ်"]').innerText();
+    assert.ok(ketuText.includes('ဂြိုဟ်အမှတ်') && ketuText.includes('၉'));
+    assert.ok(ketuText.includes('တိရစ္ဆာန်သင်္ကေတ') && ketuText.includes('ဆိတ်'));
+    assert.ok(ketuText.includes('ဗုဒ္ဓဟူးနေ့'));
+    assert.ok(ketuText.includes('နေ့လယ် ၁၂:၀၀ မှ သန်းခေါင် ၁၂:၀၀'));
+    assert.ok(ketuText.includes('အက္ခရာ၊ အဆင်းသဏ္ဌာန်နှင့် အစိုးရသောအရပ်'));
+    assert.ok((await page.locator('#planetGrid').innerText()).includes('အဖ၊ အဖေ'));
+    await page.locator('#planetSearch').fill('ပညာ');
+    assert.ok(await page.locator('#planetGrid .planet-card:not([hidden])').count() > 0);
+    assert.ok(await page.locator('#planetGrid .planet-card[hidden]').count() > 0);
+    await page.locator('#planetSearch').fill('မရှိသောစကား');
+    assert.equal(await page.locator('#planetGrid .planet-card:not([hidden])').count(), 0);
+    assert.equal(await page.locator('#noResults').isVisible(), true);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.reload();
+    const pariyayaDimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      document: document.documentElement.scrollWidth,
+    }));
+    assert.ok(pariyayaDimensions.document <= pariyayaDimensions.viewport, `pariyaya mobile horizontal overflow: ${JSON.stringify(pariyayaDimensions)}`);
     await page.goto('http://127.0.0.1:4173/app.html');
     await page.locator('#datePicker').fill('1986-08-28');
     assert.match(await page.locator('#myanmarFullDate').textContent(), /၁၃၄၈ ခု/);

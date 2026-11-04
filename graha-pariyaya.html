@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="my">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="မြန်မာ့ဗေဒင်ပညာ ဂြိုဟ် ၉ ပါး၏ ပရိယာယ်များ။ မူရင်းစာရင်းအတိုင်း ဂြိုဟ်တစ်လုံးချင်း ဖတ်ရှုရန်။">
+  <meta name="theme-color" content="#172b3b">
+  <title>မြန်မာ့ဗေဒင်ပညာ | ဂြိုလ်ပရိယာယ်များ</title>
+  <style>
+    :root{color-scheme:light;--bg:#f3f6fa;--paper:#fff;--ink:#202b3c;--muted:#637083;--line:#dce3ec;--accent:#315b86;--gold:#9a7436}
+    *{box-sizing:border-box}
+    body{margin:0;padding:22px 14px 42px;background:var(--bg);color:var(--ink);font-family:"Noto Sans Myanmar","Myanmar Text",system-ui,sans-serif;line-height:1.8}
+    main{max-width:1040px;margin:auto}
+    header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+    a{color:var(--accent);text-decoration:none}.brand{font-weight:750;color:var(--ink)}.back{padding:7px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+    .eyebrow{margin:0 0 4px;color:var(--gold);font-size:.75rem;font-weight:750;letter-spacing:.08em}
+    h1{margin:0 0 5px;font-size:clamp(1.55rem,4vw,2.2rem)}.subtitle{margin:0;color:var(--muted)}
+    .source-note{margin:18px 0;padding:12px 14px;border-left:4px solid var(--gold);border-radius:9px;background:#fffaf0;color:#584a32}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 12px}
+    .search{width:min(100%,420px);min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:inherit}
+    .count{color:var(--muted);font-size:.88rem;white-space:nowrap}
+    .planet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .planet-card{min-width:0;padding:16px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 5px 18px #23354b0a}
+    .planet-card-heading{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+    .planet-number{display:grid;place-items:center;flex:0 0 34px;height:34px;border-radius:10px;background:#edf2f8;color:var(--accent);font-weight:800}
+    .planet-card h2{margin:0;font-size:1.08rem}.planet-kind{display:inline-block;margin-top:2px;padding:1px 8px;border-radius:999px;font-size:.75rem;font-weight:750}
+    .planet-kind.papa{background:#f8e9e7;color:#8a3932}.planet-kind.soma{background:#e8f1fb;color:#315b86}
+    .planet-terms{margin:0;color:#344256;font-size:.94rem;line-height:2}
+    .planet-card.missing{border-style:dashed;background:#fafbfd}.missing-text{margin:10px 0 0;color:var(--muted);font-size:.86rem}
+    .planet-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 0}
+    .planet-facts div{padding:8px 10px;border-radius:9px;background:#f2f5f9;min-width:0}
+    .planet-facts dt{font-size:.76rem;color:var(--muted)}.planet-facts dd{margin:2px 0 0;font-weight:700;font-size:.92rem}
+    .empty{display:none;padding:18px;text-align:center;color:var(--muted)}
+    footer{margin-top:22px;color:var(--muted);font-size:.85rem}
+    input:focus-visible,a:focus-visible{outline:3px solid #8bb8df;outline-offset:2px}
+    @media(max-width:650px){body{padding:15px 9px 30px}.planet-grid{grid-template-columns:1fr}.planet-card{padding:13px}.toolbar{align-items:stretch;flex-direction:column}.search{width:100%}}
+  </style>
+</head>
+<body><main>
+  <header><a class="brand" href="app.html">✦ မြန်မာ့ဗေဒင်ပညာ</a><a class="back" href="app.html">← မူလစာမျက်နှာ</a></header>
+  <section><p class="eyebrow">TRADITIONAL PLANETARY ATTRIBUTES</p><h1>ဂြိုလ်ပရိယာယ်များ</h1><p class="subtitle">ဂြိုဟ်တစ်လုံးချင်းစီ၏ ပရိယာယ်များကို အလွယ်တကူ ဖတ်ရှုမှတ်သားရန်</p></section>
+  <p class="source-note"><strong>မူရင်းစာရင်းမှတ်ချက် —</strong> မူရင်း HTML တွင် ပရိယာယ်အချက်အလက်ကို ဂြိုဟ် ၈ လုံးအတွက်သာ ဖော်ပြထားသည်။ ကိတ်ဂြိုဟ်၏ ပရိယာယ်ကို မူရင်းတွင် မတွေ့ရသေးသဖြင့် မဖြည့်စွက်ထားပါ။</p>
+  <div class="toolbar"><label><span class="eyebrow">ဂြိုဟ်အမည် / ပရိယာယ် ရှာရန်</span><input class="search" id="planetSearch" type="search" placeholder="ဥပမာ — အဖ၊ ပညာ၊ အင်္ဂါ" autocomplete="off"></label><span class="count" id="resultCount" aria-live="polite">၉ ပါး</span></div>
+  <section class="planet-grid" id="planetGrid" aria-label="ဂြိုဟ်ပရိယာယ်စာရင်း">
+      <article class="planet-card" data-planet="တနင်္ဂနွေ">
+        <div class="planet-card-heading"><span class="planet-number">၁</span><div><h2>တနင်္ဂနွေဂြိုဟ်</h2><span class="planet-kind papa">ပါပ</span></div></div>
+        <p class="planet-terms">အဖ၊ အဖေ၊ အဖကဲ့သို့သူ၊ ယောက္ခမ(ဖခင်)၊ အကြီးအကဲ၊ တိုင်းပြည်ကိုအုပ်ချုပ်ရသော အကြီးအကဲ၊ အုပ်ချုပ်သူ၊ မင်း၊ အရာရှိ၊ အစ်ကို၊ အိမ်ဦးခန်း၊ အိမ်ထောင်အုပ်စု၊ အိမ်တွင်းရိုးရာ၊ အိမ်တွင်းရေး၊ အိမ်၊ လုပ်ငန်းခွင်၊ အလုပ်၊ ရာထူး၊ ဂုဏ်ထူး၊ ဘွဲ့ထူး၊ ပညာ၊ မြို့ပြအင်ဂျင်နီယာ၊ အင်္ဂလိပ်စာ၊ ဥပဒေ၊ တိုင်းပြည်၊ ရိုးရာဓလေ့၊ ကန်ထရိုက်၊ အဆောက်အအုံ၊ အင်းအိုင်၊ အိုးအိမ်၊ ကိုယ်၊ လက်ရုံး ရည်၊ ဦးနှောက်၊ အနီရောင်၊ နီညို၊ ကြက်သွေးရောင်၊ ယောဂီရောင်၊ ပန်းနုရောင်၊ ကြေးနီ၊ ကျောက်နီပတ္တမြား၊ အဝတ်ကြမ်း၊ အခြောက်၊ စေတီဘုရား၊ မီးခဲ၊ နေ့၊ မြင့်သောသစ်ပင်၊ အမြင့်၊ အသံကျယ်၊ ကုန်းမြင့်တောင်ပို့၊ ပထမအရွယ်၊ အတိတ်ကာလနှင့် တနင်္ဂနွေနံ ပညတ်များ</p>
+      </article>
+      <article class="planet-card" data-planet="တနင်္လာ">
+        <div class="planet-card-heading"><span class="planet-number">၂</span><div><h2>တနင်္လာဂြိုဟ်</h2><span class="planet-kind soma">သောမ</span></div></div>
+        <p class="planet-terms">အမိ၊ အမေ၊ အမိကဲ့သို့သူ၊ အချစ်ရေး၊ အလှူမင်္ဂလာ၊ အကြွားဟန်အမူအရာ၊ ငွေကြေး၊ ငွေ၊ အဖြူရောင်၊ ကျောက်၊ ကား၊ ခွေးနှင့် တနင်္လာနံ ပညတ်များ</p>
+      </article>
+      <article class="planet-card" data-planet="အင်္ဂါ">
+        <div class="planet-card-heading"><span class="planet-number">၃</span><div><h2>အင်္ဂါဂြိုဟ်</h2><span class="planet-kind papa">ပါပ</span></div></div>
+        <p class="planet-terms">လင်ယောက်ျား၊ အောက်လက်ငယ်သား၊ စစ်ဖက်ဆိုင်ရာ၊ စစ်ဖက်၊ စက်မှုလက်မှု၊ စက်မှု၊ အစွပ်အစွဲ၊ ပစ်စာတိုင်စာ၊ ခိုက်ရန်ရန်ဖြစ်မှု၊ ခိုက်ရန်ဒေါသ၊ အမှုအခင်း၊ ပယောဂ၊ ဆေးရုံဆေးခန်း၊ ဆေးရုံ၊ စိတ်ပိုင်းဆိုင်ရာခံစားချက်၊ အစိမ်းရောင်၊ ဆန်၊ ဆီ၊ ဆေးနှင့် အင်္ဂါနံ ပညတ်များ</p>
+      </article>
+      <article class="planet-card" data-planet="ဗုဒ္ဓဟူး">
+        <div class="planet-card-heading"><span class="planet-number">၄</span><div><h2>ဗုဒ္ဓဟူးဂြိုဟ်</h2><span class="planet-kind soma">သောမ</span></div></div>
+        <p class="planet-terms">သားသမီး၊ ညီအကိုမောင်နှမ၊ ဘုရားရုပ်ပွားတော်၊ ရေတွင်းရေကန်၊ ရုပ်ရှင်အနုပညာ၊ ရုပ်ရှင်ပြဇာတ်၊ အဝါရောင်၊ လူ၊ ရွှေ၊ လှေ၊ လှည်းနှင့် ဗုဒ္ဓဟူးနံ ပညတ်များ</p>
+      </article>
+      <article class="planet-card" data-planet="စနေ">
+        <div class="planet-card-heading"><span class="planet-number">၅</span><div><h2>စနေဂြိုဟ်</h2><span class="planet-kind papa">ပါပ</span></div></div>
+        <p class="planet-terms">ထင်ပေါ်မှု၊ လောဘ၊ နိုင်ငံရေး၊ မင်းစိုးရာဇာ၊ အမှုအခင်း၊ အကျဉ်းထောင်၊ ထောင်၊ ထီ၊ နတ်၊ လူမျိုးခြား၊ ဘာသာခြား၊ ပယောဂ၊ အနက်ရောင်၊ အပြာရောင်ရင့်၊ အပြာရောင်၊ ထီး၊ ဓားနှင့် စနေနံ ပညတ်များ</p>
+      </article>
+      <article class="planet-card" data-planet="ကြာသာပတေး">
+        <div class="planet-card-heading"><span class="planet-number">၆</span><div><h2>ကြာသာပတေးဂြိုဟ်</h2><span class="planet-kind soma">သောမ</span></div></div>
+        <p class="planet-terms">ဆရာသမား၊ ပညာရပ်၊ ပညာ၊ အမွေ၊ တရားဓမ္မ၊ ဘာသာရေး၊ အတွေးအခေါ်၊ မိန်းမ၊ အပြာရောင်၊ မြေ၊ မြင်း၊ မြနှင့် ကြာသာပတေးနံ ပညတ်များ</p>
+      </article>
+      <article class="planet-card" data-planet="ရာဟု">
+        <div class="planet-card-heading"><span class="planet-number">၇</span><div><h2>ရာဟုဂြိုဟ်</h2><span class="planet-kind papa">ပါပ</span></div></div>
+        <p class="planet-terms">ရေနစ်အန္တရာယ်၊ ရေနစ်ခြင်း၊ ယားယံခြင်း၊ ရင်ဝမ်းနှင့်ပတ်သက်သောရောဂါ၊ နာတာရှည်ရောဂါ၊ ကိလေသာ၊ အခြွေအရံ၊ ရွှံ့ပုပ်ကဲ့သို့အရောင်နှင့် ရာဟုနံ ပညတ်များ</p>
+      </article>
+      <article class="planet-card" data-planet="သောကြာ">
+        <div class="planet-card-heading"><span class="planet-number">၈</span><div><h2>သောကြာဂြိုဟ်</h2><span class="planet-kind soma">သောမ</span></div></div>
+        <p class="planet-terms">မယား၊ စကား၊ ခရီးသွားလာခြင်း၊ ခရီးလှုပ်ရှားမှု၊ သွေးသား၊ သူခိုး၊ အတောင်ပါသောသတ္တဝါ၊ အနုပညာ၊ အလှအပ၊ ဇိမ်ခံပစ္စည်း၊ ကာမဆန္ဒ၊ ရောင်စုံအဆင်အယင်၊ ရောနှောသောရောင်စုံ၊ သစ်၊ သံ၊ သွတ်နှင့် သောကြာနံ ပညတ်များ</p>
+      </article>
+      <article class="planet-card" data-planet="ကိတ်">
+        <div class="planet-card-heading"><span class="planet-number">၉</span><div><h2>ကိတ်ဂြိုဟ်</h2><span class="planet-kind">မူရင်းအချက်အလက် ရှိသလောက်</span></div></div>
+        <dl class="planet-facts">
+          <div><dt>ဂြိုဟ်အမှတ်</dt><dd>၉</dd></div>
+          <div><dt>တိရစ္ဆာန်သင်္ကေတ</dt><dd>ဆိတ်</dd></div>
+          <div><dt>သတ်မှတ်နေ့</dt><dd>ဗုဒ္ဓဟူးနေ့</dd></div>
+          <div><dt>အချိန်</dt><dd>နေ့လယ် ၁၂:၀၀ မှ သန်းခေါင် ၁၂:၀၀ အထိ</dd></div>
+        </dl>
+        <p class="missing-text">ပရိယာယ်စာရင်း၊ အက္ခရာ၊ အဆင်းသဏ္ဌာန်နှင့် အစိုးရသောအရပ်ကို မူရင်း HTML တွင် မဖော်ပြထားသေးပါ။ နောက်ပိုင်း မူရင်းအချက်အလက် ရရှိပါက ထပ်ဖြည့်နိုင်သည်။</p>
+      </article>
+  </section>
+  <p class="empty" id="noResults">ရှာဖွေမှုနှင့် ကိုက်ညီသော အချက်အလက် မတွေ့ပါ။</p>
+  <footer>ရင်းမြစ် — <a href="graha-nine.html#graha-pariyaya-heading">ဂြိုဟ် ၉ ပါး မူရင်းအချက်အလက်ဇယား</a>။ ပရိယာယ်စာသားများကို မူရင်းစာရင်းအတိုင်း ထိန်းသိမ်းထားသည်။</footer>
+</main>
+<script>
+(() => {
+  const input = document.getElementById('planetSearch');
+  const cards = [...document.querySelectorAll('.planet-card')];
+  const count = document.getElementById('resultCount');
+  const empty = document.getElementById('noResults');
+  const digits = value => String(value).replace(/[0-9]/g, d => '၀၁၂၃၄၅၆၇၈၉'[Number(d)]);
+  input.addEventListener('input', () => {
+    const query = input.value.trim().toLocaleLowerCase();
+    let visible = 0;
+    for (const card of cards) {
+      const match = card.textContent.toLocaleLowerCase().includes(query);
+      card.hidden = !match;
+      if (match) visible++;
+    }
+    count.textContent = digits(visible) + ' ပါး';
+    empty.style.display = visible ? 'none' : 'block';
+  });
+})();
+</script>
+</body></html>
