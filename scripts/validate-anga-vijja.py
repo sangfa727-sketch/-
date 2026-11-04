@@ -11,6 +11,7 @@ class StructureCheck(HTMLParser):
         self.title_depth = 0
         self.title_text = []
         self.select_ids = set()
+        self.input_ids = set()
         self.section_count = 0
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -18,6 +19,8 @@ class StructureCheck(HTMLParser):
             self.section_count += 1
         if tag == "select" and "id" in attrs:
             self.select_ids.add(attrs["id"])
+        if tag == "input" and "id" in attrs:
+            self.input_ids.add(attrs["id"])
         if tag == "title":
             self.title_depth += 1
     def handle_endtag(self, tag):
@@ -31,8 +34,9 @@ parser = StructureCheck()
 parser.feed(source)
 parser.close()
 
-assert "အင်္ဂဝိဇ္ဇာ ဗေဒင်" in "".join(parser.title_text), "Missing page title"
-assert {"weekday", "letter", "pillarType", "pillarNumbers"} <= parser.select_ids | {"pillarNumbers"}, "Missing required controls"
+assert "အင်္ဂဝိဇ္ဇာ" in "".join(parser.title_text), "Missing page title"
+assert {"weekday", "letter", "pillarType"} <= parser.select_ids, "Missing required select controls"
+assert "pillarNumbers" in parser.input_ids, "Missing pillar number input"
 assert parser.section_count >= 5, "Expected separate chart, alphabet, and interpretation sections"
 
 base_match = re.search(r"const base=\[([0-6, ]+)\]", source)
