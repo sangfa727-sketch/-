@@ -66,6 +66,12 @@ def main():
     for required in ('အပြင်မိတ်','အတွင်းမိတ်','အပြင်ရန်','အတွင်းရန်'):
         if required not in js:
             return fail(f"Missing dynamic pair legend label: {required}")
+    for required in ('classificationSets','native:','temporary:','master:','servant:','elementCategories','genderVerses','period-lanka-toggle','period-lanka-details','aria-expanded','0) return 7'):
+        if required not in js:
+            return fail(f"Missing expandable lanka classification invariant: {required}")
+    for required in ('period-lanka-toggle','period-lanka-row','period-lanka-details','period-lanka-note'):
+        if required not in css:
+            return fail(f"Missing daily lanka detail styling: {required}")
     if '၀၆:၀၀ မှ ၁၈:၀၀' not in html:
         return fail("Missing daily period time-boundary explanation")
     print("PASS: selected-day HTML structure and unique IDs")
