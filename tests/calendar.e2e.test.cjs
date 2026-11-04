@@ -165,6 +165,24 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       assert.equal(owners[0], weekdayIndex, sampleDate + ' must start with its own weekday');
       assert.equal(owners[7], weekdayIndex, sampleDate + ' must end with its own weekday');
       assert.equal(owners[1], (weekdayIndex + 5) % 7, sampleDate + ' inclusive sixth weekday must own period 2');
+      const pillars = await page.locator('#periodGrid .period-pillar').evaluateAll(nodes => nodes.map(pillar => {
+        const values = [...pillar.querySelectorAll('.period-pillar-cell, .period-pillar-center strong')];
+        return {
+          values: values.map(node => node.textContent.trim()),
+          tops: values.map(node => node.getBoundingClientRect().top),
+          direction: getComputedStyle(pillar).flexDirection,
+        };
+      }));
+      assert.equal(pillars.length, 8, sampleDate + ' must render eight separate pillars');
+      for (let periodIndex = 0; periodIndex < 8; periodIndex++) {
+        const owner = owners[periodIndex];
+        const expected = [5,2,6,1,4,0,3].map(value => (value + owner) % 7)
+          .map(value => String(value).replace(/[0-9]/g, digit => '၀၁၂၃၄၅၆'[Number(digit)]));
+        assert.deepEqual(pillars[periodIndex].values, expected, sampleDate + ' period ' + (periodIndex + 1) + ' pillar sequence');
+        assert.equal(pillars[periodIndex].direction, 'column', sampleDate + ' period ' + (periodIndex + 1) + ' must be vertical');
+        assert.ok(pillars[periodIndex].tops.every((top, index, all) => index === 0 || top > all[index - 1]),
+          sampleDate + ' period ' + (periodIndex + 1) + ' values must be stacked top-to-bottom');
+      }
     }
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('http://127.0.0.1:4173/day.html?date=2026-11-05');
@@ -174,6 +192,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     }));
     assert.ok(dayDimensions.document <= dayDimensions.viewport, `day page mobile horizontal overflow: ${JSON.stringify(dayDimensions)}`);
     assert.equal(await page.locator('#periodGrid .period-card').count(), 8);
+    assert.deepEqual(await page.locator('#periodGrid .period-pillar').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).flexDirection)), Array(8).fill('column'));
     await page.goto('http://127.0.0.1:4173/day.html?date=1899-12-31');
     assert.equal(await page.locator('#dayError').isVisible(), true);
     assert.equal(await page.locator('#periodGrid .period-card').count(), 0);
