@@ -134,9 +134,9 @@ def main():
     if not pariyaya_file.is_file():
         return fail("Missing graha-pariyaya.html")
     pariyaya = pariyaya_file.read_text(encoding="utf-8")
-    if pariyaya.count('class="planet-card') != 9:
+    if pariyaya.count('<article class="planet-card') != 9:
         return fail("Expected 9 planet cards in graha-pariyaya.html")
-    if "ကိတ်ဂြိုဟ်၏ ပရိယာယ်များကို မဖော်ပြထားသေး" not in pariyaya:
+    if "မူရင်း HTML တွင် ကိတ်ဂြိုဟ်၏ ပရိယာယ်များကို မဖော်ပြထားသေးပါ။" not in pariyaya:
         return fail("Ketu source gap must remain explicit")
     if "အဖ၊ အဖေ" not in pariyaya or "ပညာ" not in pariyaya:
         return fail("Expected original pariyaya wording is missing")
