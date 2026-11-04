@@ -69,7 +69,8 @@ def main():
     print("PASS: selected-day HTML structure and unique IDs")
     print("PASS: 8 x 90-minute periods, inclusive six-count rotation, and 7-number pillar")
     print("PASS: each period pillar is explicitly stacked vertically with the owner number centered")
-    print("PASS: 0→7 mnemonic conversion, Wednesday 4/8 alias, four pair-color categories, and layered rings")\n    print("PASS: date bounds and Myanmar date conversion")
+    print("PASS: 0→7 mnemonic conversion, Wednesday 4/8 alias, four pair-color categories, and layered rings")
+    print("PASS: date bounds and Myanmar date conversion")
     return 0
 
 if __name__ == "__main__":
