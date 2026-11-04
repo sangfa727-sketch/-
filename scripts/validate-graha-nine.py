@@ -123,15 +123,15 @@ def main():
     ]
     if source_verses != EXPECTED_VERSES:
         return fail("The original lanka verses were changed, reordered, or omitted")
-    if re.search(r"<h[1-6]\\b|<table\\b|[၀-၉0-9]", verse_section.group(1)):
+    if re.search(r"<h[1-6]\b|<table\b|[၀-၉0-9]", verse_section.group(1)):
         return fail("Verse-only archive must not contain headings, tables, or numeric classifications")
 
     missing_text = [item for item in REQUIRED_TEXT if item not in source]
     if missing_text:
         return fail(f"Missing required source wording/content: {missing_text}")
 
-    if source.count('id="akchara-linga-heading"') != 1:
-        return fail("Expected exactly one dedicated akchara-linga section")
+    if source.count('id="lanka-verses"') != 1:
+        return fail("Expected exactly one dedicated verse-only archive")
     if not source.rstrip().endswith("</html>"):
         return fail("Document must end with </html>")
 
@@ -186,7 +186,7 @@ def main():
     ]
     if pariyaya_verses != EXPECTED_VERSES:
         return fail("Dedicated pariyaya page does not preserve all original lanka verses")
-    if re.search(r"<h[1-6]\\b|<table\\b|[၀-၉0-9]", pariyaya_verse_section.group(1)):
+    if re.search(r"<h[1-6]\b|<table\b|[၀-၉0-9]", pariyaya_verse_section.group(1)):
         return fail("Dedicated pariyaya verse archive must not contain headings, tables, or numbers")
     for term in source_terms:
         original_text = unescape(re.sub(r"<[^>]+>", "", term)).strip()

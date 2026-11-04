@@ -307,34 +307,19 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.match(await page.locator('#calendarTitle').textContent(), /ဩဂုတ် ၁၉၈၆/);
     assert.equal(await page.locator('#calendarGrid .calendar-day.selected').getAttribute('data-date'), '1986-08-28');
 
-    // Static astrology reference: verify the mnemonic tables, corrected wording,
-    // the two new reference sections, and desktop/mobile table containment.
+    // Static astrology reference: verify the verse-only archive and the two detail tables.
     await page.setViewportSize({ width: 1365, height: 900 });
     await page.goto('http://127.0.0.1:4173/graha-nine.html');
-    const classification = page.locator('section[aria-labelledby="akchara-linga-heading"]');
-    assert.equal(await classification.locator('h3').count(), 7);
-    assert.equal(await classification.locator('table').count(), 7);
-    for (const heading of [
-      '၁။ ကျား / မ ဂြိုဟ် ခွဲခြားနည်း',
-      '၂။ စကားအမှန် / အမှား ခွဲခြားနည်း',
-      '၃။ ဝယ် / မဝယ် ခွဲခြားနည်း',
-      '၄။ နဂိုရ်ဂြိုဟ် / ယာယီဂြိုဟ် (အတွင်းလူ / အပြင်လူ) ခွဲခြားနည်း',
-      '၅။ မိတ် / ရန် ခွဲခြားနည်း',
-      '၆။ အကြီး / အငယ် ခွဲခြားနည်း',
-      '၇။ ဓာတ်မိတ် / ဓာတ်ရန် ခွဲခြားနည်း',
-    ]) {
-      assert.ok(await classification.getByRole('heading', { name: heading, exact: true }).count() === 1, `missing heading: ${heading}`);
-    }
-    assert.ok((await page.locator('body').innerText()).includes('အောင်ပ ကုလား ဆွေသား နှောင်ရင်း'));
-    const grahaBodyText = await page.locator('body').innerText();
-    assert.ok(grahaBodyText.includes('ဦးသာ စိန်ပန်း ဒန်းလှ ကိုရှာ'));
+    const classification = page.locator('#lanka-verses');
+    assert.equal(await classification.locator('.lanka-verse').count(), 16);
+    assert.deepEqual((await classification.locator('.lanka-verse').allTextContents()).map(text => text.trim()), expectedLankaVerses);
+    assert.equal(await classification.locator('h1,h2,h3,h4,h5,h6,table').count(), 0);
+    assert.doesNotMatch(await classification.innerText(), /[၀-၉0-9]/);
     assert.equal(await page.locator('#graha-comparison-heading').count(), 1);
     assert.equal(await page.locator('#people-body-heading').count(), 1);
     assert.equal(await page.locator('#graha-comparison-heading').locator('xpath=following-sibling::div//tbody/tr').count(), 8);
     assert.ok(await page.locator('#people-body-heading').locator('xpath=following-sibling::p').count() >= 1);
     assert.equal(await page.locator('#people-body-heading').locator('xpath=following-sibling::div//tbody/tr').count(), 8);
-    assert.ok((await page.locator('body').innerText()).includes('အရှင်ဂြိုဟ်'));
-    assert.ok((await page.locator('body').innerText()).includes('ကျွန်ဂြိုဟ်'));
 
     const desktopTableOverflow = await page.evaluate(() => ({
       viewport: document.documentElement.clientWidth,
