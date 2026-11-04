@@ -100,6 +100,9 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       rows.map(row => [...row.querySelectorAll('td')].map(cell => cell.textContent.trim()))
     );
     assert.equal(sourcePariyayaRows.length, 8);
+    assert.deepEqual(sourcePariyayaRows.map(row => row[1]), [
+      'တနင်္ဂနွေ','တနင်္လာ','အင်္ဂါ','ဗုဒ္ဓဟူး','ကြာသာပတေး','သောကြာ','စနေ','ရာဟု'
+    ]);
     await page.goto('http://127.0.0.1:4173/graha-pariyaya.html');
     const correctedPlanetOrder = await page.locator('#planetGrid .planet-card').evaluateAll(cards =>
       cards.map(card => card.querySelector('h2').textContent.trim())
