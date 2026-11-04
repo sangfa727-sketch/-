@@ -200,7 +200,7 @@
     details.className = "period-lanka-details";
     const heading = document.createElement("h3");
     heading.className = "period-lanka-title";
-    heading.textContent = "လင်္ကာ ၆ တန်နှင့် ဂြိုဟ်ခွဲခြားချက်များ";
+    heading.textContent = "မူရင်းလင်္ကာနှင့် ဂြိုဟ်ခွဲခြားချက်များ";
     details.append(heading);
 
     const ownerNumber = getClassificationNumber(ownerIndex + 1, selectedWeekday, periodStart);
