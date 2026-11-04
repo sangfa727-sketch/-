@@ -11,6 +11,7 @@ const APP_SHELL = [
   "./js/mm-calendar-core.js",
   "./js/calendar-app.js",
   "./js/day-astrology.js",
+  "./js/pwa-install.js",
   "./manifest.webmanifest",
   "./assets/app-icon.svg"
 ];
