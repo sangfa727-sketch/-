@@ -9,6 +9,9 @@ const root = path.resolve(__dirname, '..');
 const assets = {
   '/calendar-100-years.html': ['calendar-100-years.html', 'text/html; charset=utf-8'],
   '/js/mm-calendar-core.js': ['js/mm-calendar-core.js', 'text/javascript; charset=utf-8'],
+  '/app.html': ['app.html', 'text/html; charset=utf-8'],
+  '/css/app.css': ['css/app.css', 'text/css; charset=utf-8'],
+  '/js/calendar-app.js': ['js/calendar-app.js', 'text/javascript; charset=utf-8'],
 };
 
 test('Myanmar calendar works in desktop and mobile Chromium browsers', async () => {
@@ -66,6 +69,26 @@ test('Myanmar calendar works in desktop and mobile Chromium browsers', async () 
     await page.locator('#dateText').fill('28/08/1986');
     assert.equal(await page.locator('#myDay').textContent(), 'လဆုတ် ၈ ရက်');
     assert.ok(await page.locator('#calendarGrid .day').count() >= 28);
+
+    await page.goto('http://127.0.0.1:4173/app.html');
+    await page.locator('#datePicker').fill('1986-08-28');
+    assert.match(await page.locator('#myanmarFullDate').textContent(), /၁၃၄၈ ခု/);
+    assert.match(await page.locator('#myanmarFullDate').textContent(), /ဝါခေါင်/);
+    assert.equal(await page.locator('#moonPhase').textContent(), 'လဆုတ် ၈ ရက်');
+    assert.equal(await page.locator('#myanmarWeekday').textContent(), 'ကြာသပတေး');
+    assert.equal(await page.locator('#dateDifference').textContent(), '၄၀ နှစ် ၂ လ ၇ ရက်');
+    assert.equal(await page.locator('#totalDays').textContent(), '၁၄၆၇၈ ရက်');
+    await page.locator('#dateText').fill('31,2,2024');
+    assert.equal(await page.locator('#myanmarFullDate').textContent(), '—');
+    assert.match(await page.locator('#errorMessage').textContent(), /ရက်စွဲမမှန်ကန်ပါ/);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('http://127.0.0.1:4173/app.html');
+    const appDimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      document: document.documentElement.scrollWidth,
+    }));
+    assert.ok(appDimensions.document <= appDimensions.viewport, `app mobile horizontal overflow: ${JSON.stringify(appDimensions)}`);
+    assert.ok(await page.locator('#calendarGrid .calendar-day').count() >= 28);
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
