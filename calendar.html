@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="my">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172b3b">
+  <meta name="description" content="မြန်မာပြက္ခဒိန် သီးသန့်လုပ်ဆောင်ချက် — ၁၉၀၀ မှ ၂၁၂၅ အတွင်း ရက်စွဲပြောင်းလဲခြင်း၊ လစဉ်ကြည့်ရှုခြင်းနှင့် ရက်ကွာဟမှုတွက်ချက်ခြင်း။">
+  <title>မြန်မာပြက္ခဒိန် | သီးသန့်ရက်စွဲတွက်ချက်စနစ်</title>
+  <link rel="stylesheet" href="css/app.css">
+  <script defer src="js/mm-calendar-core.js"></script>
+  <script defer src="js/calendar-app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="app.html" aria-label="မြန်မာ့ဗေဒင်ပညာ မူလစာမျက်နှာ">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span><strong>မြန်မာ့ဗေဒင်ပညာ</strong><small>MYANMAR ASTROLOGY</small></span>
+      </a>
+      <nav class="topbar-nav" aria-label="အဓိကစာမျက်နှာများ">
+        <a href="app.html">မူလစာမျက်နှာ</a>
+        <a href="anga-vijja.html">အင်္ဂဝိဇ္ဇာ</a>
+        <a href="graha-pariyaya.html">ဂြိုလ်ပရိယာယ်</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">MYANMAR CALENDAR · 1900—2125</p>
+          <h1>မြန်မာပြက္ခဒိန်</h1>
+          <p class="intro-copy">အင်္ဂလိပ်ရက်စွဲနှင့် မြန်မာသက္ကရာဇ်ကို ပြောင်းလဲကြည့်ရှုပါ။ အတိတ်၊ အနာဂတ် ရက်စွဲများနှင့် လက်ရှိနေ့စွဲကြား ကွာဟချိန်ကိုပါ တစ်နေရာတည်းတွင် တွက်ချက်နိုင်ပါသည်။</p>
+        </div>
+        <div class="today-chip"><span>ယနေ့ ရက်စွဲ</span><strong id="todayLabel">—</strong></div>
+      </section>
+
+<section class="panel search-panel" aria-labelledby="searchTitle">
+        <div class="section-heading"><div><p class="eyebrow">DATE CONVERTER</p><h2 id="searchTitle">ရက်စွဲရှာဖွေရန်</h2></div><span class="range-label">၁၉၀၀ — ၂၁၂၅</span></div>
+        <div class="input-grid">
+          <label class="field"><span>ရက်စွဲရွေးရန် (၁၉၀၀–၂၁၂၅)</span><input id="datePicker" type="date" min="1900-01-01" max="2125-12-31"></label>
+          <label class="field"><span>ရက်၊ လ၊ နှစ် ရိုက်ထည့်ရန်</span><input id="dateText" type="text" inputmode="numeric" autocomplete="off" placeholder="28,8,1986 သို့မဟုတ် 28/08/1986"></label>
+          <button id="todayButton" class="secondary-button" type="button">ယနေ့သို့</button>
+        </div>
+        <p id="errorMessage" class="error-message" role="alert" aria-live="polite"></p>
+      </section>
+
+      <section class="result-layout" aria-live="polite">
+        <article class="panel main-result">
+          <div class="section-heading"><div><p class="eyebrow">MYANMAR DATE</p><h2>မြန်မာရက်စွဲ</h2></div><span class="result-icon" aria-hidden="true">☾</span></div>
+          <p id="myanmarFullDate" class="myanmar-full-date">—</p>
+          <div class="result-grid">
+            <div class="result-item"><span>မြန်မာသက္ကရာဇ်</span><strong id="myanmarYear">—</strong></div>
+            <div class="result-item"><span>မြန်မာလ</span><strong id="myanmarMonth">—</strong></div>
+            <div class="result-item"><span>လဆန်း / လဆုတ်</span><strong id="moonPhase">—</strong></div>
+            <div class="result-item"><span>နေ့ရက်</span><strong id="myanmarWeekday">—</strong></div>
+            <div class="result-item"><span>နှစ်အမျိုးအစား</span><strong id="yearType">—</strong></div>
+            <div class="result-item"><span>အင်္ဂလိပ်ရက်စွဲ</span><strong id="gregorianDate">—</strong></div>
+          </div>
+        </article>
+
+        <article class="panel gap-panel">
+          <div class="section-heading"><div><p class="eyebrow">DATE DIFFERENCE</p><h2>ရက်ကွာဟမှု</h2></div><span class="result-icon" aria-hidden="true">↔</span></div>
+          <p class="gap-caption">လက်ရှိနေ့စွဲနှင့် ရှာဖွေထားသောနေ့စွဲ</p>
+          <strong id="dateDifference" class="gap-value">—</strong>
+          <div class="gap-divider"></div>
+          <div class="gap-meta"><span>စုစုပေါင်းရက်</span><strong id="totalDays">—</strong></div>
+          <div class="gap-meta"><span>အချိန်ဦးတည်ချက်</span><strong id="direction">—</strong></div>
+          <p class="method-note">နှစ်၊ လ၊ ရက် ကွာဟမှုကို Gregorian ပြက္ခဒိန်အတိုင်း တွက်ချက်ထားသည်။</p>
+        </article>
+      </section>
+
+      <section class="panel calendar-panel" aria-labelledby="calendarTitle">
+        <div class="section-heading calendar-heading">
+          <div><p class="eyebrow">MONTHLY CALENDAR</p><h2 id="calendarTitle">—</h2></div>
+          <div class="calendar-controls"><button id="previousMonth" type="button" aria-label="ယခင်လသို့">‹</button><button id="nextMonth" type="button" aria-label="နောက်လသို့">›</button></div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid" role="grid" aria-label="Gregorian calendar"></div>
+        <p class="calendar-hint">ရက်တစ်ရက်ကို ရွေးချယ်ပါက မြန်မာရက်စွဲအသေးစိတ်နှင့် ယနေ့မှ ကွာဟချိန်ကို အလိုအလျောက် ပြန်လည်တွက်ချက်ပေးမည်။</p>
+      </section>
+    </main>
+    <footer>တွက်ချက်မှုအခြေခံ — Myanmar Calendar Core · Julian Day Number</footer>
+  </div>
+</body>
+</html>
