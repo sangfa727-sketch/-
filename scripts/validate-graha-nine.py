@@ -138,8 +138,11 @@ def main():
     pariyaya = pariyaya_file.read_text(encoding="utf-8")
     if pariyaya.count('<article class="planet-card') != 9:
         return fail("Expected 9 planet cards in graha-pariyaya.html")
-    if "မူရင်း HTML တွင် ကိတ်ဂြိုဟ်၏ ပရိယာယ်များကို မဖော်ပြထားသေးပါ။" not in pariyaya:
-        return fail("Ketu source gap must remain explicit")
+    for ketu_fact in ("ဂြိုဟ်အမှတ်</dt><dd>၉", "တိရစ္ဆာန်သင်္ကေတ</dt><dd>ဆိတ်", "ဗုဒ္ဓဟူးနေ့", "နေ့လယ် ၁၂:၀၀ မှ သန်းခေါင် ၁၂:၀၀"):
+        if ketu_fact not in pariyaya:
+            return fail(f"Missing existing Ketu source fact: {ketu_fact}")
+    if "ပရိယာယ်စာရင်း၊ အက္ခရာ၊ အဆင်းသဏ္ဌာန်နှင့် အစိုးရသောအရပ်ကို မူရင်း HTML တွင် မဖော်ပြထားသေးပါ။" not in pariyaya:
+        return fail("Ketu unknown fields must remain explicit")
     if "အဖ၊ အဖေ" not in pariyaya or "ပညာ" not in pariyaya:
         return fail("Expected original pariyaya wording is missing")
     source_section = re.search(
