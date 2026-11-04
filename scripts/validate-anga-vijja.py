@@ -49,7 +49,8 @@ def chart_for(day):
 
 assert chart_for(0) == [5, 2, 6, 1, 4, 0, 3], "Sunday reference chart mismatch"
 assert chart_for(1) == [6, 3, 0, 2, 5, 1, 4], "Monday reference chart mismatch"
-assert "const positions=[values[0],values[1],values[2],null,values[3],null,values[4],values[5],values[6]]" in source, "Seven digits must render in a 3x3 layout with two empty middle cells"
+assert "values.forEach((n,i)=>{if(i===3)" in source, "Seven digits must render vertically with the central digit and weekday between divider lines"
+assert "အလယ်တည်ကိန်းဂဏန်း" in source, "Missing central-standing-digit explanation for the mnemonic verses"
 
 required_phrases = [
     "အိုင်ထဲမြရွေငွေ", "ကြံပါလူ့အသွေ", "ဆင်ရံသူနှင့်ဝေ",
