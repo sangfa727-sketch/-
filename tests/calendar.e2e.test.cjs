@@ -12,9 +12,10 @@ const assets = {
   '/app.html': ['app.html', 'text/html; charset=utf-8'],
   '/css/app.css': ['css/app.css', 'text/css; charset=utf-8'],
   '/js/calendar-app.js': ['js/calendar-app.js', 'text/javascript; charset=utf-8'],
+  '/graha-nine.html': ['graha-nine.html', 'text/html; charset=utf-8'],
 };
 
-test('Myanmar calendar works in desktop and mobile Chromium browsers', async () => {
+test('Myanmar calendar and astrology reference pages work in desktop and mobile Chromium', async () => {
   const server = http.createServer((req, res) => {
     const asset = assets[new URL(req.url, 'http://localhost').pathname];
     if (!asset) {
@@ -35,6 +36,8 @@ test('Myanmar calendar works in desktop and mobile Chromium browsers', async () 
   try {
     browser = await chromium.launch({ headless: true });
     const page = await browser.newPage({ viewport: { width: 1365, height: 900 } });
+    const pageErrors = [];
+    page.on('pageerror', error => pageErrors.push(error.message));
     await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
     await page.goto('http://127.0.0.1:4173/calendar-100-years.html');
 
@@ -44,7 +47,7 @@ test('Myanmar calendar works in desktop and mobile Chromium browsers', async () 
     assert.equal(await page.locator('#myDay').textContent(), 'လဆုတ် ၉ ရက်');
     assert.equal(await page.locator('#myWeekday').textContent(), 'ဗုဒ္ဓဟူး');
     assert.equal(await page.locator('#gapDirection').textContent(), 'တူညီသောနေ့');
-    
+
     await page.locator('#dateText').fill('28,8,1986');
     assert.equal(await page.locator('#myYear').textContent(), '၁၃၄၈ ခု');
     assert.equal(await page.locator('#myMonth').textContent(), 'ဝါခေါင်');
@@ -90,6 +93,54 @@ test('Myanmar calendar works in desktop and mobile Chromium browsers', async () 
     }));
     assert.ok(appDimensions.document <= appDimensions.viewport, `app mobile horizontal overflow: ${JSON.stringify(appDimensions)}`);
     assert.ok(await page.locator('#calendarGrid .calendar-day').count() >= 28);
+
+    // Static astrology reference: verify all seven mnemonic classification tables
+    // and key source wording without changing the reference content.
+    await page.setViewportSize({ width: 1365, height: 900 });
+    await page.goto('http://127.0.0.1:4173/graha-nine.html');
+    const classification = page.locator('section[aria-labelledby="akchara-linga-heading"]');
+    assert.equal(await classification.locator('h3').count(), 7);
+    assert.equal(await classification.locator('table').count(), 7);
+    for (const heading of [
+      '၁။ ကျား / မ ဂြိုဟ် ခွဲခြားနည်း',
+      '၂။ စကားအမှန် / အမှား ခွဲခြားနည်း',
+      '၃။ ဝယ် / မဝယ် ခွဲခြားနည်း',
+      '၄။ နဂိုရ်ဂြိုဟ် / ယာယီဂြိုဟ် (အတွင်းလူ / အပြင်လူ) ခွဲခြားနည်း',
+      '၅။ မိတ် / ရန် ခွဲခြားနည်း',
+      '၆။ အကြီး / အငယ် ခွဲခြားနည်း',
+      '၇။ ဓာတ်မိတ် / ဓာတ်ရန် ခွဲခြားနည်း',
+    ]) {
+      assert.ok(await classification.getByRole('heading', { name: heading, exact: true }).count() === 1, `missing heading: ${heading}`);
+    }
+    assert.ok((await page.locator('body').innerText()).includes('အောင်ပ ကုလား ဆွေသား နှောင်ရင်း'));
+    assert.ok((await page.locator('body').innerText()).includes('အရှင်ဂြိုဟ်'));
+    assert.ok((await page.locator('body').innerText()).includes('ကျွန်ဂြိုဟ်'));
+
+    const desktopTableOverflow = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      document: document.documentElement.scrollWidth,
+      wrappers: [...document.querySelectorAll('.table-wrap')].every(wrapper =>
+        wrapper.scrollWidth >= wrapper.clientWidth
+      ),
+    }));
+    assert.ok(desktopTableOverflow.document <= desktopTableOverflow.viewport, `desktop page horizontal overflow: ${JSON.stringify(desktopTableOverflow)}`);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.reload();
+    const mobileGrahaDimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      document: document.documentElement.scrollWidth,
+      tableWrappers: [...document.querySelectorAll('.table-wrap')].length,
+      tables: [...document.querySelectorAll('.table-wrap table')].length,
+      scrollableTables: [...document.querySelectorAll('.table-wrap')].filter(wrapper =>
+        wrapper.scrollWidth > wrapper.clientWidth
+      ).length,
+    }));
+    assert.ok(mobileGrahaDimensions.document <= mobileGrahaDimensions.viewport, `graha mobile page horizontal overflow: ${JSON.stringify(mobileGrahaDimensions)}`);
+    assert.ok(mobileGrahaDimensions.tableWrappers > 0);
+    assert.equal(mobileGrahaDimensions.tables, await page.locator('table').count());
+    assert.ok(mobileGrahaDimensions.scrollableTables > 0, 'wide tables should scroll inside their wrappers on mobile');
+    assert.deepEqual(pageErrors, []);
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
