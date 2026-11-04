@@ -35,7 +35,7 @@ footer{color:var(--muted);font-size:.85rem;margin-top:22px}
 <body><main>
 <header><a class="brand" href="app.html">✦ မြန်မာ့ဗေဒင်ပညာ</a><a class="back" href="app.html">← မူလစာမျက်နှာ</a></header>
 <section><p class="eyebrow">ANGAVIJAJA · TRADITIONAL KNOWLEDGE</p><h1>အင်္ဂဝိဇ္ဇာ ဗေဒင်</h1><p class="subtitle">အက္ခရာအလိုက် အခါတိုင်ထူပုံနှင့် တိုင်အဟောလင်္ကာများ</p></section>
-<section class="panel" aria-labelledby="chart-title"><p class="eyebrow">LETTER-BASED PILLAR</p><h2 id="chart-title">အက္ခရာအလိုက် အခါတိုင်ထူပုံ</h2>
+<section class="panel" id="pillar-method" aria-labelledby="chart-title"><p class="eyebrow">LETTER-BASED PILLAR</p><h2 id="chart-title">အက္ခရာအလိုက် အခါတိုင်ထူပုံ</h2>
 <div class="controls"><div class="field"><label for="weekday">နေ့နံရွေးရန်</label><select id="weekday">
 <option value="0">တနင်္ဂနွေ</option><option value="1">တနင်္လာ</option><option value="2">အင်္ဂါ</option><option value="3">ဗုဒ္ဓဟူး</option><option value="4">ကြာသပတေး</option><option value="5">သောကြာ</option><option value="6">စနေ</option></select></div>
 <div class="field"><label for="letter">အက္ခရာရွေးရန် (နေ့နံကို အလိုအလျောက်ရွေးမည်)</label><select id="letter"><option value="">အက္ခရာရွေးပါ</option></select></div></div>
@@ -148,12 +148,12 @@ footer{color:var(--muted);font-size:.85rem;margin-top:22px}
 <tr><td>ဗုဒ္ဓဟူး</td><td>လ၊ ဝ</td></tr><tr><td>ကြာသပတေး</td><td>ပ၊ ဖ၊ ဗ၊ ဘ၊ မ</td></tr>
 <tr><td>သောကြာ</td><td>သ၊ ဟ</td></tr><tr><td>စနေ</td><td>ဋ၊ ဌ၊ ဍ၊ ဎ၊ ဏ၊ တ၊ ထ၊ ဒ၊ ဓ၊ န</td></tr>
 </tbody></table></div><p class="note">အက္ခရာအုပ်စုများကို Repository ရှိ ဂြိုဟ်အက္ခရာဇယားအတိုင်း ချိတ်ဆက်ထားသည်။</p></section>
-<section class="panel"><p class="eyebrow">FIVE-PILLAR READING</p><h2>၅ တိုင်ထူ အဟောလင်္ကာ</h2><div class="verse-lines verse">
+<section class="panel" id="five-pillar-reading"><p class="eyebrow">FIVE-PILLAR READING</p><h2>၅ တိုင်ထူ အဟောလင်္ကာ</h2><div class="verse-lines verse">
 <div class="verse-line">အိုင်ထဲမြရွေငွေ၊</div><div class="verse-line">ကြံပါလူ့အသွေ၊</div><div class="verse-line">ဆင်ရံသူနှင့်ဝေ၊</div><div class="verse-line">လေသဲကျွန်းဆောင်မြူး၊</div><div class="verse-line">ပျော်ကျူးဧလှည့်နိုင်၊</div><div class="verse-line">သာလှိုင်ဆင်ကြလန်း၊</div><div class="verse-line">နန်းအောင်ရွှေမြို့သာ။</div></div>
 <p><strong>ပေးထားသော ဥပမာ</strong></p><p class="example">အိုင်ထဲမြရွှေငွေ — ၁၊ ၀၊ ၅၊ ၄၊ ၂</p>
 <div class="pillars"><div class="pillar"><strong>၁</strong>မူလတိုင်</div><div class="pillar"><strong>၂</strong>သာဓကတိုင်</div><div class="pillar"><strong>၃</strong>နိမိတ်တိုင်</div><div class="pillar"><strong>၄</strong>ဟေတုတိုင်</div><div class="pillar"><strong>၅</strong>လက္ခဏာတိုင်</div></div>
 <p class="note">ဤလင်္ကာများကို တိုင်တစ်တိုင်ချင်း၏ အလယ်တည်ကိန်းဂဏန်းများအဖြစ် နားလည်ရမည်။ “အိုင်ထဲမြရွှေငွေ — ၁၊ ၀၊ ၅၊ ၄၊ ၂” သည် ပေးထားသော ဥပမာကိန်းစဉ်ဖြစ်သည်။ လင်္ကာတစ်ခုချင်းမှ ကိန်းထုတ်ယူပုံကို မူရင်းကျမ်းနှင့် ထပ်မံတိုက်ဆိုင်စိစစ်မည်။</p></section>
-<section class="panel"><p class="eyebrow">THREE-PILLAR READING</p><h2>၃ တိုင်ထူ အဟောလင်္ကာ</h2><p class="verse">“အမျှကြင်၊ ခင်လှသွေ၊ စေသဝန်၊ လွင်ကြာမြင့်၊ မင်း၏နောင်၊ သောင်စလမ်း၊ နန်းလုံးဆွေ”</p><p class="note">မှတ်လေ မူလ နိမိတ်ပြ ယူကြလက္ခဏာ။</p>
+<section class="panel" id="three-pillar-reading"><p class="eyebrow">THREE-PILLAR READING</p><h2>၃ တိုင်ထူ အဟောလင်္ကာ</h2><p class="verse">“အမျှကြင်၊ ခင်လှသွေ၊ စေသဝန်၊ လွင်ကြာမြင့်၊ မင်း၏နောင်၊ သောင်စလမ်း၊ နန်းလုံးဆွေ”</p><p class="note">မှတ်လေ မူလ နိမိတ်ပြ ယူကြလက္ခဏာ။</p>
 <div class="pillars" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="pillar"><strong>၁</strong>မူလတိုင်</div><div class="pillar"><strong>၂</strong>နိမိတ်တိုင်</div><div class="pillar"><strong>၃</strong>လက္ခဏာတိုင်</div></div>
 </section>
 <section class="panel"><p class="eyebrow">INTERPRETATION INPUT</p><h2>တိုင်နံပါတ်အလိုက် အမည်ခွဲကြည့်ရန်</h2><div class="controls"><div class="field"><label for="pillarType">တိုင်အမျိုးအစား</label><select id="pillarType"><option value="5">၅ တိုင်</option><option value="3">၃ တိုင်</option></select></div><div class="field"><label for="pillarNumbers">တိုင်ကိန်းများ (ဥပမာ 1,0,5,4,2)</label><input id="pillarNumbers" inputmode="numeric" placeholder="1,0,5,4,2"></div></div><button id="interpret" type="button" style="margin-top:12px">တိုင်အမည်များ ဖော်ပြရန်</button><div id="interpretResult" class="result" aria-live="polite"></div><p class="note">ဤနေရာတွင် တိုင်အစဉ်နှင့် အမည်ကိုသာ ခွဲပြထားသည်။ ကိန်းတစ်ခုချင်း၏ အဟောကို မူရင်းအချက်အလက် မပြည့်စုံသေးသဖြင့် မခန့်မှန်းထားပါ။</p></section>
