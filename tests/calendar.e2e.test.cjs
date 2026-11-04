@@ -57,13 +57,6 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       "အန္တော ဂဗ္ဘေ စရေ ဝံသေ",
       "ဦးဝေ စံကူး ရေးဗူး တောသူ"
 ];
-    const lankaSection = page.locator('#lanka-verses');
-    assert.equal(await lankaSection.count(), 1);
-    assert.deepEqual((await lankaSection.locator('.lanka-verse').allTextContents()).map(text => text.trim()), expectedLankaVerses);
-    assert.equal(await lankaSection.locator('h1,h2,h3,h4,h5,h6,table').count(), 0,
-      'the verse-only archive must not contain headings or numeric tables');
-    assert.doesNotMatch(await lankaSection.innerText(), /[၀-၉0-9]/,
-      'the verse-only archive must not contain numeric classifications');
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
     await page.locator('#feature-graha-pariyaya').click();
@@ -184,6 +177,11 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#five-pillar-reading h2').textContent(), '၅ တိုင်ထူ အဟောလင်္ကာ');
     assert.equal(await page.locator('#three-pillar-reading h2').textContent(), '၃ တိုင်ထူ အဟောလင်္ကာ');
     await page.goto('http://127.0.0.1:4173/graha-nine.html');
+    const lankaSection = page.locator('#lanka-verses');
+    assert.equal(await lankaSection.count(), 1);
+    assert.deepEqual((await lankaSection.locator('.lanka-verse').allTextContents()).map(text => text.trim()), expectedLankaVerses);
+    assert.equal(await lankaSection.locator('h1,h2,h3,h4,h5,h6,table').count(), 0);
+    assert.doesNotMatch(await lankaSection.innerText(), /[၀-၉0-9]/);
     const sourcePariyayaRows = await page.locator('section[aria-labelledby="graha-pariyaya-heading"] tbody tr').evaluateAll(rows =>
       rows.map(row => [...row.querySelectorAll('td')].map(cell => cell.textContent.trim()))
     );
