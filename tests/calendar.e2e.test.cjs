@@ -79,6 +79,10 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#astrology-features .feature-card').count(), 4);
     assert.equal(await page.locator('#feature-calendar').getAttribute('href'), 'calendar.html');
+    await page.locator('#feature-calendar').click();
+    assert.ok(page.url().endsWith('/calendar.html'));
+    assert.match(await page.locator('#calendarTitle').textContent(), /နိုဝင်ဘာ ၂၀၂၆/);
+    await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-pillar-method').getAttribute('href'), 'anga-vijja.html#pillar-method');
     assert.equal(await page.locator('#feature-pillar-verses').getAttribute('href'), 'anga-vijja.html#five-pillar-reading');
     await page.locator('#feature-pillar-method').click();
