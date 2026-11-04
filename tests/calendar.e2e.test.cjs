@@ -166,7 +166,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       assert.equal(owners[7], weekdayIndex, sampleDate + ' must end with its own weekday');
       assert.equal(owners[1], (weekdayIndex + 5) % 7, sampleDate + ' inclusive sixth weekday must own period 2');
       const pillars = await page.locator('#periodGrid .period-pillar').evaluateAll(nodes => nodes.map(pillar => {
-        const values = [...pillar.querySelectorAll('.period-pillar-cell, .period-pillar-center strong')];
+        const values = [...pillar.querySelectorAll('.pillar-number-value')];
         return {
           values: values.map(node => node.textContent.trim()),
           tops: values.map(node => node.getBoundingClientRect().top),
