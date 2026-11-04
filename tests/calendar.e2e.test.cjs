@@ -95,6 +95,27 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(page.url().endsWith('/anga-vijja.html#five-pillar-reading'));
     assert.equal(await page.locator('#five-pillar-reading h2').textContent(), '၅ တိုင်ထူ အဟောလင်္ကာ');
     assert.equal(await page.locator('#three-pillar-reading h2').textContent(), '၃ တိုင်ထူ အဟောလင်္ကာ');
+    await page.goto('http://127.0.0.1:4173/graha-nine.html');
+    const sourcePariyayaRows = await page.locator('#graha-pariyaya-heading tbody tr').evaluateAll(rows =>
+      rows.map(row => [...row.querySelectorAll('td')].map(cell => cell.textContent.trim()))
+    );
+    assert.equal(sourcePariyayaRows.length, 8);
+    await page.goto('http://127.0.0.1:4173/graha-pariyaya.html');
+    const correctedPlanetOrder = await page.locator('#planetGrid .planet-card').evaluateAll(cards =>
+      cards.map(card => card.querySelector('h2').textContent.trim())
+    );
+    assert.deepEqual(correctedPlanetOrder, [
+      'တနင်္ဂနွေဂြိုဟ်','တနင်္လာဂြိုဟ်','အင်္ဂါဂြိုဟ်','ဗုဒ္ဓဟူးဂြိုဟ်',
+      'ကြာသပတေးဂြိုဟ်','သောကြာဂြိုဟ်','စနေဂြိုဟ်','ရာဟုဂြိုဟ်','ကိတ်ဂြိုဟ်'
+    ]);
+    const destinationTerms = await page.locator('#planetGrid .planet-card:not(.missing) .planet-terms').allTextContents();
+    assert.equal(destinationTerms.length, 8);
+    assert.deepEqual(destinationTerms, sourcePariyayaRows.map(row => row[3]),
+      'all eight planet pariyaya terms must match the original graha-nine HTML verbatim');
+    assert.equal(await page.locator('#graha-comparison-heading').count(), 1);
+    assert.equal(await page.locator('#people-body-heading').count(), 1);
+    assert.equal(await page.locator('#akchara-linga-heading').count(), 1);
+    assert.equal(await page.locator('#akchara-linga-heading h3').count(), 7);
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
     await page.locator('#feature-graha-pariyaya').click();
@@ -193,6 +214,24 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       for (let periodIndex = 0; periodIndex < 8; periodIndex++) {
         const card = cards.nth(periodIndex);
         const pillar = card.locator('.period-pillar');
+        const lankaToggle = card.locator('.period-lanka-toggle');
+        const lankaPanel = card.locator('.period-lanka-details');
+        assert.equal(await lankaToggle.count(),1,sampleDate+' period '+(periodIndex+1)+' must have a hide/show control');
+        assert.equal(await lankaToggle.getAttribute('aria-expanded'),'false');
+        assert.equal(await lankaPanel.isHidden(),true);
+        await lankaToggle.click();
+        assert.equal(await lankaToggle.getAttribute('aria-expanded'),'true');
+        assert.equal(await lankaPanel.isVisible(),true);
+        const lankaText = await lankaPanel.innerText();
+        for (const phrase of ['အောင်၊ ဆု၊ လည်း၊ ပွား','အင်တူလက်မျှ နဂိုရ်ပ','ခြေစွပ်သိမ်းယူ ယာယီယူ',
+          'ကြိုင်း လောင်း မြဲ သို','အ စ နံ ရောင်း','အောင်ပ ကုလား ဆွေသား နှောင်ရင်း',
+          'ဦးညို ခေမာ သုတ ဝေရီ','အန္တော ဂဗ္ဘေ စရေ ဝံသေ','ဦးဝေ စံကူး ရေးဗူး တောသူ']) {
+          assert.ok(lankaText.includes(phrase),sampleDate+' period '+(periodIndex+1)+' missing lanka: '+phrase);
+        }
+        assert.ok(lankaText.includes('မူရင်း HTML တွင် ကိန်းဂဏန်းသတ်မှတ်ချက် မဖော်ပြထားပါ'));
+        await lankaToggle.click();
+        assert.equal(await lankaToggle.getAttribute('aria-expanded'),'false');
+        assert.equal(await lankaPanel.isHidden(),true);
         assert.equal(await card.locator('.period-pillar-legend .pair-legend-item').count(), 4,
           sampleDate + ' period ' + (periodIndex + 1) + ' must explain all four pair categories');
         assert.equal(await pillar.locator('[data-effective-number="7"]').count(), 1,
