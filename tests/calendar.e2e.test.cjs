@@ -166,7 +166,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       assert.equal(owners[7], weekdayIndex, sampleDate + ' must end with its own weekday');
       assert.equal(owners[1], (weekdayIndex + 5) % 7, sampleDate + ' inclusive sixth weekday must own period 2');
       const pillars = await page.locator('#periodGrid .period-pillar').evaluateAll(nodes => nodes.map(pillar => {
-        const values = [...pillar.querySelectorAll('.period-pillar-cell, .period-pillar-center strong')];
+        const values = [...pillar.querySelectorAll('.pillar-number-value')];
         return {
           values: values.map(node => node.textContent.trim()),
           tops: values.map(node => node.getBoundingClientRect().top),
@@ -184,6 +184,34 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
           sampleDate + ' period ' + (periodIndex + 1) + ' values must be stacked top-to-bottom');
       }
     }
+
+    // Pair classifications must render for every one of the 56 daily pillars.
+    // A displayed 0 participates as mnemonic 7; Wednesday noon uses 4/8 (Rahu).
+    for (const [sampleDate, weekdayIndex] of weekdaySamples) {
+      await page.goto('http://127.0.0.1:4173/day.html?date=' + sampleDate);
+      const cards = page.locator('#periodGrid .period-card');
+      for (let periodIndex = 0; periodIndex < 8; periodIndex++) {
+        const card = cards.nth(periodIndex);
+        const pillar = card.locator('.period-pillar');
+        assert.equal(await card.locator('.period-pillar-legend .pair-legend-item').count(), 4,
+          sampleDate + ' period ' + (periodIndex + 1) + ' must explain all four pair categories');
+        assert.equal(await pillar.locator('[data-effective-number="7"]').count(), 1,
+          sampleDate + ' period ' + (periodIndex + 1) + ' must map 0 to mnemonic 7');
+        assert.ok(await pillar.locator('.pair-ring--outer-friend').count() > 0);
+        assert.ok(await pillar.locator('.pair-ring--inner-friend').count() > 0);
+        assert.ok(await pillar.locator('.pair-ring--outer-enemy').count() > 0);
+        assert.ok(await pillar.locator('.pair-ring--inner-enemy').count() > 0);
+        const isWednesdayRahu = weekdayIndex === 3 && periodIndex >= 4;
+        assert.equal(await pillar.locator('[data-effective-number="8"]').count(), isWednesdayRahu ? 1 : 0,
+          sampleDate + ' period ' + (periodIndex + 1) + ' Wednesday 4/8 alias boundary');
+        if (isWednesdayRahu) {
+          assert.equal(await pillar.locator('.pillar-number-alias').textContent(), '၈');
+          assert.ok((await pillar.locator('.period-pillar-center').innerText()).includes('၄') ||
+            await pillar.locator('.period-pillar-cell .pillar-number[data-effective-number="8"]').count() === 1);
+        }
+      }
+    }
+
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('http://127.0.0.1:4173/day.html?date=2026-11-05');
     const dayDimensions = await page.evaluate(() => ({
