@@ -75,6 +75,18 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(await page.locator('#calendarGrid .day').count() >= 28);
 
     await page.goto('http://127.0.0.1:4173/app.html');
+    assert.equal(await page.locator('#astrology-features .feature-card').count(), 2);
+    assert.equal(await page.locator('#feature-pillar-method').getAttribute('href'), 'anga-vijja.html#pillar-method');
+    assert.equal(await page.locator('#feature-pillar-verses').getAttribute('href'), 'anga-vijja.html#five-pillar-reading');
+    await page.locator('#feature-pillar-method').click();
+    assert.ok(page.url().endsWith('/anga-vijja.html#pillar-method'));
+    assert.equal(await page.locator('#pillar-method h2').textContent(), 'အက္ခရာအလိုက် အခါတိုင်ထူပုံ');
+    await page.goto('http://127.0.0.1:4173/app.html');
+    await page.locator('#feature-pillar-verses').click();
+    assert.ok(page.url().endsWith('/anga-vijja.html#five-pillar-reading'));
+    assert.equal(await page.locator('#five-pillar-reading h2').textContent(), '၅ တိုင်ထူ အဟောလင်္ကာ');
+    assert.equal(await page.locator('#three-pillar-reading h2').textContent(), '၃ တိုင်ထူ အဟောလင်္ကာ');
+    await page.goto('http://127.0.0.1:4173/app.html');
     await page.locator('#datePicker').fill('1986-08-28');
     assert.match(await page.locator('#myanmarFullDate').textContent(), /၁၃၄၈ ခု/);
     assert.match(await page.locator('#myanmarFullDate').textContent(), /ဝါခေါင်/);
