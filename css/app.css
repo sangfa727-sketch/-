@@ -66,3 +66,10 @@
 .source-detail-section tbody tr:nth-child(even){background:#ffffff06}
 .source-detail-section .note{color:var(--muted);font-size:11px;line-height:1.8}
 @media(max-width:600px){.source-detail-section{padding:14px 10px}.source-detail-section table{font-size:11px}.source-detail-section th,.source-detail-section td{padding:8px}}
+
+/* Installable app controls */
+.topbar-actions{display:flex;align-items:center;gap:12px}
+.install-app-button{border:1px solid #d9b77999;border-radius:999px;background:#d9b779;color:#172633;font-size:12px;font-weight:750;padding:8px 14px;cursor:pointer}
+.install-app-button[hidden]{display:none}
+.install-app-help{font-size:11px;color:var(--muted);margin:12px 0 0}
+@media(max-width:600px){.topbar-actions{gap:7px;flex-direction:column;align-items:flex-end}.install-app-button{font-size:10px;padding:6px 10px}.topbar-meta{font-size:9px}}

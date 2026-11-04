@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#172b3b">
   <meta name="description" content="မြန်မာ့ဗေဒင်ပညာ — မြန်မာပြက္ခဒိန်၊ အင်္ဂဝိဇ္ဇာနှင့် ဂြိုလ်ပရိယာယ်ဆိုင်ရာ သီးသန့်ကိရိယာများ။">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/app-icon.svg" type="image/svg+xml">
   <title>မြန်မာ့ဗေဒင်ပညာ | မူလစာမျက်နှာ</title>
   <link rel="stylesheet" href="css/app.css">
 </head>
@@ -15,13 +17,17 @@
         <span class="brand-mark" aria-hidden="true">✦</span>
         <span><strong>မြန်မာ့ဗေဒင်ပညာ</strong><small>MYANMAR ASTROLOGY</small></span>
       </a>
-      <span class="topbar-meta"><span class="status-dot"></span> ပညာရပ်ဆိုင်ရာ ကိရိယာများ</span>
+      <div class="topbar-actions">
+        <span class="topbar-meta"><span class="status-dot"></span> ပညာရပ်ဆိုင်ရာ ကိရိယာများ</span>
+        <button id="installAppButton" class="install-app-button" type="button" hidden>App ထည့်သွင်းရန်</button>
+      </div>
     </header>
     <main>
       <section class="home-hero">
         <p class="eyebrow">MYANMAR ASTROLOGY KNOWLEDGE</p>
         <h1>မြန်မာ့ဗေဒင်ပညာ</h1>
         <p>ပြက္ခဒိန်တွက်ချက်မှုနှင့် ရိုးရာဗေဒင်ပညာဆိုင်ရာ အချက်အလက်များကို သီးခြားကဏ္ဍများအလိုက် လွယ်ကူစွာ အသုံးပြုနိုင်ရန် စုစည်းထားပါသည်။</p>
+        <p id="installAppHelp" class="install-app-help">Android Chrome တွင် မီနူး (⋮) → Install app / Add to Home screen ဖြင့် ဖုန်းထဲသို့ ထည့်သွင်းနိုင်ပါသည်။</p>
       </section>
       <section class="feature-section home-features" id="astrology-features" aria-labelledby="astrology-features-title">
         <div class="feature-section-heading">
@@ -58,5 +64,6 @@
     </main>
     <footer>မြန်မာ့ဗေဒင်ပညာ · ရိုးရာအချက်အလက်များကို စနစ်တကျ စုစည်းခြင်း</footer>
   </div>
+  <script src="./js/pwa-install.js" defer></script>
 </body>
 </html>
