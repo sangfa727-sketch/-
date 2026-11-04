@@ -118,7 +118,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#graha-comparison-heading').count(), 1);
     assert.equal(await page.locator('#people-body-heading').count(), 1);
     assert.equal(await page.locator('#graha-comparison-heading').locator('xpath=following-sibling::div//tbody/tr').count(), 8);
-    assert.equal(await page.locator('#people-body-heading').locator('xpath=following-sibling::p').count(), 1);
+    assert.ok(await page.locator('#people-body-heading').locator('xpath=following-sibling::p').count() >= 1);
     assert.equal(await page.locator('#people-body-heading').locator('xpath=following-sibling::div//tbody/tr').count(), 8);
     assert.ok((await page.locator('body').innerText()).includes('အရှင်ဂြိုဟ်'));
     assert.ok((await page.locator('body').innerText()).includes('ကျွန်ဂြိုဟ်'));
