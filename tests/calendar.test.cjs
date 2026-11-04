@@ -66,6 +66,26 @@ test('historical and future date lookup plus date-gap UI are present', () => {
   assert.match(html, /id="calendarGrid"/);
 });
 
+test('free-text parser accepts supported date formats and rejects malformed input', () => {
+  const match = html.match(/<script>\s*([\s\S]*?)\s*<\/script>/);
+  assert.ok(match, 'inline application script not found');
+  const start = match[1].indexOf('function parseFreeDate');
+  const end = match[1].indexOf('function updateResult');
+  assert.ok(start >= 0 && end > start, 'free-text parser not found');
+  const parserSandbox = {};
+  vm.runInNewContext(match[1].slice(start, end) + '; this.parseFreeDate = parseFreeDate;', parserSandbox);
+  for (const value of ['28,8,1986', '28/08/1986', '28-08-1986']) {
+    const parsed = parserSandbox.parseFreeDate(value);
+    assert.equal(parsed.y, 1986);
+    assert.equal(parsed.m, 8);
+    assert.equal(parsed.d, 28);
+  }
+  const iso = parserSandbox.parseFreeDate('1986-08-28');
+  assert.deepEqual({ y: iso.y, m: iso.m, d: iso.d }, { y: 1986, m: 8, d: 28 });
+  assert.equal(parserSandbox.parseFreeDate('not-a-date'), null);
+  assert.equal(parserSandbox.parseFreeDate('28,8,86'), null);
+});
+
 test('calendar date gap reports years, months, days and correct direction', () => {
   const match = html.match(/<script>\s*([\s\S]*?)\s*<\/script>/);
   assert.ok(match, 'inline application script not found');
