@@ -110,7 +110,7 @@ test('inline browser script has valid JavaScript syntax', () => {
 });
 
 test('calendar gap handles month ends and leap-day anniversaries without negative days', () => {
-  const match = html.match(/<script>\\s*([\\s\\S]*?)\\s*<\\/script>/);
+  const match = html.match(/<script>\s*([\s\S]*?)\s*<\/script>/);
   assert.ok(match, 'inline application script not found');
   const start = match[1].indexOf('function dateOnlyUTC');
   const end = match[1].indexOf('function parseFreeDate');
@@ -127,4 +127,22 @@ test('calendar gap handles month ends and leap-day anniversaries without negativ
     assert.deepEqual([result.years, result.months, result.days, result.total], [years, months, days, total]);
     assert.ok(result.days >= 0);
   }
+});
+
+test('historical lookup core returns valid Myanmar dates for every day in 1900-2025', () => {
+  let checked = 0;
+  for (let year = 1900; year <= 2025; year += 1) {
+    for (let month = 1; month <= 12; month += 1) {
+      const monthLength = new Date(Date.UTC(year, month, 0)).getUTCDate();
+      for (let day = 1; day <= monthLength; day += 1) {
+        const result = sandbox.j2m(sandbox.w2j(year, month, day, 1));
+        assert.ok(result.my >= 1260 && result.my <= 1387, `Myanmar year out of historical range: ${year}-${month}-${day}`);
+        assert.ok(result.mm >= 0 && result.mm <= 14);
+        assert.ok(result.md >= 1 && result.md <= 30);
+        assert.ok(result.myt >= 0 && result.myt <= 2);
+        checked += 1;
+      }
+    }
+  }
+  assert.ok(checked > 45000);
 });
