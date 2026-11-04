@@ -143,7 +143,7 @@ def main():
     if "အဖ၊ အဖေ" not in pariyaya or "ပညာ" not in pariyaya:
         return fail("Expected original pariyaya wording is missing")
     source_section = re.search(
-        r'<section\\b[^>]*aria-labelledby="graha-pariyaya-heading"[^>]*>(.*?)</section>',
+        r'<section[^>]*aria-labelledby="graha-pariyaya-heading"[^>]*>(.*?)</section>',
         source,
         re.DOTALL,
     )
