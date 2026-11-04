@@ -14,7 +14,7 @@ on:
       - "js/calendar-app.js"
       - "js/day-astrology.js"
       - "scripts/validate-anga-vijja.py"
-      - "scripts/validate-graha-nine.py"
+      - "scripts/validate-graha-nine.py"\n      - "scripts/validate-day-astrology.py"
       - ".github/workflows/html-validation.yml"
   push:
     branches:
