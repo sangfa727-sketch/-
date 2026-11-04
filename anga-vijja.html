@@ -22,7 +22,8 @@ button{cursor:pointer;background:var(--soft);color:var(--accent);font-weight:700
 .cell{min-height:48px;display:grid;place-items:center;border:0;border-radius:0;background:transparent;font-size:1.8rem;font-weight:800;color:var(--accent)}
 .cell.center{min-height:76px;background:#eaf1f8;border:0;color:#172b3b;border-radius:0}.chart-rule{height:2px;background:var(--accent);width:100%}.cell.center small{display:block;font-size:.78rem;font-weight:650;line-height:1.35;color:var(--muted)}
 .chart-caption{text-align:center;color:var(--muted);font-size:.9rem}
-.pillar-list{display:grid;gap:8px}.pillar-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:7px 0}.pillar-item:last-child{border:0}
+.pillar-list{display:grid;gap:8px}
+.week-examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.week-example{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;background:#fbfcfe}.week-example h3{font-size:1rem;margin:0 0 6px}.week-example pre{font-family:inherit;font-size:1rem;line-height:1.65;font-weight:700;color:var(--accent);margin:0;white-space:pre-wrap}.formula{background:#f5f7fa;border-radius:8px;padding:9px 11px;overflow-wrap:anywhere}.pillar-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:7px 0}.pillar-item:last-child{border:0}
 .note{font-size:.88rem;color:var(--muted);margin:10px 0 0}.callout{padding:12px 14px;background:#f8f6f0;border-left:3px solid var(--gold);border-radius:8px}
 .verse{font-size:1.05rem;line-height:2.15}.verse-lines{display:grid;gap:4px}.verse-line{padding:8px 10px;border-bottom:1px solid var(--line)}
 .example{font-weight:750;color:var(--accent);letter-spacing:.05em}.pillars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.pillar{border:1px solid var(--line);border-radius:11px;padding:10px;text-align:center;background:#fbfcfe}.pillar strong{display:block;font-size:1.3rem;color:var(--accent)}
@@ -41,6 +42,105 @@ footer{color:var(--muted);font-size:.85rem;margin-top:22px}
 <div class="chart-wrap"><div><div class="chart" id="chart" aria-label="ဒေါင်လိုက် အခါတိုင်"></div><p class="chart-caption" id="chartCaption">တနင်္ဂနွေ အခါတိုင်</p></div>
 <div class="pillar-list"><div class="pillar-item"><span>အပေါ်ပိုင်း ကိန်း ၃ လုံး</span><strong id="top">—</strong></div><div class="pillar-item"><span>အလယ်တည်ကိန်း</span><strong id="middle">—</strong></div><div class="pillar-item"><span>အောက်ပိုင်း ကိန်း ၃ လုံး</span><strong id="bottom">—</strong></div><p class="note">အပေါ် ၃ လုံးကို ဒေါင်လိုက်၊ အလယ်တည်ကိန်းနှင့် နေ့နံကို အလယ်တွင်၊ အောက် ၃ လုံးကို ဒေါင်လိုက် အစဉ်လိုက် ထားသည်။</p></div></div>
 <div class="callout"><strong>တွက်ချက်မှုမှတ်ချက် —</strong> တနင်္ဂနွေ/တနင်္လာ နမူနာနှစ်ခုမှ ကျန်နေ့များကို ယာယီဆက်တွက်ထားခြင်းဖြစ်ပြီး မူရင်းကျမ်းမှ အတည်ပြုချက် မရသေးပါ။ အောက်ပါ အဟောလင်္ကာများသည် သာမန်စာသားသက်သက်မဟုတ်ဘဲ တိုင်တစ်တိုင်ချင်း၏ အလယ်တည်ကိန်းဂဏန်းကို မှတ်သား/ဖော်ထုတ်ရန် အသုံးပြုသည့် လင်္ကာများဖြစ်သည်။</div>
+</section>
+<section class="panel" aria-labelledby="seven-examples-title"><p class="eyebrow">SEVEN WEEKDAY PILLARS</p><h2 id="seven-examples-title">တနင်္ဂနွေတိုင်မှ စနေတိုင်အထိ — နမူနာ ၇ တိုင်</h2>
+<p>နေ့နံတစ်ခုချင်းစီအတွက် အလယ်တည်ကိန်းနှင့် အပေါ်/အောက်ကိန်းများကို သီးခြားပြထားသည်။</p>
+<div class="week-examples">
+<article class="week-example"><h3>တနင်္ဂနွေတိုင်</h3><pre>  ၅
+  │
+  ၂
+  │
+  ၆
+──────
+  ၁
+──────
+  ၄
+  │
+  ၀
+  │
+  ၃</pre></article>
+<article class="week-example"><h3>တနင်္လာတိုင်</h3><pre>  ၆
+  │
+  ၃
+  │
+  ၀
+──────
+  ၂
+──────
+  ၅
+  │
+  ၁
+  │
+  ၄</pre></article>
+<article class="week-example"><h3>အင်္ဂါတိုင်</h3><pre>  ၀
+  │
+  ၄
+  │
+  ၁
+──────
+  ၃
+──────
+  ၆
+  │
+  ၂
+  │
+  ၅</pre></article>
+<article class="week-example"><h3>ဗုဒ္ဓဟူးတိုင်</h3><pre>  ၁
+  │
+  ၅
+  │
+  ၂
+──────
+  ၄
+──────
+  ၀
+  │
+  ၃
+  │
+  ၆</pre></article>
+<article class="week-example"><h3>ကြာသပတေးတိုင်</h3><pre>  ၂
+  │
+  ၆
+  │
+  ၃
+──────
+  ၅
+──────
+  ၁
+  │
+  ၄
+  │
+  ၀</pre></article>
+<article class="week-example"><h3>သောကြာတိုင်</h3><pre>  ၃
+  │
+  ၀
+  │
+  ၄
+──────
+  ၆
+──────
+  ၂
+  │
+  ၅
+  │
+  ၁</pre></article>
+<article class="week-example"><h3>စနေတိုင်</h3><pre>  ၄
+  │
+  ၁
+  │
+  ၅
+──────
+  ၀
+──────
+  ၃
+  │
+  ၆
+  │
+  ၂</pre></article>
+</div>
+<h3>ထိန်းသိမ်းရမည့် တွက်နည်းဖော်မြူလာ</h3>
+<p class="formula">P(d) = [(5+d)%7, (2+d)%7, (6+d)%7, (1+d)%7, (4+d)%7, (0+d)%7, (3+d)%7]</p>
+<ul><li>d သည် တနင်္ဂနွေမှ စတင်သော နေ့နံအမှတ်စဉ်ဖြစ်သည် — တနင်္ဂနွေ ၀ မှ စနေ ၆ အထိ။</li><li>ကိန်းအစဉ်မှာ အပေါ် ၃ လုံး၊ အလယ်တည်ကိန်း ၁ လုံး၊ အောက် ၃ လုံး ဖြစ်သည်။ အလယ်တည်ကိန်းသည် စတုတ္ထကိန်းဖြစ်သည်။</li><li>ဥပမာ ကြာသပတေး d=၄ ဖြစ်၍ ၂၊ ၆၊ ၃ / ၅ / ၁၊ ၄၊ ၀ ဖြစ်သည်။</li><li>ဤဖော်မြူလာသည် လက်ရှိအတည်ပြုထားသော နမူနာနှင့် ကိုက်ညီစေရန် ထိန်းသိမ်းထားခြင်းဖြစ်ပြီး မူရင်းကျမ်းမှ သီးခြားအတည်ပြုထားသည်ဟု မဆိုလိုပါ။</li></ul>
 </section>
 <section class="panel"><p class="eyebrow">WEEKDAY LETTER GROUPS</p><h2>နေ့နံနှင့် သက်ဆိုင်သော အက္ခရာများ</h2><div style="overflow-x:auto"><table class="small-table"><thead><tr><th>နေ့နံ</th><th>အက္ခရာအုပ်စု</th></tr></thead><tbody>
 <tr><td>တနင်္ဂနွေ</td><td>အ၊ အာ၊ ဣ၊ ဤ၊ ဥ၊ ဦ၊ ဧ၊ အဲ၊ ဩ၊ ဪ၊ အံ၊ အား</td></tr>
@@ -66,6 +166,9 @@ const groups=[
 ["အ","အာ","ဣ","ဤ","ဥ","ဦ","ဧ","အဲ","ဩ","ဪ","အံ","အား"],
 ["က","ခ","ဃ","ဂ","င"],["စ","ဆ","ဇ","ဈ","ည"],["လ","ဝ"],
 ["ပ","ဖ","ဗ","ဘ","မ"],["သ","ဟ"],["ဋ","ဌ","ဍ","ဎ","ဏ","တ","ထ","ဒ","ဓ","န"]];
+// အင်္ဂဝိဇ္ဇာတိုင် အခြေခံဖော်မြူလာ: P(d) = (SundayReference[i] + d) mod 7။
+// SundayReference = [5,2,6,1,4,0,3]၊ d = တနင်္ဂနွေ ၀ မှ စနေ ၆။
+// အစဉ် = အပေါ် ၃ လုံး၊ အလယ်တည်ကိန်း၊ အောက် ၃ လုံး။
 const base=[5,2,6,1,4,0,3];
 const myDigits=n=>String(n).replace(/\d/g,d=>"၀၁၂၃၄၅၆၇၈၉"[Number(d)]);
 const weekday=document.getElementById("weekday"),letter=document.getElementById("letter");
