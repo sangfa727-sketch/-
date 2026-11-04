@@ -129,15 +129,20 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#akchara-linga-heading').count(), 1);
     assert.equal(await page.locator('section[aria-labelledby="akchara-linga-heading"] h3').count(), 7);
     const genderSection = page.locator('section[aria-labelledby="akchara-linga-heading"]');
-    const maleGenderRow = genderSection.locator('tbody tr').filter({ hasText: 'ယောက်ျားဂြိုဟ်' });
-    const femaleGenderRow = genderSection.locator('tbody tr').filter({ hasText: 'မိန်းမဂြိုဟ်' });
-    assert.equal(await maleGenderRow.count(), 1, 'male graha mnemonic row must be unique');
-    assert.equal(await femaleGenderRow.count(), 1, 'female graha mnemonic row must be unique');
-    const maleGenderText = (await maleGenderRow.textContent()).replace(/\\s+/g, '');
-    const femaleGenderText = (await femaleGenderRow.textContent()).replace(/\\s+/g, '');
-    assert.match(maleGenderText, /၁၊၃၊၄၊၅/,
+    const genderTable = genderSection.locator('h3')
+      .filter({ hasText: 'ကျား / မ ဂြိုဟ် ခွဲခြားနည်း' })
+      .locator('xpath=following-sibling::div[contains(@class,"table-wrap")][1]//table');
+    const genderRows = genderTable.locator('tbody tr');
+    assert.equal(await genderRows.count(), 2, 'gender mnemonic table must contain exactly two rows');
+    const maleGenderRow = genderRows.nth(0);
+    const femaleGenderRow = genderRows.nth(1);
+    assert.equal((await maleGenderRow.locator('td').nth(0).textContent()).trim(), 'ယောက်ျားဂြိုဟ်');
+    assert.equal((await femaleGenderRow.locator('td').nth(0).textContent()).trim(), 'မိန်းမဂြိုဟ်');
+    const maleGenderNumber = (await maleGenderRow.locator('td').nth(2).textContent()).replace(/\\s+/g, '');
+    const femaleGenderNumber = (await femaleGenderRow.locator('td').nth(2).textContent()).replace(/\\s+/g, '');
+    assert.match(maleGenderNumber, /၁၊၃၊၄၊၅/,
       'male graha mnemonic must map to 1, 3, 4, 5');
-    assert.match(femaleGenderText, /၂၊၆၊၀၊၈/,
+    assert.match(femaleGenderNumber, /၂၊၆၊၀၊၈/,
       'female graha mnemonic must map to 2, 6, 0, 8');
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
