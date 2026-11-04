@@ -108,3 +108,23 @@ test('inline browser script has valid JavaScript syntax', () => {
   assert.ok(match, 'inline application script not found');
   assert.doesNotThrow(() => new vm.Script(match[1], { filename: 'calendar-100-years.inline.js' }));
 });
+
+test('calendar gap handles month ends and leap-day anniversaries without negative days', () => {
+  const match = html.match(/<script>\\s*([\\s\\S]*?)\\s*<\\/script>/);
+  assert.ok(match, 'inline application script not found');
+  const start = match[1].indexOf('function dateOnlyUTC');
+  const end = match[1].indexOf('function parseFreeDate');
+  const helperSandbox = {};
+  vm.runInNewContext(match[1].slice(start, end) + '; this.calendarGap = calendarGap;', helperSandbox);
+  const cases = [
+    [new Date(2024, 0, 31), new Date(2024, 2, 1), 0, 1, 1, 30],
+    [new Date(2023, 0, 31), new Date(2023, 1, 28), 0, 1, 0, 28],
+    [new Date(2024, 1, 29), new Date(2025, 1, 28), 1, 0, 0, 365],
+    [new Date(2023, 11, 31), new Date(2024, 0, 30), 0, 0, 30, 30],
+  ];
+  for (const [from, to, years, months, days, total] of cases) {
+    const result = helperSandbox.calendarGap(from, to);
+    assert.deepEqual([result.years, result.months, result.days, result.total], [years, months, days, total]);
+    assert.ok(result.days >= 0);
+  }
+});
