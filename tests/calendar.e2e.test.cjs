@@ -127,7 +127,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#graha-comparison-heading').count(), 1);
     assert.equal(await page.locator('#people-body-heading').count(), 1);
     assert.equal(await page.locator('#akchara-linga-heading').count(), 1);
-    assert.equal(await page.locator('#akchara-linga-heading h3').count(), 7);
+    assert.equal(await page.locator('section[aria-labelledby="akchara-linga-heading"] h3').count(), 7);
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
     await page.locator('#feature-graha-pariyaya').click();
