@@ -1,0 +1,26 @@
+name: Myanmar Calendar Tests
+
+on:
+  push:
+    branches:
+      - main
+      - feat/100-year-myanmar-calendar
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  calendar-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run calendar regression tests
+        run: node --test tests/calendar.test.cjs
