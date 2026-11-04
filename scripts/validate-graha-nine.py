@@ -12,24 +12,26 @@ VOID_TAGS = {
     "area", "base", "br", "col", "embed", "hr", "img", "input",
     "link", "meta", "param", "source", "track", "wbr",
 }
-EXPECTED_HEADINGS = [
-    "၁။ ကျား / မ ဂြိုဟ် ခွဲခြားနည်း",
-    "၂။ စကားအမှန် / အမှား ခွဲခြားနည်း",
-    "၃။ ဝယ် / မဝယ် ခွဲခြားနည်း",
-    "၄။ နဂိုရ်ဂြိုဟ် / ယာယီဂြိုဟ် (အတွင်းလူ / အပြင်လူ) ခွဲခြားနည်း",
-    "၅။ မိတ် / ရန် ခွဲခြားနည်း",
-    "၆။ အကြီး / အငယ် ခွဲခြားနည်း",
-    "၇။ ဓာတ်မိတ် / ဓာတ်ရန် ခွဲခြားနည်း",
+EXPECTED_VERSES = [
+    "အောင်၊ ဆု၊ လည်း၊ ပွား — ဂြိုလ် ယောင်္ကျား",
+    "ခြေ၊ သွား၊ ထိန်း၊ ရ — ဂြိုလ်မိန်းမ",
+    "အုတ် ခြစ် စံ ထား မှန်စကား",
+    "ကျွန် မ သား စကားမမှန်ရာ",
+    "အောင် ကျော် ဇံ လောင်း မဝယ်ကောင်း",
+    "လွမ်း ပု သာ ဝယ်ပါလေ",
+    "အင်တူလက်မျှ နဂိုရ်ပ",
+    "ခြေစွပ်သိမ်းယူ ယာယီယူ",
+    "အောင်ပ ကုလား ဆွေသား နှောင်ရင်း",
+    "ဦးသာ စိန်ပန်း ဒန်းလှ ကိုရှာ",
+    "ဦးညို ခေမာ သုတ ဝေရီ",
+    "ဓမ္မာ သောက အင်းဝ ရာဇာ",
+    "ကြိုင်း လောင်း မြဲ သို",
+    "အ စ နံ ရောင်း",
+    "အန္တော ဂဗ္ဘေ စရေ ဝံသေ",
+    "ဦးဝေ စံကူး ရေးဗူး တောသူ"
 ]
 REQUIRED_TEXT = [
     "အောင်ပ ကုလား ဆွေသား နှောင်ရင်း",
-    "အရှင်ဂြိုဟ်",
-    "ကျွန်ဂြိုဟ်",
-    "အပြင်မိတ်",
-    "အတွင်းမိတ်",
-    "အပြင်ရန်",
-    "အတွင်းရန်",
-    "မဖော်ပြထား",
     "ဂြိုဟ် ၉ ပါး ဇယား",
     "ဂြိုဟ်တို့၏ အက္ခရာများ",
     "မဟာဘုတ်ပညာ",
@@ -45,7 +47,6 @@ class DocumentAudit(HTMLParser):
         self.headings = []
         self.current_heading = None
         self.section_stack = []
-        self.akchara_table_count = 0
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -54,8 +55,6 @@ class DocumentAudit(HTMLParser):
             self.ids.append(element_id)
         if tag == "section":
             self.section_stack.append(element_id or attrs.get("aria-labelledby"))
-        if tag == "table" and "akchara-linga-heading" in self.section_stack:
-            self.akchara_table_count += 1
         if tag == "h3":
             self.current_heading = []
         if tag not in VOID_TAGS:
@@ -111,27 +110,34 @@ def main():
     if len(parser.ids) != len(set(parser.ids)):
         return fail("Duplicate HTML id attributes")
 
-    missing_headings = [item for item in EXPECTED_HEADINGS if item not in parser.headings]
-    if missing_headings:
-        return fail(f"Missing classification headings: {missing_headings}")
-    if parser.akchara_table_count != 7:
-        return fail(
-            f"Expected 7 classification tables, found {parser.akchara_table_count}"
-        )
+    verse_section = re.search(
+        r'<section[^>]*id="lanka-verses"[^>]*>(.*?)</section>',
+        source,
+        re.DOTALL,
+    )
+    if not verse_section:
+        return fail("Missing verse-only lanka archive")
+    source_verses = [
+        unescape(re.sub(r"<[^>]+>", "", item)).strip()
+        for item in re.findall(r'<p class="lanka-verse">(.*?)</p>', verse_section.group(1), re.DOTALL)
+    ]
+    if source_verses != EXPECTED_VERSES:
+        return fail("The original lanka verses were changed, reordered, or omitted")
+    if re.search(r"<h[1-6]\b|<table\b|[၀-၉0-9]", verse_section.group(1)):
+        return fail("Verse-only archive must not contain headings, tables, or numeric classifications")
 
     missing_text = [item for item in REQUIRED_TEXT if item not in source]
     if missing_text:
         return fail(f"Missing required source wording/content: {missing_text}")
 
-    if source.count('id="akchara-linga-heading"') != 1:
-        return fail("Expected exactly one dedicated akchara-linga section")
+    if source.count('id="lanka-verses"') != 1:
+        return fail("Expected exactly one dedicated verse-only archive")
     if not source.rstrip().endswith("</html>"):
         return fail("Document must end with </html>")
 
     print("PASS: HTML nesting and closing tags")
     print("PASS: unique IDs")
-    print("PASS: all 7 classification headings and tables")
-    print("PASS: corrected mnemonic and key wording")
+    print("PASS: all 16 original lanka verses are preserved without headings or numbers")
     pariyaya_file = Path("graha-pariyaya.html")
     if not pariyaya_file.is_file():
         return fail("Missing graha-pariyaya.html")
@@ -159,12 +165,35 @@ def main():
     )
     if len(source_terms) != 8:
         return fail(f"Expected 8 original pariyaya source rows, found {len(source_terms)}")
+    source_planets = re.findall(
+        r'<tr><td class="num">.*?</td><td>(.*?)</td><td>.*?</td><td>.*?</td></tr>',
+        source_section.group(1),
+        re.DOTALL,
+    )
+    expected_planets = ["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသာပတေး","သောကြာ","စနေ","ရာဟု"]
+    if source_planets != expected_planets:
+        return fail(f"Pariyaya rows must follow canonical planet numbering 1–8: {source_planets}")
+    pariyaya_verse_section = re.search(
+        r'<section[^>]*id="lanka-verses"[^>]*>(.*?)</section>',
+        pariyaya,
+        re.DOTALL,
+    )
+    if not pariyaya_verse_section:
+        return fail("Dedicated pariyaya page is missing the verse-only archive")
+    pariyaya_verses = [
+        unescape(re.sub(r"<[^>]+>", "", item)).strip()
+        for item in re.findall(r'<p class="lanka-verse">(.*?)</p>', pariyaya_verse_section.group(1), re.DOTALL)
+    ]
+    if pariyaya_verses != EXPECTED_VERSES:
+        return fail("Dedicated pariyaya page does not preserve all original lanka verses")
+    if re.search(r"<h[1-6]\b|<table\b|[၀-၉0-9]", pariyaya_verse_section.group(1)):
+        return fail("Dedicated pariyaya verse archive must not contain headings, tables, or numbers")
     for term in source_terms:
         original_text = unescape(re.sub(r"<[^>]+>", "", term)).strip()
         if original_text not in pariyaya:
             return fail("A source pariyaya entry was changed or omitted")
 
-    print("PASS: original graha, letter, and Mahabote sections remain")
+    print("PASS: verse-only archive is identical on both graha pages")
     print("PASS: nine pariyaya cards, original wording, and explicit Ketu gap")
     return 0
 
