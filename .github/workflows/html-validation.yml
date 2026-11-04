@@ -16,6 +16,7 @@ on:
   push:
     branches:
       - main
+      - feat/dedicated-myanmar-calendar-page
     paths:
       - "graha-nine.html"
       - "graha-pariyaya.html"
