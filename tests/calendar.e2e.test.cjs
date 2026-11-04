@@ -39,6 +39,11 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
 
   let browser;
   try {
+    browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage({ viewport: { width: 1365, height: 900 } });
+    const pageErrors = [];
+    page.on('pageerror', error => pageErrors.push(error.message));
+    await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
     const expectedLankaVerses = [
       "အောင်၊ ဆု၊ လည်း၊ ပွား — ဂြိုလ် ယောင်္ကျား",
       "ခြေ၊ သွား၊ ထိန်း၊ ရ — ဂြိုလ်မိန်းမ",
@@ -120,11 +125,6 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       ['2026-11-01',0],['2026-11-02',1],['2026-11-03',2],['2026-11-04',3],
       ['2026-11-05',4],['2026-11-06',5],['2026-11-07',6],
     ];
-    browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage({ viewport: { width: 1365, height: 900 } });
-    const pageErrors = [];
-    page.on('pageerror', error => pageErrors.push(error.message));
-    await page.clock.install({ time: new Date('2026-11-04T12:00:00') });
     await page.goto('http://127.0.0.1:4173/calendar-100-years.html');
 
     await page.locator('#dateInput').fill('2026-11-04');
