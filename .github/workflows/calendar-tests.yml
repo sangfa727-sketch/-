@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feat/100-year-myanmar-calendar
+      - feat/dedicated-myanmar-calendar-page
   pull_request:
     branches:
       - main

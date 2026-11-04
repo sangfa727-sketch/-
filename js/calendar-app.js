@@ -5,7 +5,7 @@
   const months = {0:"ပထမဝါဆို",1:"တန်ခူး",2:"ကဆုန်",3:"နယုန်",4:"ဒုတိယဝါဆို",5:"ဝါခေါင်",6:"တော်သလင်း",7:"သီတင်းကျွတ်",8:"တန်ဆောင်မုန်း",9:"နတ်တော်",10:"ပြာသို",11:"တပို့တွဲ",12:"တပေါင်း",13:"နှောင်းတန်ခူး",14:"နှောင်းကဆုန်"};
   const phases = ["လဆန်း","လပြည့်","လဆုတ်","လကွယ်"];
   const weekdays = ["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသပတေး","သောကြာ","စနေ"];
-  const weekdayShort = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const weekdayShort = ["နွေ","လာ","အင်္","ဗုဒ္ဓ","ကြာ","သော","စနေ"];
   const $ = id => document.getElementById(id);
   const digits = value => String(value).replace(/[0-9]/g, d => "၀၁၂၃၄၅၆၇၈၉"[Number(d)]);
   const today = new Date();
@@ -20,7 +20,7 @@
     return digits(date.getFullYear()) + "-" + digits(String(date.getMonth()+1).padStart(2,"0")) + "-" + digits(String(date.getDate()).padStart(2,"0"));
   }
   function parseDate(value) {
-    const v = value.trim();
+    const v = value.trim().replace(/[၀-၉]/g, d => String("၀၁၂၃၄၅၆၇၈၉".indexOf(d)));
     let match;
     let parts = null;
     if ((match = v.match(/^(\d{1,2})\s*[,/.-]\s*(\d{1,2})\s*[,/.-]\s*(\d{4})$/))) {
@@ -75,7 +75,8 @@
     updateDifference(date);
   }
   function renderCalendar() {
-    $("calendarTitle").textContent = new Intl.DateTimeFormat("en",{month:"long",year:"numeric"}).format(new Date(viewYear,viewMonth,1));
+    const gregorianMonths = ["ဇန်နဝါရီ","ဖေဖော်ဝါရီ","မတ်","ဧပြီ","မေ","ဇွန်","ဇူလိုင်","ဩဂုတ်","စက်တင်ဘာ","အောက်တိုဘာ","နိုဝင်ဘာ","ဒီဇင်ဘာ"];
+    $("calendarTitle").textContent = gregorianMonths[viewMonth]+" "+digits(viewYear);
     const grid = $("calendarGrid");
     grid.replaceChildren();
     weekdayShort.forEach(day => {
@@ -91,15 +92,15 @@
       const date = new Date(viewYear,viewMonth,day);
       const mm = toMyanmar(date);
       const button = document.createElement("button");
-      button.type = "button"; button.className = "calendar-day"; button.setAttribute("role","gridcell");
+      button.type = "button"; button.className = "calendar-day"; button.setAttribute("role","gridcell"); button.dataset.date = isoDate(date);
       button.setAttribute("aria-label",formatDate(date)+" ၊ "+(months[mm.mm]||"မြန်မာလ")+" "+phases[mm.mp]+" "+mm.fd+" ရက်");
       if (date.toDateString() === selected.toDateString()) button.classList.add("selected");
-      if (date.toDateString() === new Date().toDateString()) button.classList.add("today");
+      if (date.toDateString() === new Date().toDateString()) { button.classList.add("today"); button.setAttribute("aria-current","date"); }
       const gregorian = document.createElement("span"); gregorian.className = "gregorian"; gregorian.textContent = digits(day);
       const myanmar = document.createElement("span"); myanmar.className = "myanmar";
       myanmar.textContent = (months[mm.mm]||"")+" "+phases[mm.mp]+" "+digits(mm.fd);
       button.append(gregorian,myanmar);
-      button.addEventListener("click",() => chooseDate(date));
+      button.addEventListener("click",() => { window.location.href = "day.html?date=" + isoDate(date); });
       grid.append(button);
     }
     $("previousMonth").disabled = viewYear===START_YEAR && viewMonth===0;
@@ -145,5 +146,6 @@
     if (viewMonth===11) { viewYear++; viewMonth=0; } else viewMonth++;
     renderCalendar();
   });
-  chooseDate(selected);
+  const requestedDate = new URLSearchParams(window.location.search).get("date");
+  chooseDate(requestedDate ? (parseDate(requestedDate) || selected) : selected);
 })();

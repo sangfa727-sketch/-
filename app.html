@@ -4,11 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#172b3b">
-  <meta name="description" content="မြန်မာပြက္ခဒိန် App — ၁၉၀၀ မှ ၂၁၂၅ အတွင်း ရက်စွဲရှာဖွေခြင်းနှင့် ကွာဟချိန်တွက်ချက်ခြင်း။">
-  <title>မြန်မာ့ဗေဒင်ပညာ | ပြက္ခဒိန်</title>
+  <meta name="description" content="မြန်မာ့ဗေဒင်ပညာ — မြန်မာပြက္ခဒိန်၊ အင်္ဂဝိဇ္ဇာနှင့် ဂြိုလ်ပရိယာယ်ဆိုင်ရာ သီးသန့်ကိရိယာများ။">
+  <title>မြန်မာ့ဗေဒင်ပညာ | မူလစာမျက်နှာ</title>
   <link rel="stylesheet" href="css/app.css">
-  <script defer src="js/mm-calendar-core.js"></script>
-  <script defer src="js/calendar-app.js"></script>
 </head>
 <body>
   <div class="app-shell">
@@ -17,92 +15,48 @@
         <span class="brand-mark" aria-hidden="true">✦</span>
         <span><strong>မြန်မာ့ဗေဒင်ပညာ</strong><small>MYANMAR ASTROLOGY</small></span>
       </a>
-      <div class="topbar-meta"><span class="status-dot"></span> ပြက္ခဒိန်စနစ်</div>
-      <a class="topbar-meta" href="anga-vijja.html" style="text-decoration:none">အင်္ဂဝိဇ္ဇာ ဗေဒင် →</a>
+      <span class="topbar-meta"><span class="status-dot"></span> ပညာရပ်ဆိုင်ရာ ကိရိယာများ</span>
     </header>
-
     <main>
-      <section class="intro">
-        <div>
-          <p class="eyebrow">CALENDAR · 1900—2125</p>
-          <h1>မြန်မာပြက္ခဒိန်</h1>
-          <p class="intro-copy">အင်္ဂလိပ်ရက်စွဲမှ မြန်မာသက္ကရာဇ်၊ မြန်မာလ၊ လဆန်း/လဆုတ်နှင့် နေ့ရက်တို့ကို ချက်ချင်းတွက်ချက်ပါ။</p>
-        </div>
-        <div class="today-chip"><span>ယနေ့</span><strong id="todayLabel">—</strong></div>
+      <section class="home-hero">
+        <p class="eyebrow">MYANMAR ASTROLOGY KNOWLEDGE</p>
+        <h1>မြန်မာ့ဗေဒင်ပညာ</h1>
+        <p>ပြက္ခဒိန်တွက်ချက်မှုနှင့် ရိုးရာဗေဒင်ပညာဆိုင်ရာ အချက်အလက်များကို သီးခြားကဏ္ဍများအလိုက် လွယ်ကူစွာ အသုံးပြုနိုင်ရန် စုစည်းထားပါသည်။</p>
       </section>
-
-      <section class="feature-section" id="astrology-features" aria-labelledby="astrology-features-title">
+      <section class="feature-section home-features" id="astrology-features" aria-labelledby="astrology-features-title">
         <div class="feature-section-heading">
-          <div><p class="eyebrow">ASTROLOGY FEATURES</p><h2 id="astrology-features-title">ဗေဒင်ပညာဆိုင်ရာ အင်္ဂါရပ်များ</h2></div>
-          <span class="feature-section-note">အင်္ဂဝိဇ္ဇာ</span>
+          <div><p class="eyebrow">TOOLS & KNOWLEDGE</p><h2 id="astrology-features-title">အသုံးပြုလိုသော ကဏ္ဍကို ရွေးချယ်ပါ</h2></div>
+          <span class="feature-section-note">သီးသန့်ကိရိယာများ</span>
         </div>
         <div class="feature-grid">
+          <a class="feature-card calendar-feature" id="feature-calendar" href="calendar.html">
+            <span class="feature-card-index">၀၁ · CALENDAR</span>
+            <span class="feature-card-title">မြန်မာပြက္ခဒိန်</span>
+            <span class="feature-card-description">၁၉၀၀–၂၁၂၅ ရက်စွဲပြောင်းလဲခြင်း၊ မြန်မာရက်စွဲ၊ လစဉ်ပြက္ခဒိန်နှင့် နှစ်/လ/ရက် ကွာဟမှုတွက်ချက်ရန်။</span>
+            <span class="feature-card-link">ပြက္ခဒိန်ကို ဖွင့်ရန် →</span>
+          </a>
           <a class="feature-card" id="feature-pillar-method" href="anga-vijja.html#pillar-method">
-            <span class="feature-card-index">၀၁</span>
+            <span class="feature-card-index">၀၂ · ANGAVIJJA</span>
             <span class="feature-card-title">အင်္ဂဝိဇ္ဇာ တိုင်ထူနည်း</span>
             <span class="feature-card-description">နေ့နံနှင့် အက္ခရာကို ရွေးချယ်ပြီး အခါတိုင်ပုံ၊ အပေါ်/အလယ်/အောက် ကိန်းများကို ကြည့်ရှုရန်။</span>
             <span class="feature-card-link">တိုင်ထူနည်းကို ဖွင့်ရန် →</span>
           </a>
           <a class="feature-card" id="feature-pillar-verses" href="anga-vijja.html#five-pillar-reading">
-            <span class="feature-card-index">၀၂</span>
+            <span class="feature-card-index">၀၃ · VERSES</span>
             <span class="feature-card-title">တိုင်ထူ လင်္ကာ</span>
-            <span class="feature-card-description">၅ တိုင်ထူ အဟောလင်္ကာနှင့် ၃ တိုင်ထူ အဟောလင်္ကာတို့ကို မူရင်းအစဉ်အတိုင်း ဖတ်ရှုရန်။</span>
+            <span class="feature-card-description">၅ တိုင်ထူနှင့် ၃ တိုင်ထူ အဟောလင်္ကာတို့ကို မူရင်းအစဉ်အတိုင်း ဖတ်ရှုရန်။</span>
             <span class="feature-card-link">တိုင်ထူလင်္ကာကို ဖွင့်ရန် →</span>
           </a>
           <a class="feature-card" id="feature-graha-pariyaya" href="graha-pariyaya.html">
-            <span class="feature-card-index">၀၃</span>
+            <span class="feature-card-index">၀၄ · GRAHA</span>
             <span class="feature-card-title">ဂြိုလ်ပရိယာယ်များ</span>
             <span class="feature-card-description">ဂြိုဟ် ၉ ပါး၏ ပရိယာယ်များကို ဂြိုဟ်အလိုက် ရှာဖွေဖတ်ရှုမှတ်သားရန်။</span>
             <span class="feature-card-link">ဂြိုလ်ပရိယာယ်များကို ဖွင့်ရန် →</span>
           </a>
         </div>
       </section>
-
-      <section class="panel search-panel" aria-labelledby="searchTitle">
-        <div class="section-heading"><div><p class="eyebrow">DATE LOOKUP</p><h2 id="searchTitle">ရက်စွဲရှာဖွေရန်</h2></div><span class="range-label">၁၉၀၀ — ၂၁၂၅</span></div>
-        <div class="input-grid">
-          <label class="field"><span>ရက်စွဲရွေးရန်</span><input id="datePicker" type="date" min="1900-01-01" max="2125-12-31"></label>
-          <label class="field"><span>ရက်၊ လ၊ နှစ် ရိုက်ထည့်ရန်</span><input id="dateText" type="text" inputmode="numeric" autocomplete="off" placeholder="28,8,1986 သို့မဟုတ် 28/08/1986"></label>
-          <button id="todayButton" class="secondary-button" type="button">ယနေ့သို့</button>
-        </div>
-        <p id="errorMessage" class="error-message" role="alert" aria-live="polite"></p>
-      </section>
-
-      <section class="result-layout" aria-live="polite">
-        <article class="panel main-result">
-          <div class="section-heading"><div><p class="eyebrow">MYANMAR DATE</p><h2>မြန်မာရက်စွဲ</h2></div><span class="result-icon" aria-hidden="true">☾</span></div>
-          <p id="myanmarFullDate" class="myanmar-full-date">—</p>
-          <div class="result-grid">
-            <div class="result-item"><span>မြန်မာသက္ကရာဇ်</span><strong id="myanmarYear">—</strong></div>
-            <div class="result-item"><span>မြန်မာလ</span><strong id="myanmarMonth">—</strong></div>
-            <div class="result-item"><span>လဆန်း / လဆုတ်</span><strong id="moonPhase">—</strong></div>
-            <div class="result-item"><span>နေ့ရက်</span><strong id="myanmarWeekday">—</strong></div>
-            <div class="result-item"><span>နှစ်အမျိုးအစား</span><strong id="yearType">—</strong></div>
-            <div class="result-item"><span>အင်္ဂလိပ်ရက်စွဲ</span><strong id="gregorianDate">—</strong></div>
-          </div>
-        </article>
-
-        <article class="panel gap-panel">
-          <div class="section-heading"><div><p class="eyebrow">DATE DIFFERENCE</p><h2>ရက်ကွာဟမှု</h2></div><span class="result-icon" aria-hidden="true">↔</span></div>
-          <p class="gap-caption">လက်ရှိနေ့စွဲနှင့် ရှာဖွေထားသောနေ့စွဲ</p>
-          <strong id="dateDifference" class="gap-value">—</strong>
-          <div class="gap-divider"></div>
-          <div class="gap-meta"><span>စုစုပေါင်းရက်</span><strong id="totalDays">—</strong></div>
-          <div class="gap-meta"><span>အချိန်ဦးတည်ချက်</span><strong id="direction">—</strong></div>
-          <p class="method-note">နှစ်၊ လ၊ ရက် ကွာဟမှုကို Gregorian ပြက္ခဒိန်အတိုင်း တွက်ချက်ထားသည်။</p>
-        </article>
-      </section>
-
-      <section class="panel calendar-panel" aria-labelledby="calendarTitle">
-        <div class="section-heading calendar-heading">
-          <div><p class="eyebrow">MONTH VIEW</p><h2 id="calendarTitle">—</h2></div>
-          <div class="calendar-controls"><button id="previousMonth" type="button" aria-label="ယခင်လသို့">‹</button><button id="nextMonth" type="button" aria-label="နောက်လသို့">›</button></div>
-        </div>
-        <div class="calendar-grid" id="calendarGrid" role="grid" aria-label="Gregorian calendar"></div>
-        <p class="calendar-hint">ပြက္ခဒိန်ရက်တစ်ရက်ကို ရွေးချယ်လျှင် မြန်မာရက်စွဲနှင့် ကွာဟချိန်ကို ပြန်လည်တွက်ချက်ပေးမည်။</p>
-      </section>
     </main>
-    <footer>တွက်ချက်မှုအခြေခံ — Myanmar Calendar Core · Julian Day Number</footer>
+    <footer>မြန်မာ့ဗေဒင်ပညာ · ရိုးရာအချက်အလက်များကို စနစ်တကျ စုစည်းခြင်း</footer>
   </div>
 </body>
 </html>

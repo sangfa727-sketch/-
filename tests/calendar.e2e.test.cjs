@@ -10,6 +10,9 @@ const assets = {
   '/calendar-100-years.html': ['calendar-100-years.html', 'text/html; charset=utf-8'],
   '/js/mm-calendar-core.js': ['js/mm-calendar-core.js', 'text/javascript; charset=utf-8'],
   '/app.html': ['app.html', 'text/html; charset=utf-8'],
+  '/calendar.html': ['calendar.html', 'text/html; charset=utf-8'],
+  '/day.html': ['day.html', 'text/html; charset=utf-8'],
+  '/js/day-astrology.js': ['js/day-astrology.js', 'text/javascript; charset=utf-8'],
   '/css/app.css': ['css/app.css', 'text/css; charset=utf-8'],
   '/js/calendar-app.js': ['js/calendar-app.js', 'text/javascript; charset=utf-8'],
   '/graha-nine.html': ['graha-nine.html', 'text/html; charset=utf-8'],
@@ -76,7 +79,12 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(await page.locator('#calendarGrid .day').count() >= 28);
 
     await page.goto('http://127.0.0.1:4173/app.html');
-    assert.equal(await page.locator('#astrology-features .feature-card').count(), 3);
+    assert.equal(await page.locator('#astrology-features .feature-card').count(), 4);
+    assert.equal(await page.locator('#feature-calendar').getAttribute('href'), 'calendar.html');
+    await page.locator('#feature-calendar').click();
+    assert.ok(page.url().endsWith('/calendar.html'));
+    assert.match(await page.locator('#calendarTitle').textContent(), /နိုဝင်ဘာ ၂၀၂၆/);
+    await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-pillar-method').getAttribute('href'), 'anga-vijja.html#pillar-method');
     assert.equal(await page.locator('#feature-pillar-verses').getAttribute('href'), 'anga-vijja.html#five-pillar-reading');
     await page.locator('#feature-pillar-method').click();
@@ -113,7 +121,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       document: document.documentElement.scrollWidth,
     }));
     assert.ok(pariyayaDimensions.document <= pariyayaDimensions.viewport, `pariyaya mobile horizontal overflow: ${JSON.stringify(pariyayaDimensions)}`);
-    await page.goto('http://127.0.0.1:4173/app.html');
+    await page.goto('http://127.0.0.1:4173/calendar.html');
     await page.locator('#datePicker').fill('1986-08-28');
     assert.match(await page.locator('#myanmarFullDate').textContent(), /၁၃၄၈ ခု/);
     assert.match(await page.locator('#myanmarFullDate').textContent(), /ဝါခေါင်/);
@@ -126,13 +134,54 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#datePicker').inputValue(), '');
     assert.match(await page.locator('#errorMessage').textContent(), /ရက်စွဲမမှန်ကန်ပါ/);
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('http://127.0.0.1:4173/app.html');
+    await page.goto('http://127.0.0.1:4173/calendar.html');
     const appDimensions = await page.evaluate(() => ({
       viewport: document.documentElement.clientWidth,
       document: document.documentElement.scrollWidth,
     }));
     assert.ok(appDimensions.document <= appDimensions.viewport, `app mobile horizontal overflow: ${JSON.stringify(appDimensions)}`);
     assert.ok(await page.locator('#calendarGrid .calendar-day').count() >= 28);
+    assert.equal(await page.locator('#calendarGrid .calendar-day[aria-current="date"]').count(), 1);
+    assert.deepEqual(await page.locator('#calendarGrid .weekday').allTextContents(), ['နွေ','လာ','အင်္','ဗုဒ္ဓ','ကြာ','သော','စနေ']);
+    await page.locator('#dateText').fill('၂၈,၈,၁၉၈၆');
+    assert.equal(await page.locator('#myanmarWeekday').textContent(), 'ကြာသပတေး');
+    assert.equal(await page.locator('#calendarGrid .calendar-day[data-date="1986-08-28"]').count(), 1);
+    await page.locator('#calendarGrid .calendar-day[data-date="1986-08-28"]').click();
+    assert.ok(page.url().endsWith('/day.html?date=1986-08-28'));
+    assert.equal(await page.locator('#dayWeekday').textContent(), 'ကြာသပတေး နေ့');
+    assert.equal(await page.locator('#periodGrid .period-card').count(), 8);
+    assert.deepEqual(await page.locator('#periodGrid .period-card').evaluateAll(cards => cards.map(card => Number(card.dataset.ownerIndex))), [4,2,0,5,3,1,6,4]);
+    assert.deepEqual(await page.locator('#periodGrid .period-pillar-center strong').allTextContents(), ['၅','၃','၁','၆','၄','၂','၀','၅']);
+    assert.equal(await page.locator('#periodGrid .period-card').first().locator('.period-time').textContent(), 'နံနက် ၆:၀၀ မှ နံနက် ၇:၃၀');
+    assert.equal(await page.locator('#periodGrid .period-card').last().locator('.period-time').textContent(), 'ညနေ ၄:၃၀ မှ ညနေ ၆:၀၀');
+    const weekdaySamples = [
+      ['2026-11-01',0],['2026-11-02',1],['2026-11-03',2],['2026-11-04',3],
+      ['2026-11-05',4],['2026-11-06',5],['2026-11-07',6],
+    ];
+    for (const [sampleDate, weekdayIndex] of weekdaySamples) {
+      await page.goto('http://127.0.0.1:4173/day.html?date=' + sampleDate);
+      const owners = await page.locator('#periodGrid .period-card').evaluateAll(cards => cards.map(card => Number(card.dataset.ownerIndex)));
+      assert.equal(owners.length, 8);
+      assert.equal(owners[0], weekdayIndex, sampleDate + ' must start with its own weekday');
+      assert.equal(owners[7], weekdayIndex, sampleDate + ' must end with its own weekday');
+      assert.equal(owners[1], (weekdayIndex + 5) % 7, sampleDate + ' inclusive sixth weekday must own period 2');
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('http://127.0.0.1:4173/day.html?date=2026-11-05');
+    const dayDimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      document: document.documentElement.scrollWidth,
+    }));
+    assert.ok(dayDimensions.document <= dayDimensions.viewport, `day page mobile horizontal overflow: ${JSON.stringify(dayDimensions)}`);
+    assert.equal(await page.locator('#periodGrid .period-card').count(), 8);
+    await page.goto('http://127.0.0.1:4173/day.html?date=1899-12-31');
+    assert.equal(await page.locator('#dayError').isVisible(), true);
+    assert.equal(await page.locator('#periodGrid .period-card').count(), 0);
+    await page.goto('http://127.0.0.1:4173/day.html?date=1986-08-28');
+    await page.locator('#calendarBack').click();
+    assert.ok(page.url().includes('/calendar.html?date=1986-08-28'));
+    assert.match(await page.locator('#calendarTitle').textContent(), /ဩဂုတ် ၁၉၈၆/);
+    assert.equal(await page.locator('#calendarGrid .calendar-day.selected').getAttribute('data-date'), '1986-08-28');
 
     // Static astrology reference: verify the mnemonic tables, corrected wording,
     // the two new reference sections, and desktop/mobile table containment.

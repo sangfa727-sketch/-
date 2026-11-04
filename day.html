@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="my">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172b3b">
+  <meta name="description" content="ရွေးချယ်ထားသောနေ့အတွက် အင်္ဂဝိဇ္ဇာ အခါ ၈ ပါးနှင့် အချိန်အလိုက် နေ့နံပိုင်ဆိုင်မှု။">
+  <title>နေ့စွဲအသေးစိတ် | အင်္ဂဝိဇ္ဇာ အခါ ၈ ပါး</title>
+  <link rel="stylesheet" href="css/app.css">
+  <script defer src="js/mm-calendar-core.js"></script>
+  <script defer src="js/day-astrology.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="app.html" aria-label="မြန်မာ့ဗေဒင်ပညာ မူလစာမျက်နှာ">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span><strong>မြန်မာ့ဗေဒင်ပညာ</strong><small>MYANMAR ASTROLOGY</small></span>
+      </a>
+      <nav class="topbar-nav" aria-label="အဓိကစာမျက်နှာများ">
+        <a id="calendarBack" href="calendar.html">ပြက္ခဒိန်သို့</a>
+        <a href="anga-vijja.html">အင်္ဂဝိဇ္ဇာ</a>
+      </nav>
+    </header>
+    <main>
+      <section class="day-hero">
+        <p class="eyebrow">SELECTED DAY · DAILY ANGAVIJA</p>
+        <h1 id="dayTitle">နေ့စွဲအသေးစိတ်</h1>
+        <p id="dayMyanmarDate" class="day-myanmar-date">—</p>
+        <p id="dayWeekday" class="day-weekday">—</p>
+      </section>
+      <section class="panel day-period-panel" aria-labelledby="periodTitle">
+        <div class="section-heading">
+          <div><p class="eyebrow">EIGHT DAILY PERIODS</p><h2 id="periodTitle">အင်္ဂဝိဇ္ဇာ အခါ ၈ ပါး</h2></div>
+          <span class="range-label">၀၆:၀၀ — ၁၈:၀၀</span>
+        </div>
+        <p class="day-period-intro">နေ့တစ်နေ့တာကို တစ်နာရီခွဲစီ အချိန် ၈ ပိုင်းခွဲထားပြီး အခါတစ်ခုစီတွင် သက်ဆိုင်ရာနေ့နံ၏ အင်္ဂဝိဇ္ဇာတိုင် တစ်တိုင်ကို ဖော်ပြထားသည်။</p>
+        <div id="periodGrid" class="period-grid" aria-live="polite"></div>
+        <p class="method-note">နေ့နံအစဉ် — တနင်္ဂနွေမှ စနေအထိ။ နောက်အခါတစ်ခုစီတွင် မူလနေ့နံမှ စတင်ရေတွက်၍ ၆ ခုမြောက်နေ့နံကို ရွေးချယ်ထားသည်။ အခါ ၈ တွင် မူလနေ့နံသို့ ပြန်ရောက်သည်။</p>
+      </section>
+      <p id="dayError" class="day-error" role="alert" hidden>ရက်စွဲမမှန်ကန်ပါ။ Calendar မှ ရက်စွဲတစ်ရက်ကို ရွေးချယ်ပါ။</p>
+    </main>
+    <footer>မြန်မာ့ဗေဒင်ပညာ · ရွေးချယ်ထားသောနေ့အတွက် အင်္ဂဝိဇ္ဇာ အခါ ၈ ပါး</footer>
+  </div>
+</body>
+</html>
