@@ -201,6 +201,16 @@ def main():
             return fail("A source pariyaya entry was changed or omitted")
 
     print("PASS: verse-only archive is identical on both graha pages")
+    # The pariyaya profiles now keep color associations only in the dedicated comparison table.
+    profile_color_terms = ("အရောင်", "ရောင်စုံ", "အနီရောင်", "အစိမ်းရောင်", "အဝါရောင်", "အပြာရောင်", "အနက်ရောင်", "ညစ်ပုပ်")
+    planet_cards = re.findall(r'<article class="planet-card".*?</article>', pariyaya, re.DOTALL)
+    if any(any(term in card for term in profile_color_terms) for card in planet_cards):
+        return fail("Color associations must be removed from graha-pariyaya planet profiles")
+    appearance = re.search(r'<section aria-labelledby="appearance-heading">(.*?)</section>', source, re.DOTALL)
+    if not appearance or "U AYE MINN (2021)" not in appearance.group(1):
+        return fail("Side-by-side current and U AYE MINN (2021) color comparison is missing")
+    if appearance.group(1).count("<tr>") != 10:
+        return fail("Expected nine graha color comparison rows")
     print("PASS: nine pariyaya cards, original wording, and explicit Ketu gap")
     return 0
 
