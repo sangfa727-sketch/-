@@ -10,6 +10,7 @@ const assets = {
   '/calendar-100-years.html': ['calendar-100-years.html', 'text/html; charset=utf-8'],
   '/js/mm-calendar-core.js': ['js/mm-calendar-core.js', 'text/javascript; charset=utf-8'],
   '/app.html': ['app.html', 'text/html; charset=utf-8'],
+  '/calendar.html': ['calendar.html', 'text/html; charset=utf-8'],
   '/css/app.css': ['css/app.css', 'text/css; charset=utf-8'],
   '/js/calendar-app.js': ['js/calendar-app.js', 'text/javascript; charset=utf-8'],
   '/graha-nine.html': ['graha-nine.html', 'text/html; charset=utf-8'],
@@ -76,7 +77,8 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(await page.locator('#calendarGrid .day').count() >= 28);
 
     await page.goto('http://127.0.0.1:4173/app.html');
-    assert.equal(await page.locator('#astrology-features .feature-card').count(), 3);
+    assert.equal(await page.locator('#astrology-features .feature-card').count(), 4);
+    assert.equal(await page.locator('#feature-calendar').getAttribute('href'), 'calendar.html');
     assert.equal(await page.locator('#feature-pillar-method').getAttribute('href'), 'anga-vijja.html#pillar-method');
     assert.equal(await page.locator('#feature-pillar-verses').getAttribute('href'), 'anga-vijja.html#five-pillar-reading');
     await page.locator('#feature-pillar-method').click();
@@ -113,7 +115,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       document: document.documentElement.scrollWidth,
     }));
     assert.ok(pariyayaDimensions.document <= pariyayaDimensions.viewport, `pariyaya mobile horizontal overflow: ${JSON.stringify(pariyayaDimensions)}`);
-    await page.goto('http://127.0.0.1:4173/app.html');
+    await page.goto('http://127.0.0.1:4173/calendar.html');
     await page.locator('#datePicker').fill('1986-08-28');
     assert.match(await page.locator('#myanmarFullDate').textContent(), /၁၃၄၈ ခု/);
     assert.match(await page.locator('#myanmarFullDate').textContent(), /ဝါခေါင်/);
@@ -126,13 +128,16 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#datePicker').inputValue(), '');
     assert.match(await page.locator('#errorMessage').textContent(), /ရက်စွဲမမှန်ကန်ပါ/);
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('http://127.0.0.1:4173/app.html');
+    await page.goto('http://127.0.0.1:4173/calendar.html');
     const appDimensions = await page.evaluate(() => ({
       viewport: document.documentElement.clientWidth,
       document: document.documentElement.scrollWidth,
     }));
     assert.ok(appDimensions.document <= appDimensions.viewport, `app mobile horizontal overflow: ${JSON.stringify(appDimensions)}`);
     assert.ok(await page.locator('#calendarGrid .calendar-day').count() >= 28);
+    assert.deepEqual(await page.locator('#calendarGrid .weekday').allTextContents(), ['နွေ','လာ','အင်္','ဗုဒ္ဓ','ကြာ','သော','စနေ']);
+    await page.locator('#dateText').fill('၂၈,၈,၁၉၈၆');
+    assert.equal(await page.locator('#myanmarWeekday').textContent(), 'ကြာသပတေး');
 
     // Static astrology reference: verify the mnemonic tables, corrected wording,
     // the two new reference sections, and desktop/mobile table containment.
