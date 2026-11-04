@@ -66,6 +66,23 @@ test('historical and future date lookup plus date-gap UI are present', () => {
   assert.match(html, /id="calendarGrid"/);
 });
 
+test('calendar date gap reports years, months, days and correct direction', () => {
+  const match = html.match(/<script>\\s*([\\s\\S]*?)\\s*<\\/script>/);
+  assert.ok(match, 'inline application script not found');
+  const start = match[1].indexOf('function dateOnlyUTC');
+  const end = match[1].indexOf('function parseFreeDate');
+  assert.ok(start >= 0 && end > start, 'date gap helpers not found');
+  const helperSandbox = {};
+  vm.runInNewContext(match[1].slice(start, end) + '; this.calendarGap = calendarGap;', helperSandbox);
+  const past = helperSandbox.calendarGap(new Date(2026, 10, 4), new Date(1986, 7, 28));
+  assert.equal(past.years, 40);
+  assert.equal(past.months, 2);
+  assert.equal(past.days, 7);
+  assert.equal(past.direction, 'ရှာဖွေသည့်နေ့သည် အတိတ်');
+  const future = helperSandbox.calendarGap(new Date(2026, 10, 4), new Date(2030, 11, 12));
+  assert.equal(future.direction, 'ရှာဖွေသည့်နေ့သည် အနာဂတ်');
+});
+
 test('inline browser script has valid JavaScript syntax', () => {
   const match = html.match(/<script>\s*([\s\S]*?)\s*<\/script>/);
   assert.ok(match, 'inline application script not found');
