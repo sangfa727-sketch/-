@@ -31,10 +31,12 @@ def fail(message):
 def main():
     html_path=Path("day.html")
     js_path=Path("js/day-astrology.js")
-    if not html_path.is_file() or not js_path.is_file():
-        return fail("Missing day.html or js/day-astrology.js")
+    css_path=Path("css/app.css")
+    if not html_path.is_file() or not js_path.is_file() or not css_path.is_file():
+        return fail("Missing day.html, js/day-astrology.js, or css/app.css")
     html=html_path.read_text(encoding="utf-8")
     js=js_path.read_text(encoding="utf-8")
+    css=css_path.read_text(encoding="utf-8")
     parser=Audit()
     parser.feed(html)
     parser.close()
@@ -50,10 +52,17 @@ def main():
             return fail(f"Missing eight-period algorithm invariant: {required}")
     if "1900" not in js or "2125" not in js:
         return fail("Date range validation must remain 1900–2125")
+    if "အပေါ်မှအောက်သို့ ဒေါင်လိုက်" not in html:
+        return fail("Day page must explicitly identify the pillar as vertically stacked")
+    if not re.search(r"\.period-pillar\s*\{[^}]*display\s*:\s*flex[^}]*flex-direction\s*:\s*column", css):
+        return fail("Daily Angavijja pillar must render as a vertical column")
+    if ".period-pillar-cell" not in css or ".period-pillar-center" not in css:
+        return fail("Vertical pillar must style six outer values and the central owner value")
     if "myanmar" not in js.lower() or "j2m(jdn)" not in js:
         return fail("Myanmar date details must be rendered from calendar core")
     print("PASS: selected-day HTML structure and unique IDs")
     print("PASS: 8 x 90-minute periods, inclusive six-count rotation, and 7-number pillar")
+    print("PASS: each period pillar is explicitly stacked vertically with the owner number centered")
     print("PASS: date bounds and Myanmar date conversion")
     return 0
 
