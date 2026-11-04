@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "graha-nine.html"
+      - "graha-pariyaya.html"
+      - "graha-pariyaya.html"
       - "anga-vijja.html"
       - "app.html"
       - "scripts/validate-anga-vijja.py"
