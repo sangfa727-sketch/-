@@ -168,7 +168,8 @@ const groups=[
 ["ပ","ဖ","ဗ","ဘ","မ"],["သ","ဟ"],["ဋ","ဌ","ဍ","ဎ","ဏ","တ","ထ","ဒ","ဓ","န"]];
 // အင်္ဂဝိဇ္ဇာတိုင် အခြေခံဖော်မြူလာ: P(d) = (SundayReference[i] + d) mod 7။
 // SundayReference = [5,2,6,1,4,0,3]၊ d = တနင်္ဂနွေ ၀ မှ စနေ ၆။
-// အစဉ် = အပေါ် ၃ လုံး၊ အလယ်တည်ကိန်း၊ အောက် ၃ လုံး။\nconst base=[5,2,6,1,4,0,3];
+// အစဉ် = အပေါ် ၃ လုံး၊ အလယ်တည်ကိန်း၊ အောက် ၃ လုံး။
+const base=[5,2,6,1,4,0,3];
 const myDigits=n=>String(n).replace(/\d/g,d=>"၀၁၂၃၄၅၆၇၈၉"[Number(d)]);
 const weekday=document.getElementById("weekday"),letter=document.getElementById("letter");
 const chart=document.getElementById("chart");
