@@ -36,7 +36,8 @@ button:focus-visible,input:focus-visible{outline:3px solid #82b5e8;outline-offse
 <section class="panel" aria-labelledby="convert-heading">
 <h2 id="convert-heading">ရက်စွဲပြောင်းလဲရန်</h2>
 <div class="controls">
-<div class="field"><label for="dateInput">English Date</label><input id="dateInput" type="date" min="2026-01-01" max="2125-12-31" value="2026-11-04"></div>
+<div class="field"><label for="dateInput">English Date Picker</label><input id="dateInput" type="date" min="1900-01-01" max="2125-12-31"></div>
+<div class="field"><label for="dateText">ရက်၊ လ၊ နှစ် ရိုက်ထည့်ရန် (ဥပမာ 28,8,1986)</label><input id="dateText" type="text" inputmode="numeric" autocomplete="off" placeholder="28,8,1986 သို့မဟုတ် 28/08/1986"></div>
 <div class="field"><label for="yearSelect">နှစ် ၁၀၀ အတွင်း နှစ်ရွေးရန်</label><select id="yearSelect" aria-label="Gregorian year"></select></div>
 <button id="todayBtn" type="button">ယနေ့ရက်စွဲ</button>
 </div>
@@ -52,6 +53,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #82b5e8;outline-offse
 <article><small>မြန်မာနှစ်အမျိုးအစား</small><strong id="yearType">—</strong></article>
 <article><small>ရက်စွဲအပြည့်အစုံ</small><strong id="fullDate">—</strong></article>
 </div>
+<section class="panel" aria-live="polite" aria-labelledby="gap-heading"><h2 id="gap-heading">လက်ရှိနေ့စွဲနှင့် ရှာဖွေသည့်နေ့စွဲ ကွာဟမှု</h2><div class="result"><article><small>လက်ရှိနေ့စွဲ</small><strong id="currentDate">—</strong></article><article><small>ရှာဖွေသည့်နေ့စွဲ</small><strong id="searchedDate">—</strong></article><article><small>ကွာဟချိန်</small><strong id="dateGap" class="big">—</strong></article><article><small>ကွာဟရက် စုစုပေါင်း</small><strong id="totalGapDays">—</strong></article><article><small>အချိန်ဦးတည်ချက်</small><strong id="gapDirection">—</strong></article></div><p class="note">နှစ်၊ လ၊ ရက်ကို Gregorian ပြက္ခဒိန်အတိုင်း ခွဲတွက်ထားသည်။</p></section>
 <p class="note">တွက်ချက်မှုအခြေခံ — Julian Day Number နှင့် မြန်မာပြက္ခဒိန်၏ ဝါထပ်/ဝါကြီး စည်းမျဉ်းများ။ ရက်စွဲတစ်ရက်ချင်းစီကို Gregorian Julian Day Number အဖြစ်ပြောင်းပြီး မြန်မာပြက္ခဒိန် algorithm ဖြင့်တွက်ချက်ထားသည်။</p>
 </section>
 <section class="panel">
@@ -64,19 +66,25 @@ button:focus-visible,input:focus-visible{outline:3px solid #82b5e8;outline-offse
 <script src="js/mm-calendar-core.js"></script>
 <script>
 "use strict";
-const START_YEAR=2026,END_YEAR=2125;
+const START_YEAR=1900,END_YEAR=2125;
 const months={0:"ပထမဝါဆို",1:"တန်ခူး",2:"ကဆုန်",3:"နယုန်",4:"ဒုတိယဝါဆို",5:"ဝါခေါင်",6:"တော်သလင်း",7:"သီတင်းကျွတ်",8:"တန်ဆောင်မုန်း",9:"နတ်တော်",10:"ပြာသို",11:"တပို့တွဲ",12:"တပေါင်း",13:"နှောင်းတန်ခူး",14:"နှောင်းကဆုန်"};
 const phases={0:"လဆန်း",1:"လပြည့်",2:"လဆုတ်",3:"လကွယ်"};
 const weekdays=["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသပတေး","သောကြာ","စနေ"];
 const digits=s=>String(s).replace(/[0-9]/g,d=>"၀၁၂၃၄၅၆၇၈၉"[Number(d)]);
 const $=id=>document.getElementById(id);
-let selected=new Date(2026,10,4),viewYear=2026,viewMonth=10;
+const today=new Date();
+let selected=new Date(today.getFullYear(),today.getMonth(),today.getDate()),viewYear=selected.getFullYear(),viewMonth=selected.getMonth();
 const yearSelect=$("yearSelect");
 for(let y=START_YEAR;y<=END_YEAR;y++){const o=document.createElement("option");o.value=y;o.textContent=y;yearSelect.append(o);}
 function toMyanmar(y,m,d){
  const jdn=w2j(y,m,d,1);const x=j2m(jdn);
  return {...x,jdn};
 }
+function dateOnlyUTC(date){return Date.UTC(date.getFullYear(),date.getMonth(),date.getDate());}
+function formatGregorian(date){return digits(date.getFullYear())+"-"+digits(String(date.getMonth()+1).padStart(2,"0"))+"-"+digits(String(date.getDate()).padStart(2,"0"));}
+function calendarGap(a,b){const earlier=dateOnlyUTC(a)<=dateOnlyUTC(b)?a:b,later=earlier===a?b:a;let years=later.getFullYear()-earlier.getFullYear(),months=later.getMonth()-earlier.getMonth(),days=later.getDate()-earlier.getDate();if(days<0){months--;days+=new Date(Date.UTC(later.getFullYear(),later.getMonth(),0)).getUTCDate();}if(months<0){years--;months+=12;}return {years,months,days,total:Math.abs(Math.round((dateOnlyUTC(b)-dateOnlyUTC(a))/86400000)),direction:dateOnlyUTC(a)===dateOnlyUTC(b)?"တူညီသောနေ့":dateOnlyUTC(a)<dateOnlyUTC(b)?"ရှာဖွေသည့်နေ့သည် အတိတ်":"ရှာဖွေသည့်နေ့သည် အနာဂတ်"};}
+function updateGap(date){const now=new Date();now.setHours(0,0,0,0);$("currentDate").textContent=formatGregorian(now);$("searchedDate").textContent=formatGregorian(date);const g=calendarGap(now,date);$("dateGap").textContent=digits(g.years)+" နှစ် "+digits(g.months)+" လ "+digits(g.days)+" ရက်";$("totalGapDays").textContent=digits(g.total)+" ရက်";$("gapDirection").textContent=g.direction;}
+function parseFreeDate(value){const v=value.trim();let m;if((m=v.match(/^(\d{1,2})\s*[,/.-]\s*(\d{1,2})\s*[,/.-]\s*(\d{4})$/)))return {y:+m[3],m:+m[2],d:+m[1]};if((m=v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)))return {y:+m[1],m:+m[2],d:+m[3]};return null;}
 function updateResult(date){
  const y=date.getFullYear(),m=date.getMonth()+1,d=date.getDate();
  const x=toMyanmar(y,m,d);
@@ -85,7 +93,7 @@ function updateResult(date){
  $("myDay").textContent=phases[x.mp]+" "+digits(x.fd)+" ရက်";
  $("myWeekday").textContent=weekdays[x.wd===0?6:x.wd-1]||"—";
  $("yearType").textContent=["ရိုးရိုးနှစ်","ဝါငယ်ထပ်နှစ်","ဝါကြီးထပ်နှစ်"][x.myt]||"—";
- $("fullDate").textContent=digits(y)+"-"+digits(String(m).padStart(2,"0"))+"-"+digits(String(d).padStart(2,"0"));
+ $("fullDate").textContent=digits(y)+"-"+digits(String(m).padStart(2,"0"))+"-"+digits(String(d).padStart(2,"0"));updateGap(date);
 }
 function renderCalendar(){
  $("calendarTitle").textContent=new Intl.DateTimeFormat("en",{month:"long",year:"numeric"}).format(new Date(viewYear,viewMonth,1));
@@ -109,20 +117,21 @@ function chooseDate(date){
  selected=new Date(date.getFullYear(),date.getMonth(),date.getDate());
  viewYear=selected.getFullYear();viewMonth=selected.getMonth();
  $("dateInput").value=[viewYear,String(viewMonth+1).padStart(2,"0"),String(selected.getDate()).padStart(2,"0")].join("-");
- yearSelect.value=viewYear;$("error").textContent="";
+ yearSelect.value=viewYear;$("dateText").value=[selected.getDate(),selected.getMonth()+1,selected.getFullYear()].join(",");$("error").textContent="";
  updateResult(selected);renderCalendar();
 }
+$("dateText").addEventListener("input",()=>{const p=parseFreeDate($("dateText").value);if(!p){$("error").textContent="ရက်၊ လ၊ နှစ်ကို 28,8,1986 ပုံစံဖြင့် ထည့်ပါ။";return;}if(p.y<START_YEAR||p.y>END_YEAR){$("error").textContent="ရှာဖွေနိုင်သောကာလမှာ 1900 မှ 2125 အထိဖြစ်သည်။";return;}const d=new Date(p.y,p.m-1,p.d);if(p.m<1||p.m>12||p.d<1||d.getFullYear()!==p.y||d.getMonth()!==p.m-1||d.getDate()!==p.d){$("error").textContent="ရက်စွဲမမှန်ကန်ပါ။";return;}chooseDate(d);});
 $("dateInput").addEventListener("change",()=>{
  if(!$("dateInput").value)return;
  const [y,m,d]=$("dateInput").value.split("-").map(Number);
- if(y<START_YEAR||y>END_YEAR){$("error").textContent="ရွေးချယ်နိုင်သောကာလမှာ 2026 မှ 2125 အထိဖြစ်သည်။";return;}
+ if(y<START_YEAR||y>END_YEAR){$("error").textContent="ရှာဖွေနိုင်သောကာလမှာ 1900 မှ 2125 အထိဖြစ်သည်။";return;}
  const date=new Date(y,m-1,d);if(date.getFullYear()!==y||date.getMonth()!==m-1||date.getDate()!==d){$("error").textContent="ရက်စွဲမမှန်ကန်ပါ။";return;}
  chooseDate(date);
 });
 yearSelect.addEventListener("change",()=>chooseDate(new Date(Number(yearSelect.value),viewMonth,Math.min(selected.getDate(),new Date(Number(yearSelect.value),viewMonth+1,0).getDate()))));
 $("prevMonth").addEventListener("click",()=>{if(viewMonth===0){viewYear--;viewMonth=11;}else viewMonth--;renderCalendar();});
 $("nextMonth").addEventListener("click",()=>{if(viewMonth===11){viewYear++;viewMonth=0;}else viewMonth++;renderCalendar();});
-$("todayBtn").addEventListener("click",()=>{const now=new Date();if(now.getFullYear()<START_YEAR||now.getFullYear()>END_YEAR){$("error").textContent="ယနေ့ရက်စွဲသည် ဤနှစ် ၁၀၀ ကာလအတွင်း မပါဝင်ပါ။";return;}chooseDate(now);});
+$("todayBtn").addEventListener("click",()=>{const now=new Date();if(now.getFullYear()<START_YEAR||now.getFullYear()>END_YEAR){$("error").textContent="ယနေ့ရက်စွဲသည် ရှာဖွေနိုင်သောကာလအတွင်း မပါဝင်ပါ။";return;}chooseDate(now);});
 chooseDate(selected);
 </script>
 </body></html>
