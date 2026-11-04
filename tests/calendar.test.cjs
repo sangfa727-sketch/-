@@ -67,7 +67,7 @@ test('historical and future date lookup plus date-gap UI are present', () => {
 });
 
 test('calendar date gap reports years, months, days and correct direction', () => {
-  const match = html.match(/<script>\\s*([\\s\\S]*?)\\s*<\\/script>/);
+  const match = html.match(/<script>\s*([\s\S]*?)\s*<\/script>/);
   assert.ok(match, 'inline application script not found');
   const start = match[1].indexOf('function dateOnlyUTC');
   const end = match[1].indexOf('function parseFreeDate');
