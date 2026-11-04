@@ -104,6 +104,11 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       'တနင်္ဂနွေ','တနင်္လာ','အင်္ဂါ','ဗုဒ္ဓဟူး','ကြာသာပတေး','သောကြာ','စနေ','ရာဟု'
     ]);
     await page.goto('http://127.0.0.1:4173/graha-pariyaya.html');
+    const pariyayaLankaSection = page.locator('#lanka-verses');
+    assert.equal(await pariyayaLankaSection.count(), 1);
+    assert.deepEqual((await pariyayaLankaSection.locator('.lanka-verse').allTextContents()).map(text => text.trim()), expectedLankaVerses);
+    assert.equal(await pariyayaLankaSection.locator('h1,h2,h3,h4,h5,h6,table').count(), 0);
+    assert.doesNotMatch(await pariyayaLankaSection.innerText(), /[၀-၉0-9]/);
     const correctedPlanetOrder = await page.locator('#planetGrid .planet-card').evaluateAll(cards =>
       cards.map(card => card.querySelector('h2').textContent.trim())
     );
@@ -124,31 +129,31 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       assert.equal(item.terms,sourceTermsByPlanet[sourceName],
         item.planet+' pariyaya terms must match the original graha-nine HTML verbatim');
     }
-    assert.equal(await page.locator('#graha-comparison-heading').count(), 1);
-    assert.equal(await page.locator('#people-body-heading').count(), 1);
-    assert.equal(await page.locator('#akchara-linga-heading').count(), 1);
-    assert.equal(await page.locator('section[aria-labelledby="akchara-linga-heading"] h3').count(), 7);
-    const genderSection = page.locator('section[aria-labelledby="akchara-linga-heading"]');
-    // Bind the gender table to its explicit heading, not the first table in a section.
-    const genderHeading = genderSection.getByRole('heading', {
-      name: '၁။ ကျား / မ ဂြိုဟ် ခွဲခြားနည်း', exact: true
-    });
-    const genderTable = genderHeading.locator('xpath=following-sibling::div[contains(@class,"table-wrap")][1]//table');
-    const genderRows = genderTable.locator('tbody tr');
-    assert.equal(await genderRows.count(), 2, 'gender mnemonic table must contain exactly two rows');
-    const genderHeaders = await genderTable.locator('thead th').allTextContents();
-    const numberColumn = genderHeaders.findIndex(value => value.trim() === 'ကိန်းဂဏန်း');
-    assert.ok(numberColumn >= 0, 'gender table must expose a number column');
-    const maleGenderRow = genderRows.filter({ hasText: 'ယောက်ျားဂြိုဟ်' }).first();
-    const femaleGenderRow = genderRows.filter({ hasText: 'မိန်းမဂြိုဟ်' }).first();
-    assert.equal(await maleGenderRow.count(), 1, 'male gender mnemonic row must exist exactly once');
-    assert.equal(await femaleGenderRow.count(), 1, 'female gender mnemonic row must exist exactly once');
-    const maleGenderNumber = (await maleGenderRow.locator('td').nth(numberColumn).textContent()).replace(/\\s+/g, '');
-    const femaleGenderNumber = (await femaleGenderRow.locator('td').nth(numberColumn).textContent()).replace(/\\s+/g, '');
-    assert.match(maleGenderNumber, /၁၊၃၊၄၊၅/,
-      'male graha mnemonic must map to 1, 3, 4, 5');
-    assert.match(femaleGenderNumber, /၂၊၆၊၀၊၈/,
-      'female graha mnemonic must map to 2, 6, 0, 8');
+    const expectedLankaVerses = [
+      "အောင်၊ ဆု၊ လည်း၊ ပွား — ဂြိုလ် ယောင်္ကျား",
+      "ခြေ၊ သွား၊ ထိန်း၊ ရ — ဂြိုလ်မိန်းမ",
+      "အုတ် ခြစ် စံ ထား မှန်စကား",
+      "ကျွန် မ သား စကားမမှန်ရာ",
+      "အောင် ကျော် ဇံ လောင်း မဝယ်ကောင်း",
+      "လွမ်း ပု သာ ဝယ်ပါလေ",
+      "အင်တူလက်မျှ နဂိုရ်ပ",
+      "ခြေစွပ်သိမ်းယူ ယာယီယူ",
+      "အောင်ပ ကုလား ဆွေသား နှောင်ရင်း",
+      "ဦးသာ စိန်ပန်း ဒန်းလှ ကိုရှာ",
+      "ဦးညို ခေမာ သုတ ဝေရီ",
+      "ဓမ္မာ သောက အင်းဝ ရာဇာ",
+      "ကြိုင်း လောင်း မြဲ သို",
+      "အ စ နံ ရောင်း",
+      "အန္တော ဂဗ္ဘေ စရေ ဝံသေ",
+      "ဦးဝေ စံကူး ရေးဗူး တောသူ"
+];
+    const lankaSection = page.locator('#lanka-verses');
+    assert.equal(await lankaSection.count(), 1);
+    assert.deepEqual((await lankaSection.locator('.lanka-verse').allTextContents()).map(text => text.trim()), expectedLankaVerses);
+    assert.equal(await lankaSection.locator('h1,h2,h3,h4,h5,h6,table').count(), 0,
+      'the verse-only archive must not contain headings or numeric tables');
+    assert.doesNotMatch(await lankaSection.innerText(), /[၀-၉0-9]/,
+      'the verse-only archive must not contain numeric classifications');
     await page.goto('http://127.0.0.1:4173/app.html');
     assert.equal(await page.locator('#feature-graha-pariyaya').getAttribute('href'), 'graha-pariyaya.html');
     await page.locator('#feature-graha-pariyaya').click();
