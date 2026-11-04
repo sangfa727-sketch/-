@@ -146,5 +146,6 @@
     if (viewMonth===11) { viewYear++; viewMonth=0; } else viewMonth++;
     renderCalendar();
   });
-  chooseDate(selected);
+  const requestedDate = new URLSearchParams(window.location.search).get("date");
+  chooseDate(requestedDate ? (parseDate(requestedDate) || selected) : selected);
 })();
