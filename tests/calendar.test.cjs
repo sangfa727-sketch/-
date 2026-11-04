@@ -84,6 +84,11 @@ test('free-text parser accepts supported date formats and rejects malformed inpu
   assert.deepEqual({ y: iso.y, m: iso.m, d: iso.d }, { y: 1986, m: 8, d: 28 });
   assert.equal(parserSandbox.parseFreeDate('not-a-date'), null);
   assert.equal(parserSandbox.parseFreeDate('28,8,86'), null);
+  for (const invalid of ['31,2,2024', '29,2,2023', '0,1,2024', '1,13,2024']) {
+    assert.equal(parserSandbox.parseFreeDate(invalid), null, invalid);
+  }
+  assert.match(html, /function clearResults\(/);
+  assert.match(html, /function rejectFreeDate\(/);
 });
 
 test('calendar date gap reports years, months, days and correct direction', () => {
