@@ -180,12 +180,19 @@ def main():
     )
     if not pariyaya_verse_section:
         return fail("Dedicated pariyaya page is missing the verse-only archive")
-    pariyaya_verses = [
-        unescape(re.sub(r"<[^>]+>", "", item)).strip()
-        for item in re.findall(r'<p class="lanka-verse">(.*?)</p>', pariyaya_verse_section.group(1), re.DOTALL)
-    ]
+    pariyaya_verses = []
+    pariyaya_classifications = []
+    for item in re.findall(r'<p class="lanka-verse">(.*?)</p>', pariyaya_verse_section.group(1), re.DOTALL):
+        classification = re.search(r'<span class="lanka-classification">(.*?)</span>', item)
+        clean_item = re.sub(r'<span class="lanka-classification">.*?</span>', '', item)
+        pariyaya_verses.append(unescape(re.sub(r"<[^>]+>", "", clean_item)).strip())
+        if classification:
+            pariyaya_classifications.append(unescape(classification.group(1)).strip())
     if pariyaya_verses != EXPECTED_VERSES:
-        return fail("Dedicated pariyaya page does not preserve all original lanka verses")
+        return fail("Dedicated pariyaya page must preserve original lanka wording and order")
+    expected_classifications = ["အပြင်မိတ်","အတွင်းမိတ်","အပြင်ရန်","အတွင်းရန်","အရှင်ဂြိုလ်","ကျွန်ဂြိုလ်ပေါင်း","ဓာတ်မိတ်","ဓာတ်ရန်"]
+    if pariyaya_classifications != expected_classifications:
+        return fail("Dedicated pariyaya page is missing or reorders the eight inline classifications")
     if re.search(r"<h[1-6]\b|<table\b|[၀-၉0-9]", pariyaya_verse_section.group(1)):
         return fail("Dedicated pariyaya verse archive must not contain headings, tables, or numbers")
     for term in source_terms:
@@ -194,6 +201,16 @@ def main():
             return fail("A source pariyaya entry was changed or omitted")
 
     print("PASS: verse-only archive is identical on both graha pages")
+    # The pariyaya profiles now keep color associations only in the dedicated comparison table.
+    profile_color_terms = ("အရောင်", "ရောင်စုံ", "အနီရောင်", "အစိမ်းရောင်", "အဝါရောင်", "အပြာရောင်", "အနက်ရောင်", "ညစ်ပုပ်")
+    planet_cards = re.findall(r'<article class="planet-card".*?</article>', pariyaya, re.DOTALL)
+    if any(any(term in card for term in profile_color_terms) for card in planet_cards):
+        return fail("Color associations must be removed from graha-pariyaya planet profiles")
+    appearance = re.search(r'<section aria-labelledby="appearance-heading">(.*?)</section>', source, re.DOTALL)
+    if not appearance or "U AYE MINN (2021)" not in appearance.group(1):
+        return fail("Side-by-side current and U AYE MINN (2021) color comparison is missing")
+    if appearance.group(1).count("<tr>") != 10:
+        return fail("Expected nine graha color comparison rows")
     print("PASS: nine pariyaya cards, original wording, and explicit Ketu gap")
     return 0
 
