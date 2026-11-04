@@ -26,7 +26,10 @@
     .planet-card h2{margin:0;font-size:1.08rem}.planet-kind{display:inline-block;margin-top:2px;padding:1px 8px;border-radius:999px;font-size:.75rem;font-weight:750}
     .planet-kind.papa{background:#f8e9e7;color:#8a3932}.planet-kind.soma{background:#e8f1fb;color:#315b86}
     .planet-terms{margin:0;color:#344256;font-size:.94rem;line-height:2}
-    .planet-card.missing{border-style:dashed;background:#fafbfd}.missing-text{margin:0;color:var(--muted)}
+    .planet-card.missing{border-style:dashed;background:#fafbfd}.missing-text{margin:10px 0 0;color:var(--muted);font-size:.86rem}
+    .planet-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 0}
+    .planet-facts div{padding:8px 10px;border-radius:9px;background:#f2f5f9;min-width:0}
+    .planet-facts dt{font-size:.76rem;color:var(--muted)}.planet-facts dd{margin:2px 0 0;font-weight:700;font-size:.92rem}
     .empty{display:none;padding:18px;text-align:center;color:var(--muted)}
     footer{margin-top:22px;color:var(--muted);font-size:.85rem}
     input:focus-visible,a:focus-visible{outline:3px solid #8bb8df;outline-offset:2px}
@@ -71,9 +74,15 @@
         <div class="planet-card-heading"><span class="planet-number">၈</span><div><h2>သောကြာဂြိုဟ်</h2><span class="planet-kind soma">သောမ</span></div></div>
         <p class="planet-terms">မယား၊ စကား၊ ခရီးသွားလာခြင်း၊ ခရီးလှုပ်ရှားမှု၊ သွေးသား၊ သူခိုး၊ အတောင်ပါသောသတ္တဝါ၊ အနုပညာ၊ အလှအပ၊ ဇိမ်ခံပစ္စည်း၊ ကာမဆန္ဒ၊ ရောင်စုံအဆင်အယင်၊ ရောနှောသောရောင်စုံ၊ သစ်၊ သံ၊ သွတ်နှင့် သောကြာနံ ပညတ်များ</p>
       </article>
-      <article class="planet-card missing" data-planet="ကိတ်">
-        <div class="planet-card-heading"><span class="planet-number">၉</span><div><h2>ကိတ်ဂြိုဟ်</h2><span class="planet-kind">အချက်အလက် မပြည့်စုံသေး</span></div></div>
-        <p class="missing-text">မူရင်း HTML တွင် ကိတ်ဂြိုဟ်၏ ပရိယာယ်များကို မဖော်ပြထားသေးပါ။</p>
+      <article class="planet-card" data-planet="ကိတ်">
+        <div class="planet-card-heading"><span class="planet-number">၉</span><div><h2>ကိတ်ဂြိုဟ်</h2><span class="planet-kind">မူရင်းအချက်အလက် ရှိသလောက်</span></div></div>
+        <dl class="planet-facts">
+          <div><dt>ဂြိုဟ်အမှတ်</dt><dd>၉</dd></div>
+          <div><dt>တိရစ္ဆာန်သင်္ကေတ</dt><dd>ဆိတ်</dd></div>
+          <div><dt>သတ်မှတ်နေ့</dt><dd>ဗုဒ္ဓဟူးနေ့</dd></div>
+          <div><dt>အချိန်</dt><dd>နေ့လယ် ၁၂:၀၀ မှ သန်းခေါင် ၁၂:၀၀ အထိ</dd></div>
+        </dl>
+        <p class="missing-text">ပရိယာယ်စာရင်း၊ အက္ခရာ၊ အဆင်းသဏ္ဌာန်နှင့် အစိုးရသောအရပ်ကို မူရင်း HTML တွင် မဖော်ပြထားသေးပါ။ နောက်ပိုင်း မူရင်းအချက်အလက် ရရှိပါက ထပ်ဖြည့်နိုင်သည်။</p>
       </article>
   </section>
   <p class="empty" id="noResults">ရှာဖွေမှုနှင့် ကိုက်ညီသော အချက်အလက် မတွေ့ပါ။</p>
