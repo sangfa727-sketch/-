@@ -9,12 +9,12 @@ on:
       - "app.html"
       - "calendar.html"
       - "day.html"
-      - "js/day-astrology.js"
       - "css/app.css"
       - "js/calendar-app.js"
       - "js/day-astrology.js"
       - "scripts/validate-anga-vijja.py"
-      - "scripts/validate-graha-nine.py"\n      - "scripts/validate-day-astrology.py"
+      - "scripts/validate-graha-nine.py"
+      - "scripts/validate-day-astrology.py"
       - ".github/workflows/html-validation.yml"
   push:
     branches:
@@ -23,18 +23,23 @@ on:
     paths:
       - "graha-nine.html"
       - "graha-pariyaya.html"
+      - "anga-vijja.html"
       - "app.html"
       - "calendar.html"
+      - "day.html"
       - "css/app.css"
       - "js/calendar-app.js"
+      - "js/day-astrology.js"
+      - "scripts/validate-anga-vijja.py"
       - "scripts/validate-graha-nine.py"
+      - "scripts/validate-day-astrology.py"
       - ".github/workflows/html-validation.yml"
 
 permissions:
   contents: read
 
 jobs:
-  validate-graha-nine:
+  validate-astrology:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -47,3 +52,5 @@ jobs:
         run: python scripts/validate-graha-nine.py
       - name: Validate Angavijja charts and mnemonic content
         run: python scripts/validate-anga-vijja.py
+      - name: Validate selected-day eight-period astrology
+        run: python scripts/validate-day-astrology.py
