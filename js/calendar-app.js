@@ -95,7 +95,7 @@
       button.type = "button"; button.className = "calendar-day"; button.setAttribute("role","gridcell");
       button.setAttribute("aria-label",formatDate(date)+" ၊ "+(months[mm.mm]||"မြန်မာလ")+" "+phases[mm.mp]+" "+mm.fd+" ရက်");
       if (date.toDateString() === selected.toDateString()) button.classList.add("selected");
-      if (date.toDateString() === new Date().toDateString()) button.classList.add("today");
+      if (date.toDateString() === new Date().toDateString()) { button.classList.add("today"); button.setAttribute("aria-current","date"); }
       const gregorian = document.createElement("span"); gregorian.className = "gregorian"; gregorian.textContent = digits(day);
       const myanmar = document.createElement("span"); myanmar.className = "myanmar";
       myanmar.textContent = (months[mm.mm]||"")+" "+phases[mm.mp]+" "+digits(mm.fd);
