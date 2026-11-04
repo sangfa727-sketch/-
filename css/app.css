@@ -43,3 +43,10 @@
 .pair-legend-swatch--outer-enemy{color:#ff716b}
 .pair-legend-swatch--inner-enemy{color:#c28aff}
 @media(max-width:680px){.period-pillar-wrap{width:min(100%,230px)}.period-pillar-legend{font-size:10px;gap:5px 8px}}
+
+/* Installable app controls */
+.topbar-actions{display:flex;align-items:center;gap:12px}
+.install-app-button{border:1px solid #d9b77999;border-radius:999px;background:#d9b779;color:#172633;font-size:12px;font-weight:750;padding:8px 14px;cursor:pointer}
+.install-app-button[hidden]{display:none}
+.install-app-help{font-size:11px;color:var(--muted);margin:12px 0 0}
+@media(max-width:600px){.topbar-actions{gap:7px;flex-direction:column;align-items:flex-end}.install-app-button{font-size:10px;padding:6px 10px}.topbar-meta{font-size:9px}}

@@ -1,0 +1,21 @@
+{
+  "id": "./app.html",
+  "name": "မြန်မာ့ဗေဒင်ပညာ",
+  "short_name": "မြန်မာ့ဗေဒင်",
+  "description": "မြန်မာပြက္ခဒိန်၊ အင်္ဂဝိဇ္ဇာနှင့် ဂြိုလ်ပရိယာယ်",
+  "lang": "my",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#101d29",
+  "theme_color": "#172b3b",
+  "icons": [
+    {
+      "src": "./assets/app-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
