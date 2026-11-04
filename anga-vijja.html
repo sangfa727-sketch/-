@@ -73,7 +73,7 @@ const chart=document.getElementById("chart");
 function render(){
  const day=Number(weekday.value),values=base.map(n=>(n+day)%7);
  chart.replaceChildren();
- values.forEach((n,i)=>{const cell=document.createElement("div");cell.className="cell"+(i===3?" center":"");cell.textContent=myDigits(n);cell.setAttribute("aria-label",(i===3?"အလယ်ကိန်း ":"တိုင်ကိန်း ")+n);chart.append(cell);});
+ const positions=[values[0],values[1],values[2],null,values[3],null,values[4],values[5],values[6]];positions.forEach((n,i)=>{const cell=document.createElement("div");if(n===null){cell.className="cell empty";cell.setAttribute("aria-hidden","true");}else{cell.className="cell"+(i===4?" center":"");cell.textContent=myDigits(n);cell.setAttribute("aria-label",(i===4?"အလယ်ကိန်း ":"တိုင်ကိန်း ")+n);}chart.append(cell);});
  document.getElementById("chartCaption").textContent=weekdays[day]+" အခါတိုင်";
  document.getElementById("top").textContent=values.slice(0,3).map(myDigits).join(" · ");
  document.getElementById("middle").textContent=myDigits(values[3]);
