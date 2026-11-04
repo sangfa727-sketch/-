@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="နှစ် ၁၀၀ မြန်မာပြက္ခဒိန် — English ရက်စွဲမှ မြန်မာသက္ကရာဇ်၊ မြန်မာလနှင့် လဆန်း/လဆုတ်သို့ ပြောင်းလဲကြည့်ရှုရန်။">
+<title>နှစ် ၁၀၀ မြန်မာပြက္ခဒိန်</title>
+<style>
+:root{color-scheme:light;--bg:#f3f6fb;--paper:#fff;--ink:#182538;--muted:#66758a;--line:#dce4ee;--accent:#245b8f;--soft:#eaf2fb;--today:#fff4d8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans Myanmar","Myanmar Text",system-ui,sans-serif;line-height:1.65;padding:22px 14px 48px}
+main{max-width:1050px;margin:auto}header{margin-bottom:20px}h1{font-size:clamp(1.5rem,4vw,2.15rem);margin:0 0 4px}.sub{color:var(--muted);margin:0}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;margin:16px 0;box-shadow:0 6px 22px #1a35500a}
+h2{font-size:1.12rem;margin:0 0 14px}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+.field{display:grid;gap:5px;flex:1 1 210px}.field label{font-size:.92rem;color:var(--muted)}
+input,button{font:inherit;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;color:var(--ink)}
+input{min-height:46px}button{cursor:pointer;background:var(--soft);border-color:#c9d9eb;color:var(--accent);font-weight:650}
+button:focus-visible,input:focus-visible{outline:3px solid #82b5e8;outline-offset:2px}
+.result{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.result article{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}
+.result small{display:block;color:var(--muted);margin-bottom:4px}.result strong{font-size:1.05rem;overflow-wrap:anywhere}
+.big{font-size:clamp(1.25rem,3vw,1.8rem)!important;color:var(--accent)}
+.monthbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.monthbar h2{margin:0}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.weekday{text-align:center;color:var(--muted);font-size:.85rem;padding:5px 0}
+.day{min-height:76px;border:1px solid var(--line);border-radius:9px;background:#fff;padding:6px;text-align:left;display:flex;flex-direction:column;gap:2px;color:var(--ink);font-weight:400}
+.day .g{font-weight:750;font-size:1rem}.day .m{font-size:.72rem;color:var(--muted);line-height:1.35}
+.day.selected{border:2px solid var(--accent);background:var(--soft);padding:5px}
+.day.today{background:var(--today)}.day:disabled{background:transparent;border-color:transparent;cursor:default}
+.note{font-size:.88rem;color:var(--muted);margin:12px 0 0}.error{color:#a12b2b;min-height:1.5em}
+@media(max-width:620px){body{padding:14px 9px 32px}.panel{padding:13px 10px}.result{grid-template-columns:1fr}.day{min-height:67px;padding:4px}.day .m{font-size:.65rem}.grid{gap:3px}.weekday{font-size:.72rem}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>နှစ် ၁၀၀ မြန်မာပြက္ခဒိန်</h1><p class="sub">English ရက်စွဲရွေးပါ — မြန်မာသက္ကရာဇ်၊ မြန်မာလနှင့် လဆန်း/လဆုတ်ကို အလိုအလျောက်ကြည့်နိုင်ပါသည်။</p></header>
+<section class="panel" aria-labelledby="convert-heading">
+<h2 id="convert-heading">ရက်စွဲပြောင်းလဲရန်</h2>
+<div class="controls">
+<div class="field"><label for="dateInput">English Date</label><input id="dateInput" type="date" min="2026-01-01" max="2125-12-31" value="2026-11-04"></div>
+<div class="field"><label for="yearSelect">နှစ် ၁၀၀ အတွင်း နှစ်ရွေးရန်</label><select id="yearSelect" aria-label="Gregorian year"></select></div>
+<button id="todayBtn" type="button">ယနေ့ရက်စွဲ</button>
+</div>
+<p id="error" class="error" role="alert"></p>
+</section>
+<section class="panel" aria-live="polite" aria-labelledby="result-heading">
+<h2 id="result-heading">မြန်မာပြက္ခဒိန်ရလဒ်</h2>
+<div class="result">
+<article><small>မြန်မာသက္ကရာဇ်</small><strong id="myYear" class="big">—</strong></article>
+<article><small>မြန်မာလ</small><strong id="myMonth">—</strong></article>
+<article><small>လဆန်း / လဆုတ် / လပြည့် / လကွယ်</small><strong id="myDay">—</strong></article>
+<article><small>နေ့ရက်</small><strong id="myWeekday">—</strong></article>
+<article><small>မြန်မာနှစ်အမျိုးအစား</small><strong id="yearType">—</strong></article>
+<article><small>ရက်စွဲအပြည့်အစုံ</small><strong id="fullDate">—</strong></article>
+</div>
+<p class="note">တွက်ချက်မှုအခြေခံ — Julian Day Number နှင့် မြန်မာပြက္ခဒိန်၏ ဝါထပ်/ဝါကြီး စည်းမျဉ်းများ။ မြန်မာစံတော်ချိန် UTC+06:30 ကို အသုံးပြုထားသည်။</p>
+</section>
+<section class="panel">
+<div class="monthbar"><button id="prevMonth" type="button" aria-label="Previous month">← ယခင်လ</button><h2 id="calendarTitle">—</h2><button id="nextMonth" type="button" aria-label="Next month">နောက်လ →</button></div>
+<div id="calendarGrid" class="grid" role="grid" aria-label="Gregorian calendar"></div>
+<p class="note">ပြက္ခဒိန်ထဲက ရက်တစ်ရက်ကို နှိပ်လျှင် မြန်မာရက်စွဲအသေးစိတ်ကို ပြောင်းလဲပြသပါမည်။</p>
+</section>
+<footer class="note">ဤစာမျက်နှာသည် ဗေဒင်ပညာဆိုင်ရာ မှတ်စုများနှင့် သီးခြားထားသော ပြက္ခဒိန်တွက်ချက်မှု module ဖြစ်သည်။ နောင် App တွင် သက်ဆိုင်ရာနေရာမှ ပြန်လည်ချိတ်ဆက်အသုံးပြုနိုင်ရန် သီးခြားဖိုင်အဖြစ် စီစဉ်ထားသည်။</footer>
+</main>
+<script src="js/mm-calendar-core.js"></script>
+<script>
+"use strict";
+const START_YEAR=2026,END_YEAR=2125;
+const months={0:"ပထမဝါဆို",1:"တန်ခူး",2:"ကဆုန်",3:"နယုန်",4:"ဒုတိယဝါဆို",5:"ဝါခေါင်",6:"တော်သလင်း",7:"သီတင်းကျွတ်",8:"တန်ဆောင်မုန်း",9:"နတ်တော်",10:"ပြာသို",11:"တပို့တွဲ",12:"တပေါင်း",13:"နှောင်းတန်ခူး",14:"နှောင်းကဆုန်"};
+const phases={0:"လဆန်း",1:"လပြည့်",2:"လဆုတ်",3:"လကွယ်"};
+const weekdays=["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသပတေး","သောကြာ","စနေ"];
+const digits=s=>String(s).replace(/[0-9]/g,d=>"၀၁၂၃၄၅၆၇၈၉"[Number(d)]);
+const $=id=>document.getElementById(id);
+let selected=new Date(2026,10,4),viewYear=2026,viewMonth=10;
+const yearSelect=$("yearSelect");
+for(let y=START_YEAR;y<=END_YEAR;y++){const o=document.createElement("option");o.value=y;o.textContent=y;yearSelect.append(o);}
+function toMyanmar(y,m,d){
+ const jdn=w2j(y,m,d,1);const x=j2m(jdn);
+ return {...x,jdn};
+}
+function updateResult(date){
+ const y=date.getFullYear(),m=date.getMonth()+1,d=date.getDate();
+ const x=toMyanmar(y,m,d);
+ $("myYear").textContent=digits(x.my)+" ခု";
+ $("myMonth").textContent=months[x.mm]||("မြန်မာလ "+digits(x.mm));
+ $("myDay").textContent=phases[x.mp]+" "+digits(x.fd)+" ရက်";
+ $("myWeekday").textContent=weekdays[x.wd===0?6:x.wd-1]||"—";
+ $("yearType").textContent=["ရိုးရိုးနှစ်","ဝါငယ်ထပ်နှစ်","ဝါကြီးထပ်နှစ်"][x.myt]||"—";
+ $("fullDate").textContent=digits(y)+"-"+digits(String(m).padStart(2,"0"))+"-"+digits(String(d).padStart(2,"0"));
+}
+function renderCalendar(){
+ $("calendarTitle").textContent=new Intl.DateTimeFormat("en",{month:"long",year:"numeric"}).format(new Date(viewYear,viewMonth,1));
+ const grid=$("calendarGrid");grid.replaceChildren();
+ ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(w=>{const e=document.createElement("div");e.className="weekday";e.textContent=w;grid.append(e);});
+ const first=new Date(viewYear,viewMonth,1).getDay(),count=new Date(viewYear,viewMonth+1,0).getDate();
+ for(let i=0;i<first;i++){const blank=document.createElement("div");grid.append(blank);}
+ for(let d=1;d<=count;d++){
+  const date=new Date(viewYear,viewMonth,d),x=toMyanmar(viewYear,viewMonth+1,d),b=document.createElement("button");
+  b.type="button";b.className="day";b.setAttribute("role","gridcell");
+  if(date.toDateString()===selected.toDateString())b.classList.add("selected");
+  if(date.toDateString()===new Date().toDateString())b.classList.add("today");
+  const g=document.createElement("span");g.className="g";g.textContent=d;
+  const my=document.createElement("span");my.className="m";my.textContent=(months[x.mm]||"")+" "+phases[x.mp]+" "+digits(x.fd);
+  b.append(g,my);b.addEventListener("click",()=>chooseDate(date));grid.append(b);
+ }
+ $("prevMonth").disabled=viewYear===START_YEAR&&viewMonth===0;
+ $("nextMonth").disabled=viewYear===END_YEAR&&viewMonth===11;
+}
+function chooseDate(date){
+ selected=new Date(date.getFullYear(),date.getMonth(),date.getDate());
+ viewYear=selected.getFullYear();viewMonth=selected.getMonth();
+ $("dateInput").value=[viewYear,String(viewMonth+1).padStart(2,"0"),String(selected.getDate()).padStart(2,"0")].join("-");
+ yearSelect.value=viewYear;$("error").textContent="";
+ updateResult(selected);renderCalendar();
+}
+$("dateInput").addEventListener("change",()=>{
+ if(!$("dateInput").value)return;
+ const [y,m,d]=$("dateInput").value.split("-").map(Number);
+ if(y<START_YEAR||y>END_YEAR){$("error").textContent="ရွေးချယ်နိုင်သောကာလမှာ 2026 မှ 2125 အထိဖြစ်သည်။";return;}
+ const date=new Date(y,m-1,d);if(date.getFullYear()!==y||date.getMonth()!==m-1||date.getDate()!==d){$("error").textContent="ရက်စွဲမမှန်ကန်ပါ။";return;}
+ chooseDate(date);
+});
+yearSelect.addEventListener("change",()=>chooseDate(new Date(Number(yearSelect.value),viewMonth,Math.min(selected.getDate(),new Date(Number(yearSelect.value),viewMonth+1,0).getDate()))));
+$("prevMonth").addEventListener("click",()=>{if(viewMonth===0){viewYear--;viewMonth=11;}else viewMonth--;renderCalendar();});
+$("nextMonth").addEventListener("click",()=>{if(viewMonth===11){viewYear++;viewMonth=0;}else viewMonth++;renderCalendar();});
+$("todayBtn").addEventListener("click",()=>{const now=new Date();if(now.getFullYear()<START_YEAR||now.getFullYear()>END_YEAR){$("error").textContent="ယနေ့ရက်စွဲသည် ဤနှစ် ၁၀၀ ကာလအတွင်း မပါဝင်ပါ။";return;}chooseDate(now);});
+chooseDate(selected);
+</script>
+</body></html>
