@@ -108,10 +108,19 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       'တနင်္ဂနွေဂြိုဟ်','တနင်္လာဂြိုဟ်','အင်္ဂါဂြိုဟ်','ဗုဒ္ဓဟူးဂြိုဟ်',
       'ကြာသပတေးဂြိုဟ်','သောကြာဂြိုဟ်','စနေဂြိုဟ်','ရာဟုဂြိုဟ်','ကိတ်ဂြိုဟ်'
     ]);
-    const destinationTerms = await page.locator('#planetGrid .planet-card:not(.missing) .planet-terms').allTextContents();
-    assert.equal(destinationTerms.length, 8);
-    assert.deepEqual(destinationTerms, sourcePariyayaRows.map(row => row[3]),
-      'all eight planet pariyaya terms must match the original graha-nine HTML verbatim');
+    const sourceTermsByPlanet = Object.fromEntries(sourcePariyayaRows.map(row => [row[1],row[3]]));
+    const destinationTermsByPlanet = await page.locator('#planetGrid .planet-card').evaluateAll(cards =>
+      cards.filter(card => card.querySelector('.planet-terms')).map(card => ({
+        planet:card.dataset.planet,
+        terms:card.querySelector('.planet-terms').textContent.trim()
+      }))
+    );
+    assert.equal(destinationTermsByPlanet.length, 8);
+    for (const item of destinationTermsByPlanet) {
+      const sourceName = item.planet === 'ကြာသပတေး' ? 'ကြာသာပတေး' : item.planet;
+      assert.equal(item.terms,sourceTermsByPlanet[sourceName],
+        item.planet+' pariyaya terms must match the original graha-nine HTML verbatim');
+    }
     assert.equal(await page.locator('#graha-comparison-heading').count(), 1);
     assert.equal(await page.locator('#people-body-heading').count(), 1);
     assert.equal(await page.locator('#akchara-linga-heading').count(), 1);
