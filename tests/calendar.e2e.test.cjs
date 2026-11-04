@@ -177,6 +177,11 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     await page.goto('http://127.0.0.1:4173/day.html?date=1899-12-31');
     assert.equal(await page.locator('#dayError').isVisible(), true);
     assert.equal(await page.locator('#periodGrid .period-card').count(), 0);
+    await page.goto('http://127.0.0.1:4173/day.html?date=1986-08-28');
+    await page.locator('#calendarBack').click();
+    assert.ok(page.url().includes('/calendar.html?date=1986-08-28'));
+    assert.match(await page.locator('#calendarTitle').textContent(), /ဩဂုတ် ၁၉၈၆/);
+    assert.equal(await page.locator('#calendarGrid .calendar-day.selected').getAttribute('data-date'), '1986-08-28');
 
     // Static astrology reference: verify the mnemonic tables, corrected wording,
     // the two new reference sections, and desktop/mobile table containment.
