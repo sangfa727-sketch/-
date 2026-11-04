@@ -135,6 +135,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     }));
     assert.ok(appDimensions.document <= appDimensions.viewport, `app mobile horizontal overflow: ${JSON.stringify(appDimensions)}`);
     assert.ok(await page.locator('#calendarGrid .calendar-day').count() >= 28);
+    assert.equal(await page.locator('#calendarGrid .calendar-day[aria-current="date"]').count(), 1);
     assert.deepEqual(await page.locator('#calendarGrid .weekday').allTextContents(), ['နွေ','လာ','အင်္','ဗုဒ္ဓ','ကြာ','သော','စနေ']);
     await page.locator('#dateText').fill('၂၈,၈,၁၉၈၆');
     assert.equal(await page.locator('#myanmarWeekday').textContent(), 'ကြာသပတေး');
