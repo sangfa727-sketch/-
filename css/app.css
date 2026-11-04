@@ -43,3 +43,26 @@
 .pair-legend-swatch--outer-enemy{color:#ff716b}
 .pair-legend-swatch--inner-enemy{color:#c28aff}
 @media(max-width:680px){.period-pillar-wrap{width:min(100%,230px)}.period-pillar-legend{font-size:10px;gap:5px 8px}}
+
+/* Expandable daily lanka classifications */
+.period-lanka-toggle{display:block;width:100%;margin:12px auto 0;padding:9px 12px;border:1px solid #d9b77977;border-radius:10px;background:#203648;color:var(--gold-soft);font-size:12px;font-weight:750;cursor:pointer}
+.period-lanka-toggle[aria-expanded="true"]{background:#344354;border-color:var(--gold)}
+.period-lanka-details{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:11px;background:#10212e}
+.period-lanka-details[hidden]{display:none}
+.period-lanka-title{margin:0 0 9px;font-size:13px;color:var(--gold-soft)}
+.period-lanka-row{display:grid;gap:3px;padding:8px 0;border-bottom:1px solid #ffffff12}
+.period-lanka-row:last-of-type{border-bottom:0}
+.period-lanka-row strong{font-size:11px;color:var(--gold)}
+.period-lanka-verse{font-size:11px;color:var(--ink);line-height:1.8}
+.period-lanka-result{font-size:10px;color:var(--muted);line-height:1.8}
+.period-lanka-note{font-size:10px;line-height:1.8;color:var(--muted);margin:9px 0 0}
+.source-detail-section{margin-top:22px;padding:18px;background:linear-gradient(145deg,#1c3040,#172836);border:1px solid var(--line);border-radius:16px}
+.source-detail-section h2{margin:0 0 12px;font-size:17px;color:var(--gold-soft)}
+.source-detail-section h3{margin:18px 0 8px;font-size:14px;color:var(--gold)}
+.source-detail-section .table-wrap{overflow-x:auto}
+.source-detail-section table{width:100%;border-collapse:collapse;min-width:620px;font-size:12px}
+.source-detail-section th,.source-detail-section td{padding:9px 10px;border:1px solid var(--line);text-align:left;vertical-align:top}
+.source-detail-section th{background:#203648;color:var(--gold-soft);white-space:nowrap}
+.source-detail-section tbody tr:nth-child(even){background:#ffffff06}
+.source-detail-section .note{color:var(--muted);font-size:11px;line-height:1.8}
+@media(max-width:600px){.source-detail-section{padding:14px 10px}.source-detail-section table{font-size:11px}.source-detail-section th,.source-detail-section td{padding:8px}}
