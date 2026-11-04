@@ -50,7 +50,7 @@ class DocumentAudit(HTMLParser):
         if element_id:
             self.ids.append(element_id)
         if tag == "section":
-            self.section_stack.append(element_id)
+            self.section_stack.append(element_id or attrs.get("aria-labelledby"))
         if tag == "table" and "akchara-linga-heading" in self.section_stack:
             self.akchara_table_count += 1
         if tag == "h3":
