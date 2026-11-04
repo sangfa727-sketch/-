@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="အင်္ဂဝိဇ္ဇာဗေဒင် အက္ခရာအလိုက် အခါတိုင်ထူပုံ၊ ၅ တိုင်နှင့် ၃ တိုင် အဟောလင်္ကာ။">
+<meta name="theme-color" content="#172b3b">
+<title>မြန်မာ့ဗေဒင်ပညာ | အင်္ဂဝိဇ္ဇာ ဗေဒင်</title>
+<style>
+:root{color-scheme:light;--bg:#f2f5f9;--paper:#fff;--ink:#1c2b3d;--muted:#64748b;--line:#dce4ed;--accent:#315d83;--soft:#edf4fa;--gold:#9a7436}
+*{box-sizing:border-box}body{margin:0;padding:22px 14px 46px;background:var(--bg);color:var(--ink);font-family:"Noto Sans Myanmar","Myanmar Text",system-ui,sans-serif;line-height:1.8}
+main{max-width:1040px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.brand{color:var(--ink);text-decoration:none;font-weight:750}.back{color:var(--accent);text-decoration:none;border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:10px}
+h1{font-size:clamp(1.55rem,4vw,2.2rem);margin:0 0 5px}.subtitle{margin:0;color:var(--muted)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;margin:16px 0;box-shadow:0 5px 20px #1d35500a}
+h2{font-size:1.15rem;margin:0 0 12px}.eyebrow{font-size:.75rem;letter-spacing:.08em;color:var(--gold);font-weight:750;margin:0 0 4px}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:grid;gap:5px}.field label{font-size:.92rem;color:var(--muted)}
+select,input,button{font:inherit;color:var(--ink);border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 12px;min-height:44px}
+button{cursor:pointer;background:var(--soft);color:var(--accent);font-weight:700}button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #8bb8df;outline-offset:2px}
+.chart-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.7fr);gap:20px;align-items:center}
+.chart{width:min(100%,340px);margin:8px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.cell{min-height:74px;display:grid;place-items:center;border:1px solid #d7e0ea;border-radius:12px;background:#f8fafc;font-size:1.8rem;font-weight:800;color:var(--accent)}
+.cell.center{background:#eaf1f8;border:2px solid var(--accent);color:#172b3b}.cell.empty{visibility:hidden}
+.chart-caption{text-align:center;color:var(--muted);font-size:.9rem}
+.pillar-list{display:grid;gap:8px}.pillar-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:7px 0}.pillar-item:last-child{border:0}
+.note{font-size:.88rem;color:var(--muted);margin:10px 0 0}.callout{padding:12px 14px;background:#f8f6f0;border-left:3px solid var(--gold);border-radius:8px}
+.verse{font-size:1.05rem;line-height:2.15}.verse-lines{display:grid;gap:4px}.verse-line{padding:8px 10px;border-bottom:1px solid var(--line)}
+.example{font-weight:750;color:var(--accent);letter-spacing:.05em}.pillars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.pillar{border:1px solid var(--line);border-radius:11px;padding:10px;text-align:center;background:#fbfcfe}.pillar strong{display:block;font-size:1.3rem;color:var(--accent)}
+.result{margin-top:12px;min-height:1.5em;color:var(--accent);font-weight:700}.small-table{width:100%;border-collapse:collapse}.small-table th,.small-table td{padding:9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.small-table th{color:var(--muted);font-weight:650}
+footer{color:var(--muted);font-size:.85rem;margin-top:22px}
+@media(max-width:650px){body{padding:15px 9px 32px}.panel{padding:14px 11px}.chart-wrap{grid-template-columns:1fr}.chart{max-width:290px}.cell{min-height:65px}.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}.controls{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<header><a class="brand" href="app.html">✦ မြန်မာ့ဗေဒင်ပညာ</a><a class="back" href="app.html">← မူလစာမျက်နှာ</a></header>
+<section><p class="eyebrow">ANGAVIJAJA · TRADITIONAL KNOWLEDGE</p><h1>အင်္ဂဝိဇ္ဇာ ဗေဒင်</h1><p class="subtitle">အက္ခရာအလိုက် အခါတိုင်ထူပုံနှင့် တိုင်အဟောလင်္ကာများ</p></section>
+<section class="panel" aria-labelledby="chart-title"><p class="eyebrow">LETTER-BASED PILLAR</p><h2 id="chart-title">အက္ခရာအလိုက် အခါတိုင်ထူပုံ</h2>
+<div class="controls"><div class="field"><label for="weekday">နေ့နံရွေးရန်</label><select id="weekday">
+<option value="0">တနင်္ဂနွေ</option><option value="1">တနင်္လာ</option><option value="2">အင်္ဂါ</option><option value="3">ဗုဒ္ဓဟူး</option><option value="4">ကြာသပတေး</option><option value="5">သောကြာ</option><option value="6">စနေ</option></select></div>
+<div class="field"><label for="letter">အက္ခရာရွေးရန် (နေ့နံကို အလိုအလျောက်ရွေးမည်)</label><select id="letter"><option value="">အက္ခရာရွေးပါ</option></select></div></div>
+<div class="chart-wrap"><div><div class="chart" id="chart" aria-label="အခါတိုင်ဇယား"></div><p class="chart-caption" id="chartCaption">တနင်္ဂနွေ အခါတိုင်</p></div>
+<div class="pillar-list"><div class="pillar-item"><span>အပေါ်ဆုံးတိုင်</span><strong id="top">—</strong></div><div class="pillar-item"><span>အလယ် မူလကိန်း</span><strong id="middle">—</strong></div><div class="pillar-item"><span>အောက်ဆုံးတိုင်</span><strong id="bottom">—</strong></div><p class="note">ဇယားကို အပေါ် ၃ ကိန်း၊ အလယ် ၁ ကိန်း၊ အောက် ၃ ကိန်းဖြင့် ဖော်ပြထားသည်။</p></div></div>
+<div class="callout"><strong>တွက်ချက်မှုမှတ်ချက် —</strong> ပေးထားသော တနင်္ဂနွေ/တနင်္လာ နမူနာနှစ်ခုကို တိုက်ဆိုင်ကြည့်ရာ တနင်္လာဇယားသည် တနင်္ဂနွေဇယား၏ ကိန်းတစ်ဆင့်စီကို ၇ ဖြင့် ပတ်လည်တိုးထားသည့်ပုံစံနှင့် ကိုက်ညီသည်။ ကျန်နေ့များကို ထိုပုံစံအတိုင်း ဆက်လက်ဖြည့်ထားခြင်းဖြစ်ပြီး မူရင်းကျမ်းမှ သီးခြားအတည်ပြုချက်ဟု မဆိုလိုပါ။</div>
+</section>
+<section class="panel"><p class="eyebrow">WEEKDAY LETTER GROUPS</p><h2>နေ့နံနှင့် သက်ဆိုင်သော အက္ခရာများ</h2><div style="overflow-x:auto"><table class="small-table"><thead><tr><th>နေ့နံ</th><th>အက္ခရာအုပ်စု</th></tr></thead><tbody>
+<tr><td>တနင်္ဂနွေ</td><td>အ၊ အာ၊ ဣ၊ ဤ၊ ဥ၊ ဦ၊ ဧ၊ အဲ၊ ဩ၊ ဪ၊ အံ၊ အား</td></tr>
+<tr><td>တနင်္လာ</td><td>က၊ ခ၊ ဃ၊ ဂ၊ င</td></tr><tr><td>အင်္ဂါ</td><td>စ၊ ဆ၊ ဇ၊ ဈ၊ ည</td></tr>
+<tr><td>ဗုဒ္ဓဟူး</td><td>လ၊ ဝ</td></tr><tr><td>ကြာသပတေး</td><td>ပ၊ ဖ၊ ဗ၊ ဘ၊ မ</td></tr>
+<tr><td>သောကြာ</td><td>သ၊ ဟ</td></tr><tr><td>စနေ</td><td>ဋ၊ ဌ၊ ဍ၊ ဎ၊ ဏ၊ တ၊ ထ၊ ဒ၊ ဓ၊ န</td></tr>
+</tbody></table></div><p class="note">အက္ခရာအုပ်စုများကို Repository ရှိ ဂြိုဟ်အက္ခရာဇယားအတိုင်း ချိတ်ဆက်ထားသည်။</p></section>
+<section class="panel"><p class="eyebrow">FIVE-PILLAR READING</p><h2>၅ တိုင်ထူ အဟောလင်္ကာ</h2><div class="verse-lines verse">
+<div class="verse-line">အိုင်ထဲမြရွေငွေ၊</div><div class="verse-line">ကြံပါလူ့အသွေ၊</div><div class="verse-line">ဆင်ရံသူနှင့်ဝေ၊</div><div class="verse-line">လေသဲကျွန်းဆောင်မြူး၊</div><div class="verse-line">ပျော်ကျူးဧလှည့်နိုင်၊</div><div class="verse-line">သာလှိုင်ဆင်ကြလန်း၊</div><div class="verse-line">နန်းအောင်ရွှေမြို့သာ။</div></div>
+<p><strong>ပေးထားသော ဥပမာ</strong></p><p class="example">အိုင်ထဲမြရွှေငွေ — ၁၊ ၀၊ ၅၊ ၄၊ ၂</p>
+<div class="pillars"><div class="pillar"><strong>၁</strong>မူလတိုင်</div><div class="pillar"><strong>၂</strong>သာဓကတိုင်</div><div class="pillar"><strong>၃</strong>နိမိတ်တိုင်</div><div class="pillar"><strong>၄</strong>ဟေတုတိုင်</div><div class="pillar"><strong>၅</strong>လက္ခဏာတိုင်</div></div>
+<p class="note">လင်္ကာတစ်ပိုဒ်ချင်းနှင့် တိုင်ကိန်းချင်း ဆက်စပ်ပုံအပြည့်အစုံကို မူရင်းစာအုပ်/ဆရာ့မှတ်တမ်းဖြင့် ထပ်မံတိုက်ဆိုင်ရန် လိုအပ်သည်။</p></section>
+<section class="panel"><p class="eyebrow">THREE-PILLAR READING</p><h2>၃ တိုင်ထူ အဟောလင်္ကာ</h2><p class="verse">“အမျှကြင်၊ ခင်လှသွေ၊ စေသဝန်၊ လွင်ကြာမြင့်၊ မင်း၏နောင်၊ သောင်စလမ်း၊ နန်းလုံးဆွေ”</p><p class="note">မှတ်လေ မူလ နိမိတ်ပြ ယူကြလက္ခဏာ။</p>
+<div class="pillars" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="pillar"><strong>၁</strong>မူလတိုင်</div><div class="pillar"><strong>၂</strong>နိမိတ်တိုင်</div><div class="pillar"><strong>၃</strong>လက္ခဏာတိုင်</div></div>
+</section>
+<section class="panel"><p class="eyebrow">INTERPRETATION INPUT</p><h2>တိုင်နံပါတ်အလိုက် အမည်ခွဲကြည့်ရန်</h2><div class="controls"><div class="field"><label for="pillarType">တိုင်အမျိုးအစား</label><select id="pillarType"><option value="5">၅ တိုင်</option><option value="3">၃ တိုင်</option></select></div><div class="field"><label for="pillarNumbers">တိုင်ကိန်းများ (ဥပမာ 1,0,5,4,2)</label><input id="pillarNumbers" inputmode="numeric" placeholder="1,0,5,4,2"></div></div><button id="interpret" type="button" style="margin-top:12px">တိုင်အမည်များ ဖော်ပြရန်</button><div id="interpretResult" class="result" aria-live="polite"></div><p class="note">ဤနေရာတွင် တိုင်အစဉ်နှင့် အမည်ကိုသာ ခွဲပြထားသည်။ ကိန်းတစ်ခုချင်း၏ အဟောကို မူရင်းအချက်အလက် မပြည့်စုံသေးသဖြင့် မခန့်မှန်းထားပါ။</p></section>
+<footer>အချက်အလက်အခြေခံ — အသုံးပြုသူပေးပို့ထားသော အခါတိုင်ပုံ၊ လင်္ကာနှင့် Repository ရှိ နေ့နံ/အက္ခရာဇယား။ ရိုးရာအယူအဆမှတ်တမ်းဖြစ်ပြီး မူရင်းကျမ်းနှင့် ထပ်မံစိစစ်နိုင်ရန် အထောက်အထားအခြေအနေကို ဖော်ပြထားသည်။</footer>
+</main>
+<script>
+"use strict";
+const weekdays=["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသပတေး","သောကြာ","စနေ"];
+const groups=[
+["အ","အာ","ဣ","ဤ","ဥ","ဦ","ဧ","အဲ","ဩ","ဪ","အံ","အား"],
+["က","ခ","ဃ","ဂ","င"],["စ","ဆ","ဇ","ဈ","ည"],["လ","ဝ"],
+["ပ","ဖ","ဗ","ဘ","မ"],["သ","ဟ"],["ဋ","ဌ","ဍ","ဎ","ဏ","တ","ထ","ဒ","ဓ","န"]];
+const base=[5,2,6,1,4,0,3];
+const myDigits=n=>String(n).replace(/\d/g,d=>"၀၁၂၃၄၅၆၇၈၉"[Number(d)]);
+const weekday=document.getElementById("weekday"),letter=document.getElementById("letter");
+const chart=document.getElementById("chart");
+function render(){
+ const day=Number(weekday.value),values=base.map(n=>(n+day)%7);
+ chart.replaceChildren();
+ const positions=[values[0],values[1],values[2],null,values[3],null,values[4],values[5],values[6]];positions.forEach((n,i)=>{const cell=document.createElement("div");if(n===null){cell.className="cell empty";cell.setAttribute("aria-hidden","true");}else{cell.className="cell"+(i===4?" center":"");cell.textContent=myDigits(n);cell.setAttribute("aria-label",(i===4?"အလယ်ကိန်း ":"တိုင်ကိန်း ")+n);}chart.append(cell);});
+ document.getElementById("chartCaption").textContent=weekdays[day]+" အခါတိုင်";
+ document.getElementById("top").textContent=values.slice(0,3).map(myDigits).join(" · ");
+ document.getElementById("middle").textContent=myDigits(values[3]);
+ document.getElementById("bottom").textContent=values.slice(4).map(myDigits).join(" · ");
+}
+function fillLetters(day){letter.replaceChildren(new Option("အက္ခရာရွေးပါ",""));groups[day].forEach(ch=>letter.add(new Option(ch,ch)));}
+weekday.addEventListener("change",()=>{fillLetters(Number(weekday.value));render();});
+letter.addEventListener("change",()=>{if(!letter.value)return;const day=groups.findIndex(g=>g.includes(letter.value));if(day>=0){weekday.value=String(day);render();}});
+document.getElementById("interpret").addEventListener("click",()=>{
+ const count=Number(document.getElementById("pillarType").value),raw=document.getElementById("pillarNumbers").value.trim();
+ const nums=raw.split(/[၊,\s]+/).filter(Boolean);
+ const out=document.getElementById("interpretResult");
+ if(nums.length!==count||nums.some(n=>!/^\d+$/.test(n)||Number(n)>6)){out.textContent="တိုင်အရေအတွက်နှင့် ကိန်းများကို စစ်ဆေးပါ။ ၀ မှ ၆ အတွင်း ကိန်းများကို ထည့်ပါ။";return;}
+ const names=count===5?["မူလတိုင်","သာဓကတိုင်","နိမိတ်တိုင်","ဟေတုတိုင်","လက္ခဏာတိုင်"]:["မူလတိုင်","နိမိတ်တိုင်","လက္ခဏာတိုင်"];
+ out.textContent=nums.map((n,i)=>"တိုင် "+myDigits(i+1)+" ("+myDigits(n)+") — "+names[i]).join("　|　");
+});
+fillLetters(0);render();
+</script>
+</body></html>
