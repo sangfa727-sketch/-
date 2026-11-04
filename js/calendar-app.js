@@ -92,7 +92,7 @@
       const date = new Date(viewYear,viewMonth,day);
       const mm = toMyanmar(date);
       const button = document.createElement("button");
-      button.type = "button"; button.className = "calendar-day"; button.setAttribute("role","gridcell");
+      button.type = "button"; button.className = "calendar-day"; button.setAttribute("role","gridcell"); button.dataset.date = isoDate(date);
       button.setAttribute("aria-label",formatDate(date)+" ၊ "+(months[mm.mm]||"မြန်မာလ")+" "+phases[mm.mp]+" "+mm.fd+" ရက်");
       if (date.toDateString() === selected.toDateString()) button.classList.add("selected");
       if (date.toDateString() === new Date().toDateString()) { button.classList.add("today"); button.setAttribute("aria-current","date"); }
@@ -100,7 +100,7 @@
       const myanmar = document.createElement("span"); myanmar.className = "myanmar";
       myanmar.textContent = (months[mm.mm]||"")+" "+phases[mm.mp]+" "+digits(mm.fd);
       button.append(gregorian,myanmar);
-      button.addEventListener("click",() => chooseDate(date));
+      button.addEventListener("click",() => { window.location.href = "day.html?date=" + isoDate(date); });
       grid.append(button);
     }
     $("previousMonth").disabled = viewYear===START_YEAR && viewMonth===0;
