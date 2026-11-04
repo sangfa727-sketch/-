@@ -31,6 +31,7 @@ REQUIRED_TEXT = [
     "ဂြိုဟ် ၉ ပါး ဇယား",
     "ဂြိုဟ်တို့၏ အက္ခရာများ",
     "မဟာဘုတ်ပညာ",
+    "ဂြိုဟ် ၈ လုံး ပရိယာယ်",
 ]
 
 class DocumentAudit(HTMLParser):
@@ -129,7 +130,19 @@ def main():
     print("PASS: unique IDs")
     print("PASS: all 7 classification headings and tables")
     print("PASS: corrected mnemonic and key wording")
+    pariyaya_file = Path("graha-pariyaya.html")
+    if not pariyaya_file.is_file():
+        return fail("Missing graha-pariyaya.html")
+    pariyaya = pariyaya_file.read_text(encoding="utf-8")
+    if pariyaya.count('class="planet-card') != 9:
+        return fail("Expected 9 planet cards in graha-pariyaya.html")
+    if "ကိတ်ဂြိုဟ်၏ ပရိယာယ်များကို မဖော်ပြထားသေး" not in pariyaya:
+        return fail("Ketu source gap must remain explicit")
+    if "အဖ၊ အဖေ" not in pariyaya or "ပညာ" not in pariyaya:
+        return fail("Expected original pariyaya wording is missing")
+
     print("PASS: original graha, letter, and Mahabote sections remain")
+    print("PASS: nine pariyaya cards, original wording, and explicit Ketu gap")
     return 0
 
 if __name__ == "__main__":
