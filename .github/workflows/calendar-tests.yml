@@ -24,3 +24,9 @@ jobs:
           node-version: 22
       - name: Run calendar regression tests
         run: node --test tests/calendar.test.cjs
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Run browser end-to-end tests
+        run: node --test tests/calendar.e2e.test.cjs
