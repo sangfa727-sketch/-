@@ -180,12 +180,19 @@ def main():
     )
     if not pariyaya_verse_section:
         return fail("Dedicated pariyaya page is missing the verse-only archive")
-    pariyaya_verses = [
-        unescape(re.sub(r"<[^>]+>", "", item)).strip()
-        for item in re.findall(r'<p class="lanka-verse">(.*?)</p>', pariyaya_verse_section.group(1), re.DOTALL)
-    ]
+    pariyaya_verses = []
+    pariyaya_classifications = []
+    for item in re.findall(r'<p class="lanka-verse">(.*?)</p>', pariyaya_verse_section.group(1), re.DOTALL):
+        classification = re.search(r'<span class="lanka-classification">(.*?)</span>', item)
+        clean_item = re.sub(r'<span class="lanka-classification">.*?</span>', '', item)
+        pariyaya_verses.append(unescape(re.sub(r"<[^>]+>", "", clean_item)).strip())
+        if classification:
+            pariyaya_classifications.append(unescape(classification.group(1)).strip())
     if pariyaya_verses != EXPECTED_VERSES:
-        return fail("Dedicated pariyaya page does not preserve all original lanka verses")
+        return fail("Dedicated pariyaya page must preserve original lanka wording and order")
+    expected_classifications = ["အပြင်မိတ်","အတွင်းမိတ်","အပြင်ရန်","အတွင်းရန်","အရှင်ဂြိုလ်","ကျွန်ဂြိုလ်ပေါင်း","ဓာတ်မိတ်","ဓာတ်ရန်"]
+    if pariyaya_classifications != expected_classifications:
+        return fail("Dedicated pariyaya page is missing or reorders the eight inline classifications")
     if re.search(r"<h[1-6]\b|<table\b|[၀-၉0-9]", pariyaya_verse_section.group(1)):
         return fail("Dedicated pariyaya verse archive must not contain headings, tables, or numbers")
     for term in source_terms:
