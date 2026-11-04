@@ -96,7 +96,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#five-pillar-reading h2').textContent(), '၅ တိုင်ထူ အဟောလင်္ကာ');
     assert.equal(await page.locator('#three-pillar-reading h2').textContent(), '၃ တိုင်ထူ အဟောလင်္ကာ');
     await page.goto('http://127.0.0.1:4173/graha-nine.html');
-    const sourcePariyayaRows = await page.locator('#graha-pariyaya-heading tbody tr').evaluateAll(rows =>
+    const sourcePariyayaRows = await page.locator('section[aria-labelledby="graha-pariyaya-heading"] tbody tr').evaluateAll(rows =>
       rows.map(row => [...row.querySelectorAll('td')].map(cell => cell.textContent.trim()))
     );
     assert.equal(sourcePariyayaRows.length, 8);
