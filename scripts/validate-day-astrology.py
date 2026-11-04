@@ -63,9 +63,11 @@ def main():
     for required in ('0) return 7','selectedWeekday === 3 && periodStart >= 720','outer-friend','inner-friend','outer-enemy','inner-enemy','pair-ring-layer-4','၄⁽⁸⁾'):
         if required not in js + css + html:
             return fail(f"Missing pair-color or graha alias invariant: {required}")
-    for required in ('အပြင်မိတ်','အတွင်းမိတ်','အပြင်ရန်','အတွင်းရန်','၀၆:၀၀ မှ ၁၈:၀၀'):
-        if required not in html:
-            return fail(f"Missing pair legend or time-boundary explanation: {required}")
+    for required in ('အပြင်မိတ်','အတွင်းမိတ်','အပြင်ရန်','အတွင်းရန်'):
+        if required not in js:
+            return fail(f"Missing dynamic pair legend label: {required}")
+    if '၀၆:၀၀ မှ ၁၈:၀၀' not in html:
+        return fail("Missing daily period time-boundary explanation")
     print("PASS: selected-day HTML structure and unique IDs")
     print("PASS: 8 x 90-minute periods, inclusive six-count rotation, and 7-number pillar")
     print("PASS: each period pillar is explicitly stacked vertically with the owner number centered")
