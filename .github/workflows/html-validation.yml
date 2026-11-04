@@ -5,15 +5,11 @@ on:
     paths:
       - "graha-nine.html"
       - "graha-pariyaya.html"
-      - "calendar.html"
-      - "app.html"
-      - "js/calendar-app.js"
-      - "css/app.css"
       - "anga-vijja.html"
       - "app.html"
       - "calendar.html"
-      - "js/calendar-app.js"
       - "css/app.css"
+      - "js/calendar-app.js"
       - "scripts/validate-anga-vijja.py"
       - "scripts/validate-graha-nine.py"
       - ".github/workflows/html-validation.yml"
@@ -23,6 +19,10 @@ on:
     paths:
       - "graha-nine.html"
       - "graha-pariyaya.html"
+      - "app.html"
+      - "calendar.html"
+      - "css/app.css"
+      - "js/calendar-app.js"
       - "scripts/validate-graha-nine.py"
       - ".github/workflows/html-validation.yml"
 
