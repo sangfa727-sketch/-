@@ -93,12 +93,12 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.ok(page.url().endsWith('/graha-pariyaya.html'));
     assert.equal(await page.locator('#planetGrid .planet-card').count(), 9);
     assert.equal(await page.locator('#planetGrid .planet-card:not(.missing)').count(), 9);
-    const ketuCard = page.locator('#planetGrid [data-planet="ကိတ်"]');
-    assert.match(await ketuCard.innerText(), /ဂြိုဟ်အမှတ်[\\s\\S]*၉/);
-    assert.match(await ketuCard.innerText(), /တိရစ္ဆာန်သင်္ကေတ[\\s\\S]*ဆိတ်/);
-    assert.match(await ketuCard.innerText(), /ဗုဒ္ဓဟူးနေ့/);
-    assert.match(await ketuCard.innerText(), /နေ့လယ် ၁၂:၀၀ မှ သန်းခေါင် ၁၂:၀၀/);
-    assert.match(await ketuCard.innerText(), /အက္ခရာ၊ အဆင်းသဏ္ဌာန်နှင့် အစိုးရသောအရပ်/);
+    const ketuText = await page.locator('#planetGrid [data-planet="ကိတ်"]').innerText();
+    assert.ok(ketuText.includes('ဂြိုဟ်အမှတ်') && ketuText.includes('၉'));
+    assert.ok(ketuText.includes('တိရစ္ဆာန်သင်္ကေတ') && ketuText.includes('ဆိတ်'));
+    assert.ok(ketuText.includes('ဗုဒ္ဓဟူးနေ့'));
+    assert.ok(ketuText.includes('နေ့လယ် ၁၂:၀၀ မှ သန်းခေါင် ၁၂:၀၀'));
+    assert.ok(ketuText.includes('အက္ခရာ၊ အဆင်းသဏ္ဌာန်နှင့် အစိုးရသောအရပ်'));
     assert.ok((await page.locator('#planetGrid').innerText()).includes('အဖ၊ အဖေ'));
     await page.locator('#planetSearch').fill('ပညာ');
     assert.ok(await page.locator('#planetGrid .planet-card:not([hidden])').count() > 0);
