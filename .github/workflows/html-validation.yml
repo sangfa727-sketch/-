@@ -1,0 +1,31 @@
+name: HTML validation
+
+on:
+  pull_request:
+    paths:
+      - "graha-nine.html"
+      - "scripts/validate-graha-nine.py"
+      - ".github/workflows/html-validation.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "graha-nine.html"
+      - "scripts/validate-graha-nine.py"
+      - ".github/workflows/html-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-graha-nine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Validate HTML structure and astrology tables
+        run: python scripts/validate-graha-nine.py
