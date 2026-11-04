@@ -115,6 +115,7 @@
   }
   function rejectDate(message) {
     $("errorMessage").textContent = message;
+    $("datePicker").value = "";
     $("myanmarFullDate").textContent = "—";
     ["myanmarYear","myanmarMonth","moonPhase","myanmarWeekday","yearType","gregorianDate","dateDifference","totalDays","direction"].forEach(id => $(id).textContent="—");
   }
