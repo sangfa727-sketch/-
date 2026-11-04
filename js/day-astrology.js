@@ -164,6 +164,8 @@
   const planetNames = ["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသပတေး","သောကြာ","စနေ","ရာဟု"];
   const malePlanetNumbers = new Set([1,3,4,5]);
   const femalePlanetNumbers = new Set([2,6,7,8]);
+  const comparisonMalePlanetNumbers = new Set([1,2,3,4]);
+  const comparisonFemalePlanetNumbers = new Set([5,6,7,8]);
   function getClassificationNumber(value, selectedWeekday, periodStart) {
     if (value === 4 && selectedWeekday === 3 && periodStart >= 720) return 8;
     return value;
@@ -204,12 +206,17 @@
     details.append(heading);
 
     const ownerNumber = getClassificationNumber(ownerIndex + 1, selectedWeekday, periodStart);
-    const gender = malePlanetNumbers.has(ownerNumber) ? "ယောက်ျားဂြိုဟ်"
+    const lankaGender = malePlanetNumbers.has(ownerNumber) ? "ယောက်ျားဂြိုဟ်"
       : femalePlanetNumbers.has(ownerNumber) ? "မိန်းမဂြိုဟ်" : "မူရင်းတွင် မသတ်မှတ်ထား";
-    const genderResult = planetNames[ownerNumber - 1]
-      ? planetNames[ownerNumber - 1] + "ဂြိုဟ် — " + gender
-      : gender;
-    addLankaRow(details,"ကျား / မ ဂြိုဟ်",genderVerses.male + " · " + genderVerses.female,genderResult);
+    const comparisonGender = comparisonMalePlanetNumbers.has(ownerNumber) ? "ယောက်ျားဂြိုဟ်"
+      : comparisonFemalePlanetNumbers.has(ownerNumber) ? "မိန်းမဂြိုဟ်" : "မူရင်းတွင် မသတ်မှတ်ထား";
+    const ownerPlanetName = planetNames[ownerNumber - 1] || "မသတ်မှတ်ထား";
+    addLankaRow(details,"ကျား / မ ဂြိုဟ်",genderVerses.male + " · " + genderVerses.female,
+      ownerPlanetName + "ဂြိုဟ် — လင်္ကာခွဲခြားဇယား: " + lankaGender + " | အခန်း (က) နှိုင်းယှဉ်ဇယား: " + comparisonGender);
+    if (lankaGender !== comparisonGender) {
+      addLankaRow(details,"မူရင်းကျား / မ ဇယားကွဲလွဲချက်","ဂြိုဟ် ၉ ပါး မူရင်း HTML အခန်းနှစ်ခုကို သီးခြားထိန်းသိမ်းထားသည်။",
+        "ဤဂြိုဟ်အတွက် အခန်းနှစ်ခု၏ သတ်မှတ်ချက် မတူညီပါ။ အတည်ပြုချက်မရမချင်း တစ်မျိုးတည်းအဖြစ် မပေါင်းစည်းထားပါ။");
+    }
 
     const classNumbers = values.map(value => getClassificationNumber(value,selectedWeekday,periodStart));
     addLankaRow(details,"နဂိုရ် / ယာယီ ဂြိုဟ်",classificationSets.native.verse + " · " + classificationSets.temporary.verse,
