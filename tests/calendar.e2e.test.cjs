@@ -243,9 +243,19 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       assert.equal(item.terms,sourceTermsByPlanet[sourceName],
         item.planet+' pariyaya terms must match the original graha-nine HTML verbatim');
     }
+    const centersByOwner = {
+      0:['၁','၀','၅','၄','၂'],
+      1:['၂','၅','၄','၁','၆'],
+      2:['၃','၄','၆','၀','၄'],
+      3:['၄','၆','၂','၃','၅'],
+      4:['၅','၂','၁','၄','၀'],
+      5:['၆','၄','၃','၂','၄'],
+      6:['၀','၁','၄','၅','၆'],
+    };
     for (const [sampleDate, weekdayIndex] of weekdaySamples) {
       await page.goto('http://127.0.0.1:4173/day.html?date=' + sampleDate);
-      const owners = await page.locator('#periodGrid .period-card').evaluateAll(cards => cards.map(card => Number(card.dataset.ownerIndex)));
+      const cards = page.locator('#periodGrid .period-card');
+      const owners = await cards.evaluateAll(nodes => nodes.map(card => Number(card.dataset.ownerIndex)));
       assert.equal(owners.length, 8);
       assert.equal(owners[0], weekdayIndex, sampleDate + ' must start with its own weekday');
       assert.equal(owners[7], weekdayIndex, sampleDate + ' must end with its own weekday');
@@ -258,28 +268,36 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
           direction: getComputedStyle(pillar).flexDirection,
         };
       }));
-      assert.equal(pillars.length, 8, sampleDate + ' must render eight separate pillars');
+      assert.equal(pillars.length, 40, sampleDate + ' must render five pillars in each of eight periods');
       for (let periodIndex = 0; periodIndex < 8; periodIndex++) {
         const owner = owners[periodIndex];
-        const expected = [5,2,6,1,4,0,3].map(value => (value + owner) % 7)
-          .map(value => String(value).replace(/[0-9]/g, digit => '၀၁၂၃၄၅၆'[Number(digit)]));
-        assert.deepEqual(pillars[periodIndex].values, expected, sampleDate + ' period ' + (periodIndex + 1) + ' pillar sequence');
-        assert.equal(pillars[periodIndex].direction, 'column', sampleDate + ' period ' + (periodIndex + 1) + ' must be vertical');
-        assert.ok(pillars[periodIndex].tops.every((top, index, all) => index === 0 || top > all[index - 1]),
-          sampleDate + ' period ' + (periodIndex + 1) + ' values must be stacked top-to-bottom');
+        const cardPillars = cards.nth(periodIndex).locator('.period-pillar');
+        assert.equal(await cardPillars.count(), 5, sampleDate + ' period ' + (periodIndex + 1) + ' must contain five pillars');
+        for (let pillarIndex = 0; pillarIndex < 5; pillarIndex++) {
+          const flatIndex = periodIndex * 5 + pillarIndex;
+          const center = Number(centersByOwner[owner][pillarIndex].replace(/[၀-၉]/g, digit => '၀၁၂၃၄၅၆၇၈၉'.indexOf(digit)));
+          const offset = (center - 1 + 7) % 7;
+          const expected = [5,2,6,1,4,0,3].map(value => (value + offset) % 7)
+            .map(value => String(value).replace(/[0-9]/g, digit => '၀၁၂၃၄၅၆'[Number(digit)]));
+          assert.deepEqual(pillars[flatIndex].values, expected, sampleDate + ' period ' + (periodIndex + 1) + ' pillar ' + (pillarIndex + 1) + ' sequence');
+          assert.equal(pillars[flatIndex].direction, 'column', sampleDate + ' period ' + (periodIndex + 1) + ' pillar ' + (pillarIndex + 1) + ' must be vertical');
+          assert.ok(pillars[flatIndex].tops.every((top, index, all) => index === 0 || top > all[index - 1]),
+            sampleDate + ' period ' + (periodIndex + 1) + ' pillar ' + (pillarIndex + 1) + ' values must be stacked top-to-bottom');
+        }
       }
     }
 
-    // Pair classifications must render for every one of the 56 daily pillars.
-    // A displayed 0 participates as mnemonic 7; Wednesday noon uses 4/8 (Rahu).
+    // Pair classifications must render across all 280 pillars (7 weekdays x 8 periods x 5 pillars).
+    // Displayed 0/4 remain unchanged; 0→7 and Wednesday's Rahu 4→8 are interpretation aliases only.
     for (const [sampleDate, weekdayIndex] of weekdaySamples) {
       await page.goto('http://127.0.0.1:4173/day.html?date=' + sampleDate);
       const cards = page.locator('#periodGrid .period-card');
       for (let periodIndex = 0; periodIndex < 8; periodIndex++) {
         const card = cards.nth(periodIndex);
-        const pillar = card.locator('.period-pillar');
+        const pillars = card.locator('.period-pillar');
         const lankaToggle = card.locator('.period-lanka-toggle');
         const lankaPanel = card.locator('.period-lanka-details');
+        assert.equal(await pillars.count(),5,sampleDate+' period '+(periodIndex+1)+' must show five pillars');
         assert.equal(await lankaToggle.count(),1,sampleDate+' period '+(periodIndex+1)+' must have a hide/show control');
         assert.equal(await lankaToggle.getAttribute('aria-expanded'),'false');
         assert.equal(await lankaPanel.isHidden(),true);
@@ -296,21 +314,24 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
         await lankaToggle.click();
         assert.equal(await lankaToggle.getAttribute('aria-expanded'),'false');
         assert.equal(await lankaPanel.isHidden(),true);
-        assert.equal(await card.locator('.period-pillar-legend .pair-legend-item').count(), 4,
-          sampleDate + ' period ' + (periodIndex + 1) + ' must explain all four pair categories');
-        assert.equal(await pillar.locator('[data-effective-number="7"]').count(), 1,
-          sampleDate + ' period ' + (periodIndex + 1) + ' must map 0 to mnemonic 7');
-        assert.ok(await pillar.locator('.pair-ring--outer-friend').count() > 0);
-        assert.ok(await pillar.locator('.pair-ring--inner-friend').count() > 0);
-        assert.ok(await pillar.locator('.pair-ring--outer-enemy').count() > 0);
-        assert.ok(await pillar.locator('.pair-ring--inner-enemy').count() > 0);
-        const isWednesdayRahu = weekdayIndex === 3 && periodIndex >= 4;
-        assert.equal(await pillar.locator('[data-effective-number="8"]').count(), isWednesdayRahu ? 1 : 0,
-          sampleDate + ' period ' + (periodIndex + 1) + ' Wednesday 4/8 alias boundary');
-        if (isWednesdayRahu) {
-          assert.equal(await pillar.locator('.pillar-number-alias').textContent(), '၈');
-          assert.ok((await pillar.locator('.period-pillar-center').innerText()).includes('၄') ||
-            await pillar.locator('.period-pillar-cell .pillar-number[data-effective-number="8"]').count() === 1);
+        assert.equal(await card.locator('.period-pillar-legend .pair-legend-item').count(),4,
+          sampleDate+' period '+(periodIndex+1)+' must explain all four pair categories');
+        for (let pillarIndex=0; pillarIndex<5; pillarIndex++) {
+          const pillar=pillars.nth(pillarIndex);
+          assert.equal(await pillar.locator('[data-effective-number="7"]').count(),1,
+            sampleDate+' period '+(periodIndex+1)+' pillar '+(pillarIndex+1)+' must map displayed 0 to mnemonic 7');
+          for (const category of ['outer-friend','inner-friend','outer-enemy','inner-enemy']) {
+            assert.ok(await pillar.locator('.pair-ring--'+category).count()>0,
+              sampleDate+' period '+(periodIndex+1)+' pillar '+(pillarIndex+1)+' missing '+category+' ring');
+          }
+          const isWednesdayRahu = weekdayIndex===3 && periodIndex>=4;
+          assert.equal(await pillar.locator('[data-effective-number="8"]').count(),isWednesdayRahu?1:0,
+            sampleDate+' period '+(periodIndex+1)+' pillar '+(pillarIndex+1)+' Wednesday 4/8 alias boundary');
+          if (isWednesdayRahu) {
+            assert.equal(await pillar.locator('.pillar-number-alias').count(),0,
+              'Rahu alias must not replace the displayed Angavijja number 4');
+            assert.equal(await pillar.locator('[data-effective-number="8"] .pillar-number-value').textContent(),'၄');
+          }
         }
       }
     }
@@ -323,7 +344,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     }));
     assert.ok(dayDimensions.document <= dayDimensions.viewport, `day page mobile horizontal overflow: ${JSON.stringify(dayDimensions)}`);
     assert.equal(await page.locator('#periodGrid .period-card').count(), 8);
-    assert.deepEqual(await page.locator('#periodGrid .period-pillar').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).flexDirection)), Array(8).fill('column'));
+    assert.deepEqual(await page.locator('#periodGrid .period-pillar').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).flexDirection)), Array(40).fill('column'));
     await page.goto('http://127.0.0.1:4173/day.html?date=1899-12-31');
     assert.equal(await page.locator('#dayError').isVisible(), true);
     assert.equal(await page.locator('#periodGrid .period-card').count(), 0);
