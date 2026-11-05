@@ -81,16 +81,9 @@
     number.className = "pillar-number-value";
     number.textContent = toMyanmarDigits(value);
     badge.append(number);
-    if (effectiveValue === 8 && value === 4) {
-      const alias = document.createElement("sup");
-      alias.className = "pillar-number-alias";
-      alias.textContent = "၈";
-      alias.setAttribute("aria-label", "ရာဟု ၈");
-      badge.append(alias);
-      badge.dataset.effectiveNumber = "8";
-    } else {
-      badge.dataset.effectiveNumber = String(effectiveValue);
-    }
+    // ပြသသည့်ကိန်းကို မူလအင်္ဂဝိဇ္ဇာအစားထိုးစည်းမျဉ်းအတိုင်း ၀/၄ အဖြစ်သာ ထားသည်။
+    // မိတ်/ရန် စက်ဝိုင်းစစ်ဆေးမှုအတွက် effective number ကို data attribute တွင်သာ သိမ်းထားသည်။
+    badge.dataset.effectiveNumber = String(effectiveValue);
     markIds.forEach((id, layer) => {
       const ring = document.createElement("span");
       ring.className = "pair-ring pair-ring--" + id + " pair-ring-layer-" + (layer + 1);
