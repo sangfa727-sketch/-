@@ -73,3 +73,36 @@
 .install-app-button[hidden]{display:none}
 .install-app-help{font-size:11px;color:var(--muted);margin:12px 0 0}
 @media(max-width:600px){.topbar-actions{gap:7px;flex-direction:column;align-items:flex-end}.install-app-button{font-size:10px;padding:6px 10px}.topbar-meta{font-size:9px}}
+
+
+/* Five-pillar Angavijja layout for each daily time period */
+.period-five-pillars-wrap{width:100%;min-width:0;margin:8px auto 0}
+.period-five-pillars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;align-items:start;width:100%;min-width:0}
+.period-five-pillar{min-width:0;padding:6px 3px;border:1px solid #d9b77933;border-radius:9px;background:#10212e66}
+.period-five-pillar-title{min-height:34px;display:grid;place-items:center;margin:0 0 5px;text-align:center;font-size:10px;line-height:1.45;font-weight:750;color:var(--gold-soft);overflow-wrap:anywhere}
+.period-five-pillar-chart{width:100%;max-width:none;margin:0;padding:2px 3px;border-left:1px solid #d9b77933;border-right:1px solid #d9b77933;background:#172b3b44}
+.period-five-pillar-chart .period-pillar-cell{min-height:25px;font-size:15px}
+.period-five-pillar-chart .period-pillar-center{min-height:42px;display:grid;gap:0;padding:2px 0}
+.period-five-pillar-chart .period-pillar-center strong{font-size:17px}
+.period-five-pillar-chart .period-pillar-owner-label{font-size:8px;line-height:1.25;text-align:center;overflow-wrap:anywhere}
+.period-five-pillar-chart .period-pillar-rule{height:1px}
+.period-five-pillar-verse{margin:10px 0 4px;text-align:center;color:var(--gold-soft);font-size:13px;font-weight:750;line-height:1.7}
+.period-five-pillar-centers{margin:8px 0 0;text-align:center;color:var(--muted);font-size:11px;letter-spacing:.02em}
+.period-five-pillar-legend{margin-top:9px}
+.calendar-day .calendar-pillar-hint{align-self:flex-start;margin-top:2px;padding:1px 5px;border:1px solid #d9b77955;border-radius:999px;color:var(--gold-soft);font-size:8px;line-height:1.4;white-space:nowrap}
+@media(max-width:680px){
+  .period-five-pillars{gap:3px}
+  .period-five-pillar{padding:5px 2px;border-radius:7px}
+  .period-five-pillar-title{min-height:39px;font-size:9px}
+  .period-five-pillar-chart{padding:1px 2px}
+  .period-five-pillar-chart .period-pillar-cell{min-height:23px;font-size:13px}
+  .period-five-pillar-chart .period-pillar-center{min-height:39px}
+  .period-five-pillar-chart .period-pillar-center strong{font-size:15px}
+  .period-five-pillar-chart .period-pillar-owner-label{font-size:7px}
+}
+@media(max-width:370px){
+  .period-five-pillars{gap:2px}
+  .period-five-pillar-title{font-size:8px;min-height:42px}
+  .period-five-pillar-chart .period-pillar-cell{font-size:12px;min-height:22px}
+  .period-five-pillar-chart .period-pillar-center strong{font-size:14px}
+}
