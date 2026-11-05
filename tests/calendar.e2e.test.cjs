@@ -125,9 +125,9 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
       ['၁','၀','၅','၄','၂'],
       ['၆','၄','၃','၂','၄'],
       ['၄','၆','၂','၃','၅'],
-      ['၂','５','４','１','６'],
-      ['０','１','４','５','６'],
-      ['５','２','１','４','０'],
+      ['၂','၅','၄','၁','၆'],
+      ['၀','၁','၄','၅','၆'],
+      ['၅','၂','၁','၄','၀'],
     ].flat();
     assert.deepEqual(await page.locator('#periodGrid .period-pillar-center strong').allTextContents(), expectedFivePillarCenters);
     assert.deepEqual(await page.locator('#periodGrid .period-card').evaluateAll(cards => cards.map(card => card.querySelectorAll('.period-five-pillar').length)), [5,5,5,5,5,5,5,5]);
