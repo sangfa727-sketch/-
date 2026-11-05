@@ -108,6 +108,7 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     }));
     assert.ok(appDimensions.document <= appDimensions.viewport, `app mobile horizontal overflow: ${JSON.stringify(appDimensions)}`);
     assert.ok(await page.locator('#calendarGrid .calendar-day').count() >= 28);
+    assert.equal(await page.locator('#calendarGrid .calendar-day .calendar-pillar-hint').count(), await page.locator('#calendarGrid .calendar-day').count());
     assert.equal(await page.locator('#calendarGrid .calendar-day[aria-current="date"]').count(), 1);
     assert.deepEqual(await page.locator('#calendarGrid .weekday').allTextContents(), ['နွေ','လာ','အင်္','ဗုဒ္ဓ','ကြာ','သော','စနေ']);
     await page.locator('#dateText').fill('၂၈,၈,၁၉၈၆');
@@ -118,7 +119,20 @@ test('Myanmar calendar and astrology reference pages work in desktop and mobile 
     assert.equal(await page.locator('#dayWeekday').textContent(), 'ကြာသပတေး နေ့');
     assert.equal(await page.locator('#periodGrid .period-card').count(), 8);
     assert.deepEqual(await page.locator('#periodGrid .period-card').evaluateAll(cards => cards.map(card => Number(card.dataset.ownerIndex))), [4,2,0,5,3,1,6,4]);
-    assert.deepEqual(await page.locator('#periodGrid .period-pillar-center strong').allTextContents(), ['၅','၃','၁','၆','၄','၂','၀','၅']);
+    const expectedFivePillarCenters = [
+      ['၅','၂','၁','၄','၀'],
+      ['၃','၄','၆','၀','၄'],
+      ['၁','၀','၅','၄','၂'],
+      ['၆','၄','၃','၂','၄'],
+      ['၄','၆','၂','၃','၅'],
+      ['၂','５','４','１','６'],
+      ['０','１','４','５','６'],
+      ['５','２','１','４','０'],
+    ].flat();
+    assert.deepEqual(await page.locator('#periodGrid .period-pillar-center strong').allTextContents(), expectedFivePillarCenters);
+    assert.deepEqual(await page.locator('#periodGrid .period-card').evaluateAll(cards => cards.map(card => card.querySelectorAll('.period-five-pillar').length)), [5,5,5,5,5,5,5,5]);
+    assert.deepEqual(await page.locator('#periodGrid .period-card').first().locator('.period-five-pillar-title').allTextContents(), ['မူလတိုင်','သာဓကတိုင်','နိမိတ်တိုင်','ဟေတုတိုင်','လက္ခဏာတိုင်']);
+    assert.equal(await page.locator('#periodGrid .period-card').first().locator('.period-five-pillar-verse').textContent(), 'လင်္ကာ — ပျော်ကျူးဧလှည့်နိုင်');
     assert.equal(await page.locator('#periodGrid .period-card').first().locator('.period-time').textContent(), 'နံနက် ၆:၀၀ မှ နံနက် ၇:၃၀');
     assert.equal(await page.locator('#periodGrid .period-card').last().locator('.period-time').textContent(), 'ညနေ ၄:၃၀ မှ ညနေ ၆:၀၀');
     const weekdaySamples = [
