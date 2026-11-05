@@ -157,6 +157,110 @@
     return wrapper;
   }
 
+  const classificationSets = {
+    native: { label:"နဂိုရ်ဂြိုဟ်", verse:"အင်တူလက်မျှ နဂိုရ်ပ", values:[1,0,4,5] },
+    temporary: { label:"ယာယီဂြိုဟ်", verse:"ခြေစွပ်သိမ်းယူ ယာယီယူ", values:[2,3,6,8] },
+    master: { label:"အရှင်ဂြိုဟ် (အကြီး)", verse:"ကြိုင်း လောင်း မြဲ သို", values:[2,4,5,6] },
+    servant: { label:"ကျွန်ဂြိုဟ် (အငယ်)", verse:"အ စ နံ ရောင်း", values:[1,3,0,8] }
+  };
+  const genderVerses = {
+    male:"အောင်၊ ဆု၊ လည်း၊ ပွား — ဂြိုဟ် ယောက်ျား",
+    female:"ခြေ၊ သွား၊ ထိန်း၊ ရ — ဂြိုဟ် မိန်းမ"
+  };
+  const truthVerses = [
+    { label:"မှန်စကား", verse:"အုတ် ခြစ် စံ ထား မှန်စကား" },
+    { label:"စကားမမှန်ရာ", verse:"ကျွန် မ သား စကားမမှန်ရာ" }
+  ];
+  const purchaseVerses = [
+    { label:"မဝယ်ကောင်း", verse:"အောင် ကျော် ဇံ လောင်း မဝယ်ကောင်း" },
+    { label:"ဝယ်ရန်", verse:"လွမ်း ပု သာ ဝယ်ပါလေ" }
+  ];
+  const elementCategories = [
+    { label:"ဓာတ်မိတ်", verse:"အန္တော ဂဗ္ဘေ စရေ ဝံသေ", pairs:["17","25","38","46"] },
+    { label:"ဓာတ်ရန်", verse:"ဦးဝေ စံကူး ရေးဗူး တောသူ", pairs:["14","32","85","76"] }
+  ];
+  const planetNames = ["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသပတေး","သောကြာ","စနေ","ရာဟု"];
+  const malePlanetNumbers = new Set([1,3,4,5]);
+  const femalePlanetNumbers = new Set([2,6,0,8]);
+  function getClassificationNumber(value, selectedWeekday, periodStart) {
+    if (value === 4 && selectedWeekday === 3 && periodStart >= 720) return 8;
+    return value;
+  }
+  function matchingPairs(values, pairs, selectedWeekday, periodStart, useMnemonicAlias) {
+    const numbers = values.map(value => useMnemonicAlias
+      ? getEffectiveNumber(value, selectedWeekday, periodStart)
+      : getClassificationNumber(value, selectedWeekday, periodStart));
+    return pairs.filter(pair => {
+      const first = Number(pair[0]), second = Number(pair[1]);
+      const firstIndex = numbers.indexOf(first);
+      return firstIndex !== -1 && numbers.findIndex((n,index) => n === second && index !== firstIndex) !== -1;
+    });
+  }
+  function addLankaRow(container, label, verse, result) {
+    const row = document.createElement("div");
+    row.className = "period-lanka-row";
+    const heading = document.createElement("strong");
+    heading.textContent = label;
+    const verseText = document.createElement("span");
+    verseText.className = "period-lanka-verse";
+    verseText.textContent = verse;
+    const outcome = document.createElement("span");
+    outcome.className = "period-lanka-result";
+    outcome.textContent = result;
+    row.append(heading,verseText,outcome);
+    container.append(row);
+  }
+  function formatValues(values) {
+    return values.length ? values.map(toMyanmarDigits).join("၊ ") : "မတွေ့ပါ";
+  }
+  function renderLankaDetails(values, ownerIndex, selectedWeekday, periodStart) {
+    const details = document.createElement("section");
+    details.className = "period-lanka-details";
+    const heading = document.createElement("h3");
+    heading.className = "period-lanka-title";
+    heading.textContent = "မူရင်းလင်္ကာနှင့် ဂြိုဟ်ခွဲခြားချက်များ";
+    details.append(heading);
+
+    const ownerNumber = getClassificationNumber(ownerIndex + 1, selectedWeekday, periodStart);
+    const lankaGender = malePlanetNumbers.has(ownerNumber) ? "ယောက်ျားဂြိုဟ်"
+      : femalePlanetNumbers.has(ownerNumber) ? "မိန်းမဂြိုဟ်" : "မူရင်းတွင် မသတ်မှတ်ထား";
+    const ownerPlanetName = planetNames[ownerNumber - 1] || "မသတ်မှတ်ထား";
+    addLankaRow(details,"ကျား / မ ဂြိုဟ်",genderVerses.male + " · " + genderVerses.female,
+      ownerPlanetName + "ဂြိုဟ် — " + lankaGender);
+
+    const classNumbers = values.map(value => getClassificationNumber(value,selectedWeekday,periodStart));
+    addLankaRow(details,"နဂိုရ် / ယာယီ ဂြိုဟ်",classificationSets.native.verse + " · " + classificationSets.temporary.verse,
+      "နဂိုရ် " + formatValues(values.filter((v,i) => classificationSets.native.values.includes(classNumbers[i]))) +
+      "  |  ယာယီ " + formatValues(values.filter((v,i) => classificationSets.temporary.values.includes(classNumbers[i]))));
+    addLankaRow(details,"အရှင် / ကျွန် ဂြိုဟ်",classificationSets.master.verse + " · " + classificationSets.servant.verse,
+      "အရှင် " + formatValues(values.filter((v,i) => classificationSets.master.values.includes(classNumbers[i]))) +
+      "  |  ကျွန် " + formatValues(values.filter((v,i) => classificationSets.servant.values.includes(classNumbers[i]))));
+
+    const friendEnemy = [
+      {id:"outer-friend",label:"အပြင်မိတ်",verse:"အောင်ပ ကုလား ဆွေသား နှောင်ရင်း",pairs:["15","24","36","78"]},
+      {id:"inner-friend",label:"အတွင်းမိတ်",verse:"ဦးသာ စိန်ပန်း ဒန်းလှ ကိုရှာ",pairs:["16","35","74","23"]},
+      {id:"outer-enemy",label:"အပြင်ရန်",verse:"ဦးညို ခေမာ သုတ ဝေရီ",pairs:["13","25","67","48"]},
+      {id:"inner-enemy",label:"အတွင်းရန်",verse:"ဓမ္မာ သောက အင်းဝ ရာဇာ",pairs:["75","62","14","83"]}
+    ];
+    friendEnemy.forEach(category => {
+      const found = matchingPairs(values,category.pairs,selectedWeekday,periodStart,true);
+      addLankaRow(details,category.label,category.verse,
+        found.length ? "ကိုက်ညီသော ကိန်းတွဲ " + found.join("၊ ") : "ဤတိုင်တွင် ကိုက်ညီသော ကိန်းတွဲ မတွေ့ပါ");
+    });
+    elementCategories.forEach(category => {
+      const found = matchingPairs(values,category.pairs,selectedWeekday,periodStart,true);
+      addLankaRow(details,category.label,category.verse,
+        found.length ? "ကိုက်ညီသော ကိန်းတွဲ " + found.join("၊ ") : "ဤတိုင်တွင် ကိုက်ညီသော ကိန်းတွဲ မတွေ့ပါ");
+    });
+    truthVerses.forEach(item => addLankaRow(details,item.label,item.verse,"မူရင်း HTML တွင် ကိန်းဂဏန်းသတ်မှတ်ချက် မဖော်ပြထားပါ"));
+    purchaseVerses.forEach(item => addLankaRow(details,item.label,item.verse,"မူရင်း HTML တွင် ကိန်းဂဏန်းသတ်မှတ်ချက် မဖော်ပြထားပါ"));
+    const note = document.createElement("p");
+    note.className = "period-lanka-note";
+    note.textContent = "မှတ်ချက် — လင်္ကာကိန်းတွဲများကို မူရင်းကိန်းနှင့် ၀→၇ မိတ်/ရန်ပြောင်းလဲမှုကို သီးခြားလိုက်နာ၍ စစ်ဆေးထားသည်။ ဗုဒ္ဓဟူးနေ့ နေ့လယ် ၁၂ နာရီနောက်ပိုင်း ၄⁽၈⁾ ကို ၈ အဖြစ် သတ်မှတ်ထားသည်။ ကိန်းမဖော်ပြထားသော လင်္ကာများကို အဖြေမခန့်မှန်းဘဲ မူရင်းအတိုင်းသာ ပြထားသည်။";
+    details.append(note);
+    return details;
+  }
+
   if (!valid) {
     error.hidden = false;
     document.getElementById("dayTitle").textContent = "ရက်စွဲမရရှိပါ";
@@ -203,6 +307,23 @@
     centers.className = "period-five-pillar-centers";
     centers.textContent = "အခြေတည်ကိန်း — " + lanka.centers.map(toMyanmarDigits).join("၊ ");
     card.append(heading,owner,verse,renderFivePillars(lanka.centers,ownerIndex,startIndex,start),centers);
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "period-lanka-toggle";
+    toggle.textContent = "လင်္ကာနှင့် ခွဲခြားချက်များ ကြည့်ရန်";
+    toggle.setAttribute("aria-expanded","false");
+    const detailId = "period-lanka-" + (index + 1);
+    toggle.setAttribute("aria-controls",detailId);
+    const detailPanel = renderLankaDetails(lanka.centers,ownerIndex,startIndex,start);
+    detailPanel.id = detailId;
+    detailPanel.hidden = true;
+    toggle.addEventListener("click",() => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded",String(!isOpen));
+      detailPanel.hidden = isOpen;
+      toggle.textContent = isOpen ? "လင်္ကာနှင့် ခွဲခြားချက်များ ကြည့်ရန်" : "လင်္ကာနှင့် ခွဲခြားချက်များ ဖျောက်ရန်";
+    });
+    card.append(toggle,detailPanel);
     grid.append(card);
   }
 })();
