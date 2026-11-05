@@ -5,6 +5,17 @@
   const weekdays = ["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသပတေး","သောကြာ","စနေ"];
   const weekdayNumbers = [1,2,3,4,5,6,7];
   const basePillar = [5,2,6,1,4,0,3];
+  const fivePillarNames = ["မူလတိုင်","သာဓကတိုင်","နိမိတ်တိုင်","ဟေတုတိုင်","လက္ခဏာတိုင်"];
+  // လင်္ကာတစ်ပုဒ်စီ၏ အခြေတည်ကိန်း ၅ လုံး — အစဉ်သည် တနင်္ဂနွေမှ စနေအထိ။
+  const fivePillarVerses = [
+    { verse:"အိုင်ထဲမြရွှေငွေ", centers:[1,0,5,4,2] },
+    { verse:"ကြံပါလူ့အသွေ", centers:[2,5,4,1,6] },
+    { verse:"ဆင်ရံသူနှင့်ဝေ", centers:[3,4,6,0,4] },
+    { verse:"လေသဲကျွန်းဆောင်မြူး", centers:[4,6,2,3,5] },
+    { verse:"ပျော်ကျူးဧလှည့်နိုင်", centers:[5,2,1,4,0] },
+    { verse:"သာလှိုင်ဆင်ကြလန်း", centers:[6,4,3,2,4] },
+    { verse:"နန်းအောင်ရွှေမြို့သာ", centers:[0,1,4,5,6] }
+  ];
   const pairCategories = [
     { id:"outer-friend", label:"အပြင်မိတ်", pairs:["15","24","36","78"] },
     { id:"inner-friend", label:"အတွင်းမိတ်", pairs:["16","35","74","23"] },
@@ -31,9 +42,6 @@
     const period = hour24 < 12 ? "နံနက်" : hour24 < 16 ? "နေ့" : "ညနေ";
     const hour12 = hour24 % 12 || 12;
     return period + " " + toMyanmarDigits(hour12) + ":" + toMyanmarDigits(String(minute).padStart(2,"0"));
-  }
-  function makePillar(ownerIndex) {
-    return basePillar.map(value => (value + ownerIndex) % 7);
   }
   function getEffectiveNumber(value, selectedWeekday, periodStart) {
     if (value === 0) return 7;
@@ -70,16 +78,9 @@
     number.className = "pillar-number-value";
     number.textContent = toMyanmarDigits(value);
     badge.append(number);
-    if (effectiveValue === 8 && value === 4) {
-      const alias = document.createElement("sup");
-      alias.className = "pillar-number-alias";
-      alias.textContent = "၈";
-      alias.setAttribute("aria-label", "ရာဟု ၈");
-      badge.append(alias);
-      badge.dataset.effectiveNumber = "8";
-    } else {
-      badge.dataset.effectiveNumber = String(effectiveValue);
-    }
+    // ပြသသည့်ကိန်းကို မူလအင်္ဂဝိဇ္ဇာအစားထိုးစည်းမျဉ်းအတိုင်း ၀/၄ အဖြစ်သာ ထားသည်။
+    // မိတ်/ရန် စက်ဝိုင်းစစ်ဆေးမှုအတွက် effective number ကို data attribute တွင်သာ သိမ်းထားသည်။
+    badge.dataset.effectiveNumber = String(effectiveValue);
     markIds.forEach((id, layer) => {
       const ring = document.createElement("span");
       ring.className = "pair-ring pair-ring--" + id + " pair-ring-layer-" + (layer + 1);
@@ -89,53 +90,70 @@
     cell.append(badge);
     return cell;
   }
-  function renderPillar(values, ownerIndex, selectedWeekday, periodStart) {
-    const chart = document.createElement("div");
-    chart.className = "period-pillar";
-    chart.setAttribute("aria-label", weekdays[ownerIndex] + " အင်္ဂဝိဇ္ဇာတိုင်");
-    const { marks, activeCategories, effective } = getPairMarks(values, selectedWeekday, periodStart);
-    values.forEach((value, index) => {
-      if (index === 3) {
-        const ruleTop = document.createElement("div");
-        ruleTop.className = "period-pillar-rule";
-        chart.append(ruleTop);
-      }
-      const cell = renderNumber(value, index, [...marks[index]], effective[index]);
-      if (index === 3) {
-        const label = document.createElement("span");
-        label.className = "period-pillar-owner-label";
-        label.textContent = weekdays[ownerIndex] + " နံ";
-        cell.append(label);
-      }
-      chart.append(cell);
-      if (index === 3) {
-        const ruleBottom = document.createElement("div");
-        ruleBottom.className = "period-pillar-rule";
-        chart.append(ruleBottom);
-      }
+
+  function renderFivePillars(centers, ownerIndex, selectedWeekday, periodStart) {
+    const section = document.createElement("div");
+    section.className = "period-five-pillars";
+    section.setAttribute("aria-label", weekdays[ownerIndex] + " အချိန်ပိုင် လင်္ကာ ၅ တိုင်");
+    const allActive = new Map();
+    centers.forEach((centerNumber, pillarIndex) => {
+      const offset = (centerNumber - 1 + 7) % 7;
+      const values = basePillar.map(value => (value + offset) % 7);
+      const { marks, activeCategories, effective } = getPairMarks(values, selectedWeekday, periodStart);
+      activeCategories.forEach(category => allActive.set(category.id, category));
+      const pillar = document.createElement("section");
+      pillar.className = "period-five-pillar";
+      const title = document.createElement("h3");
+      title.className = "period-five-pillar-title";
+      title.textContent = fivePillarNames[pillarIndex];
+      const chart = document.createElement("div");
+      chart.className = "period-pillar period-five-pillar-chart";
+      chart.setAttribute("aria-label", fivePillarNames[pillarIndex] + "၊ အလယ်တည်ကိန်း " + centerNumber);
+      values.forEach((value, index) => {
+        if (index === 3) {
+          const ruleTop = document.createElement("div");
+          ruleTop.className = "period-pillar-rule";
+          chart.append(ruleTop);
+        }
+        const cell = renderNumber(value, index, [...marks[index]], effective[index]);
+        if (index === 3) {
+          const label = document.createElement("span");
+          label.className = "period-pillar-owner-label";
+          label.textContent = "အလယ် " + toMyanmarDigits(centerNumber);
+          cell.append(label);
+        }
+        chart.append(cell);
+        if (index === 3) {
+          const ruleBottom = document.createElement("div");
+          ruleBottom.className = "period-pillar-rule";
+          chart.append(ruleBottom);
+        }
+      });
+      pillar.append(title, chart);
+      section.append(pillar);
     });
     const legend = document.createElement("div");
-    legend.className = "period-pillar-legend";
+    legend.className = "period-pillar-legend period-five-pillar-legend";
     legend.setAttribute("aria-label", "စက်ဝိုင်းအရောင် အဓိပ္ပာယ်");
-    if (activeCategories.length) {
-      activeCategories.forEach(category => {
+    if (allActive.size) {
+      allActive.forEach(category => {
         const item = document.createElement("span");
         item.className = "pair-legend-item";
         item.dataset.category = category.id;
         const swatch = document.createElement("span");
         swatch.className = "pair-legend-swatch pair-legend-swatch--" + category.id;
         swatch.setAttribute("aria-hidden", "true");
-        const text = document.createElement("span");
-        text.textContent = category.label;
-        item.append(swatch,text);
+        const label = document.createElement("span");
+        label.textContent = category.label;
+        item.append(swatch, label);
         legend.append(item);
       });
     } else {
       legend.textContent = "သက်ဆိုင်သော မိတ်/ရန်အတွဲ မတွေ့ပါ";
     }
     const wrapper = document.createElement("div");
-    wrapper.className = "period-pillar-wrap";
-    wrapper.append(chart,legend);
+    wrapper.className = "period-five-pillars-wrap";
+    wrapper.append(section, legend);
     return wrapper;
   }
 
@@ -281,8 +299,14 @@
     const owner = document.createElement("p");
     owner.className = "period-owner";
     owner.textContent = weekdays[ownerIndex] + " နံ · ကိန်း " + toMyanmarDigits(weekdayNumbers[ownerIndex]);
-    const pillarValues = makePillar(ownerIndex);
-    card.append(heading,owner,renderPillar(pillarValues,ownerIndex,startIndex,start));
+    const lanka = fivePillarVerses[ownerIndex];
+    const verse = document.createElement("p");
+    verse.className = "period-five-pillar-verse";
+    verse.textContent = "လင်္ကာ — " + lanka.verse;
+    const centers = document.createElement("p");
+    centers.className = "period-five-pillar-centers";
+    centers.textContent = "အခြေတည်ကိန်း — " + lanka.centers.map(toMyanmarDigits).join("၊ ");
+    card.append(heading,owner,verse,renderFivePillars(lanka.centers,ownerIndex,startIndex,start),centers);
     const toggle = document.createElement("button");
     toggle.type = "button";
     toggle.className = "period-lanka-toggle";
@@ -290,7 +314,7 @@
     toggle.setAttribute("aria-expanded","false");
     const detailId = "period-lanka-" + (index + 1);
     toggle.setAttribute("aria-controls",detailId);
-    const detailPanel = renderLankaDetails(pillarValues,ownerIndex,startIndex,start);
+    const detailPanel = renderLankaDetails(lanka.centers,ownerIndex,startIndex,start);
     detailPanel.id = detailId;
     detailPanel.hidden = true;
     toggle.addEventListener("click",() => {
